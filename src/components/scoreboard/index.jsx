@@ -7,14 +7,8 @@ import CalculatedSound from "../../assets/sounds/calculated.mp3";
 import FinishSound from "../../assets/sounds/endedDuel.mp3";
 import StartDuelSound from "../../assets/sounds/duelStart.mp3";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import MonsterDestruction from "../../assets/sounds/monsterDestruction.mp3";
-import MonsterActivation from "../../assets/sounds/monsterActivation.mp3";
-import MagicActivation from "../../assets/sounds/magicActivation.mp3";
-import {
-  getRandomDamageLpSpell,
-  getRandomMonster,
-} from "../../shared/services/cards";
 import { Howl, Howler } from "howler";
+import CardGenerator from "../cardGenerator";
 
 const ScoreBoard = () => {
   const [lpInput, setLpInput] = useState();
@@ -23,9 +17,6 @@ const ScoreBoard = () => {
   const [opponentLifePoints, setOpponentLifePoints] = useState(8000);
   const [previousLp, setPreviousLp] = useState(8000);
   const [opponentPreviousLp, setopponentPreviousLp] = useState(8000);
-  const [randomCard, setRandomCard] = useState({});
-  const [magicCard, setMagicCard] = useState({});
-  const [disabledButton, setDisabledButton] = useState(false);
   Howler.volume(1.0);
 
   const soundPlay = (src) => {
@@ -88,38 +79,6 @@ const ScoreBoard = () => {
     setLifePoints(8000);
     setOpponentLifePoints(8000);
     soundPlay(StartDuelSound);
-  };
-
-  const handleRandomCard = () => {
-    setDisabledButton(true);
-
-    getRandomMonster().then((res) => {
-      let monstersAmmount = res.data.length;
-      setRandomCard(res.data[Math.floor(Math.random() * monstersAmmount) + 1]);
-      setDisabledButton(false);
-      soundPlay(MonsterActivation);
-    });
-  };
-
-  const handleMagicCard = () => {
-    setDisabledButton(true);
-
-    getRandomDamageLpSpell().then((res) => {
-      setMagicCard(res.data[0]);
-      console.log(magicCard);
-      setDisabledButton(false);
-      soundPlay(MagicActivation);
-    });
-  };
-
-  const handleDestroyMonster = () => {
-    setRandomCard({});
-    soundPlay(MonsterDestruction);
-  };
-
-  const handleDestroyMagic = () => {
-    setMagicCard({});
-    soundPlay(MonsterDestruction);
   };
 
   return (
@@ -209,73 +168,18 @@ const ScoreBoard = () => {
         </Grid>
       </Grid>
       <div className="cardsWrapper">
-        <div className="cardGenerator">
-          <div className="cardContainer">
-            <Button
-              disabled={disabledButton}
-              className="cardButtons"
-              color="primary"
-              variant="contained"
-              onClick={handleRandomCard}
-            >
-              Summon
-            </Button>
-            <img
-              src={
-                randomCard?.card_images?.length > 0
-                  ? randomCard?.card_images[0].image_url
-                  : "https://i.pinimg.com/236x/c6/4e/a3/c64ea38e58ab38e3a340fb0b40ae8aa9--yu-gi-oh-jpg.jpg"
-              }
-              alt="random card"
-              className={
-                randomCard?.atk < randomCard?.def ? "defenseMode" : "attackMode"
-              }
-            />
-            <Button
-              disabled={disabledButton}
-              className="cardButtons"
-              color="primary"
-              variant="contained"
-              onClick={handleDestroyMonster}
-            >
-              Destroy
-            </Button>
-          </div>
-          <div className="monsterAtkDef">{`ATK ${randomCard?.atk || 0} / DEF ${
-            randomCard?.def || 0
-          }`}</div>
-        </div>
-        <div className="cardGenerator">
-          <div className="cardContainer">
-            <Button
-              disabled={disabledButton}
-              className="cardButtons"
-              color="primary"
-              variant="contained"
-              onClick={handleMagicCard}
-            >
-              Magic
-            </Button>
-            <img
-              src={
-                magicCard?.card_images?.length > 0
-                  ? magicCard?.card_images[0].image_url
-                  : "https://i.pinimg.com/236x/c6/4e/a3/c64ea38e58ab38e3a340fb0b40ae8aa9--yu-gi-oh-jpg.jpg"
-              }
-              alt="magic card"
-              className="attackMode"
-            />
-            <Button
-              disabled={disabledButton}
-              className="cardButtons"
-              color="primary"
-              variant="contained"
-              onClick={handleDestroyMagic}
-            >
-              Destroy
-            </Button>
-          </div>
-        </div>
+        <CardGenerator type="magic" />
+        <CardGenerator type="magic" />
+        <CardGenerator type="magic" />
+        <CardGenerator type="magic" />
+        <CardGenerator type="magic" />
+      </div>
+      <div className="cardsWrapper">
+        <CardGenerator type="monster" />
+        <CardGenerator type="monster" />
+        <CardGenerator type="monster" />
+        <CardGenerator type="monster" />
+        <CardGenerator type="monster" />
       </div>
     </>
   );

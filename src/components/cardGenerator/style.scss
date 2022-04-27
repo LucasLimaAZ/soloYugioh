@@ -1,0 +1,29 @@
+.defenseMode {
+  transform: rotate(90deg);
+  width: 200px;
+}
+
+.attackMode {
+  height: 300px;
+  width: 200px;
+}
+
+.cardButtonsContainer {
+  margin-top: 50px;
+  display: flex;
+}
+
+.monsterAtkDef {
+  background: rgba($color: #000000, $alpha: 0.3);
+  padding: 10px;
+  border: 2px solid rgba($color: #ffffff, $alpha: 0.4);
+  border-radius: 4px;
+  text-align: center;
+  width: 178px;
+  color: white;
+}
+
+.cardsWrapper {
+  display: flex;
+  justify-content: space-between;
+}
