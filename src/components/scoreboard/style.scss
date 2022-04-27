@@ -6,6 +6,13 @@ body {
   background-size: cover;
 }
 
+.playerWrapper {
+  background: rgba($color: #ffffff, $alpha: 0.2);
+  padding: 30px;
+  border: 2px solid rgba($color: #ffffff, $alpha: 0.4);
+  border-radius: 4px;
+}
+
 .lifepointsBg {
   background-image: url("../../assets/img/lifepointsBg.png");
   background-repeat: no-repeat;
@@ -21,4 +28,54 @@ body {
 
 .lpButtons {
   height: 80%;
+}
+
+.inputsWrapper {
+  display: flex;
+}
+
+.resetDuel {
+  text-align: center;
+  .resetDuelButton {
+    margin-top: 30px;
+    height: 50%;
+    width: 50%;
+  }
+}
+
+.defenseMode {
+  transform: rotate(90deg);
+  margin-left: 100px;
+  width: 400px;
+  margin-right: 100px;
+}
+
+.attackMode {
+  height: 580px;
+  width: 400px;
+}
+
+.cardButtons {
+  height: 580px !important;
+  background-color: rgba($color: #1976d2, $alpha: 0.4) !important;
+}
+
+.cardContainer {
+  margin-top: 50px;
+  display: flex;
+}
+
+.monsterAtkDef {
+  background: rgba($color: #000000, $alpha: 0.3);
+  padding: 10px;
+  border: 2px solid rgba($color: #ffffff, $alpha: 0.4);
+  border-radius: 4px;
+  text-align: center;
+  width: 578px;
+  color: white;
+}
+
+.cardsWrapper {
+  display: flex;
+  justify-content: space-between;
 }
