@@ -1,5 +1,5 @@
-import { defaultListboxReducer } from "@mui/base";
 import axios from "axios";
+
 const spellCards = [
   "00000000",
   "73134082",
@@ -15,6 +15,16 @@ const spellCards = [
   "18144507",
   "19613556",
   "95051344",
+];
+
+const trapCards = [
+  "00000000",
+  "96355986",
+  "62279055",
+  "14315573",
+  "17814387",
+  "44095762",
+  "56120475",
 ];
 
 export const getRandomCard = () => {
@@ -33,6 +43,16 @@ export const getRandomDamageLpSpell = () => {
     .then((res) => res.data);
 };
 
+export const getRandomTrap = () => {
+  return axios
+    .get(
+      `https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${
+        trapCards[Math.floor(Math.random() * trapCards.length) + 1]
+      }`
+    )
+    .then((res) => res.data);
+};
+
 export const getRandomMonster = () => {
   let monsterUrl =
     "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=normal%20monster";
@@ -45,7 +65,7 @@ export const getRandomMonster = () => {
       break;
     case 4:
       monsterUrl =
-        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=normal%20monster&atk=gte1700";
+        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=fusion%20monster&atk=gte1700&startdate=01/01/2000&enddate=08/23/2002&dateregion=tcg_date";
       break;
     case 5:
       monsterUrl =

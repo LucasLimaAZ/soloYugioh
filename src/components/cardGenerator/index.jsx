@@ -18,8 +18,13 @@ import MagicActivation from "../../assets/sounds/magicActivation.mp3";
 import {
   getRandomDamageLpSpell,
   getRandomMonster,
+  getRandomTrap,
 } from "../../shared/services/cards";
 import "./style.scss";
+import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
+import SwipeRightIcon from "@mui/icons-material/SwipeRight";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 
 const soundPlay = (src) => {
   const sound = new Howl({
@@ -29,16 +34,18 @@ const soundPlay = (src) => {
 };
 
 const CardGenerator = (props) => {
-  const [card, setCard] = useState({});
+  const [card, setCard] = useState(undefined);
+  const [trapCard, setTrapCard] = useState(undefined);
   const [monsterPosition, setMonsterPosition] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [openAttack, setOpenAttack] = useState(null);
   const [attack, setAttack] = useState(undefined);
+  const [openTrapModal, setOpenTrapModal] = useState(false);
   const openMenu = Boolean(anchorEl);
 
   const handleDestroyCard = () => {
     setAnchorEl(null);
-    setCard({});
+    setCard(undefined);
     setMonsterPosition("");
     if (props.type === "monster") soundPlay(MonsterDestruction);
     else soundPlay(CardFlip);
@@ -49,11 +56,16 @@ const CardGenerator = (props) => {
   };
 
   const handleCardClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    if (card) {
+      setAnchorEl(event.currentTarget);
+    } else {
+      generateCard();
+    }
   };
 
   const handleChangePosition = () => {
     setAnchorEl(null);
+    soundPlay(CardFlip);
 
     if (monsterPosition === "atk") setMonsterPosition("def");
     else setMonsterPosition("atk");
@@ -82,12 +94,40 @@ const CardGenerator = (props) => {
     }
   };
 
-  const handleConfirmAttack = () => {
+  const calculateDamage = () => {
     setOpenAttack(false);
+    let atkDif = Number(attack - card?.atk);
+    let defDif = Number(attack - card?.def);
 
-    if (Number(attack - card?.atk) >= 0) {
-      handleDestroyCard();
+    if (monsterPosition === "atk") {
+      if (atkDif >= 0) {
+        handleDestroyCard();
+      }
+      props.calculateDamage(atkDif);
+    } else {
+      if (defDif > 0) {
+        handleDestroyCard();
+      }
+      if (defDif < 0) {
+        props.calculateDamage(defDif);
+      }
     }
+  };
+
+  const handleContinueAttack = () => {
+    handleCloseTrapModal();
+    calculateDamage();
+  };
+
+  const handleConfirmAttack = () => {
+    let hasTrap = Math.floor(Math.random() * 10) + 1 < 4;
+
+    if (hasTrap) {
+      setOpenTrapModal(true);
+      getRandomTrap().then((res) => {
+        setTrapCard(res.data[0]);
+      });
+    } else calculateDamage();
   };
 
   const handleAttack = () => {
@@ -102,9 +142,31 @@ const CardGenerator = (props) => {
     setAttack(e.target.value);
   };
 
+  const handleCloseTrapModal = () => {
+    setOpenTrapModal(false);
+    handleCloseAttack();
+  };
+
   return (
     <div className="cardGenerator">
       <div className="cardButtonsContainer">
+        <Dialog open={openTrapModal} onClose={handleCloseTrapModal}>
+          <DialogTitle>Your opponent used a TRAP CARD!</DialogTitle>
+          <DialogContent>
+            {trapCard && (
+              <img
+                width="400px"
+                alt="trap card"
+                src={trapCard.card_images[0].image_url}
+              />
+            )}
+            <DialogContentText>Continue Attack?</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseTrapModal}>Cancel</Button>
+            <Button onClick={handleContinueAttack}>Continue Attack</Button>
+          </DialogActions>
+        </Dialog>
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -114,18 +176,24 @@ const CardGenerator = (props) => {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem onClick={generateCard}>
-            {props.type === "monster" ? "Summon" : "Activate"}
-          </MenuItem>
-          {props.type === "monster" && (
+          {props.type === "monster" && card?.atk && (
             <div>
-              <MenuItem onClick={handleAttack}>Attack</MenuItem>
+              <MenuItem onClick={handleAttack}>
+                <CompareArrowsIcon className="actionIcon" />
+                Attack
+              </MenuItem>
               <MenuItem onClick={handleChangePosition}>
-                Change Position
+                <SwipeRightIcon className="actionIcon" /> Change Position
               </MenuItem>
             </div>
           )}
-          <MenuItem onClick={handleDestroyCard}>Destroy</MenuItem>
+          <MenuItem onClick={generateCard}>
+            <AutoAwesomeIcon className="actionIcon" />{" "}
+            {props.type === "monster" ? "Summon" : "Activate"}
+          </MenuItem>
+          <MenuItem onClick={handleDestroyCard}>
+            <DoDisturbIcon className="actionIcon" /> Destroy
+          </MenuItem>
         </Menu>
         <Dialog open={openAttack} onClose={handleCloseAttack}>
           <DialogTitle>Attack this monster</DialogTitle>
@@ -145,15 +213,31 @@ const CardGenerator = (props) => {
             />
             {attack && (
               <DialogContentText>
-                The given damage will be of{" "}
-                <b
-                  className={
-                    Number(attack - card?.atk) < 0 ? "negative" : "positive"
-                  }
-                >
-                  {attack - card?.atk}
-                </b>{" "}
-                LP.
+                {monsterPosition === "atk" ? (
+                  <>
+                    The given damage will be of{" "}
+                    <b
+                      className={
+                        Number(attack - card?.atk) < 0 ? "negative" : "positive"
+                      }
+                    >
+                      {attack - card?.atk}
+                    </b>{" "}
+                    LP.
+                  </>
+                ) : (
+                  <>
+                    The difference will be of{" "}
+                    <b
+                      className={
+                        Number(attack - card?.def) < 0 ? "negative" : "positive"
+                      }
+                    >
+                      {attack - card?.def}
+                    </b>{" "}
+                    .
+                  </>
+                )}
               </DialogContentText>
             )}
           </DialogContent>

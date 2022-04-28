@@ -87,6 +87,21 @@ const ScoreBoard = () => {
     soundPlay(StartDuelSound);
   };
 
+  const handleCalculateAttackDamage = (dif) => {
+    if (dif !== 0) {
+      soundPlay(DamageSound);
+      setTimeout(() => {
+        soundPlay(CalculatedSound);
+      }, 700);
+    }
+
+    if (dif < 0) {
+      setLifePoints(lifePoints + dif);
+    } else {
+      setOpponentLifePoints(opponentLifePoints - dif);
+    }
+  };
+
   return (
     <>
       <Grid className="scoreBoard" container>
@@ -181,11 +196,26 @@ const ScoreBoard = () => {
         <CardGenerator type="magic" />
       </div>
       <div className="cardsWrapper">
-        <CardGenerator type="monster" />
-        <CardGenerator type="monster" />
-        <CardGenerator type="monster" />
-        <CardGenerator type="monster" />
-        <CardGenerator type="monster" />
+        <CardGenerator
+          calculateDamage={handleCalculateAttackDamage}
+          type="monster"
+        />
+        <CardGenerator
+          calculateDamage={handleCalculateAttackDamage}
+          type="monster"
+        />
+        <CardGenerator
+          calculateDamage={handleCalculateAttackDamage}
+          type="monster"
+        />
+        <CardGenerator
+          calculateDamage={handleCalculateAttackDamage}
+          type="monster"
+        />
+        <CardGenerator
+          calculateDamage={handleCalculateAttackDamage}
+          type="monster"
+        />
       </div>
       <ToolBar />
     </>
