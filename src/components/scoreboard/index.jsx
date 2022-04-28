@@ -6,9 +6,11 @@ import DamageSound from "../../assets/sounds/calculating.mp3";
 import CalculatedSound from "../../assets/sounds/calculated.mp3";
 import FinishSound from "../../assets/sounds/endedDuel.mp3";
 import StartDuelSound from "../../assets/sounds/duelStart.mp3";
+import VictorySound from "../../assets/sounds/victory.mp3";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Howl, Howler } from "howler";
 import CardGenerator from "../cardGenerator";
+import ToolBar from "../toolBar";
 
 const ScoreBoard = () => {
   const [lpInput, setLpInput] = useState();
@@ -19,9 +21,10 @@ const ScoreBoard = () => {
   const [opponentPreviousLp, setopponentPreviousLp] = useState(8000);
   Howler.volume(1.0);
 
-  const soundPlay = (src) => {
+  const soundPlay = (src, volume = 1) => {
     const sound = new Howl({
       src,
+      volume,
     });
     sound.play();
   };
@@ -54,6 +57,9 @@ const ScoreBoard = () => {
           setOpponentLifePoints(0);
           setTimeout(() => {
             soundPlay(FinishSound);
+            setTimeout(() => {
+              soundPlay(VictorySound, 0.2);
+            }, 1000);
           }, 1100);
         } else {
           setOpponentLifePoints(
@@ -96,7 +102,7 @@ const ScoreBoard = () => {
             </Button>
             <TextField
               id="outlined-basic"
-              label="Increase / Decrease"
+              label="You"
               variant="outlined"
               type="number"
               onChange={handleLpInputChange}
@@ -151,7 +157,7 @@ const ScoreBoard = () => {
             </Button>
             <TextField
               id="outlined-basic"
-              label="Increase / Decrease"
+              label="Opponent"
               variant="outlined"
               type="number"
               onChange={handleOpponentInputChange}
@@ -181,6 +187,7 @@ const ScoreBoard = () => {
         <CardGenerator type="monster" />
         <CardGenerator type="monster" />
       </div>
+      <ToolBar />
     </>
   );
 };

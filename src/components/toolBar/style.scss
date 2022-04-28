@@ -1,0 +1,26 @@
+.toolbar-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  background: rgba($color: #ffffff, $alpha: 0.2);
+  padding: 30px;
+  border: 2px solid rgba($color: #ffffff, $alpha: 0.4);
+  border-radius: 4px;
+}
+
+.buttonContent {
+  width: 260px;
+}
+
+.selected {
+  text-decoration: underline;
+}
+
+.toolbar-outside-info {
+  font-size: 22px;
+  margin-left: 10px;
+  color: white;
+  text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000,
+    1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+}

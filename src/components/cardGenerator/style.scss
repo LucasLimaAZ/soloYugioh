@@ -1,11 +1,21 @@
+.card {
+  transition: 0.3s;
+  width: 200px;
+  cursor: pointer;
+  &:hover {
+    position: relative;
+    transition: 0.3s;
+    margin-top: 10px;
+    margin-bottom: -10px;
+  }
+}
+
 .defenseMode {
   transform: rotate(90deg);
-  width: 200px;
 }
 
 .attackMode {
   height: 300px;
-  width: 200px;
 }
 
 .cardButtonsContainer {
@@ -26,4 +36,12 @@
 .cardsWrapper {
   display: flex;
   justify-content: space-between;
+}
+
+.negative {
+  color: red;
+}
+
+.positive {
+  color: green;
 }
