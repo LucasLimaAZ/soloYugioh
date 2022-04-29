@@ -29,31 +29,39 @@ const ScoreBoard = () => {
     sound.play();
   };
 
-  const handleLifePoints = (who, operation) => {
+  const calculateDamage = (who, operation, amount = undefined) => {
     soundPlay(DamageSound);
+    setTimeout(() => {
+      soundPlay(CalculatedSound);
+    }, 700);
+
+    let reduceYours = Number(lifePoints) - Number(amount || lpInput);
+    let sumYours = Number(lifePoints) + Number(amount || lpInput);
+    let reduceOpponents =
+      Number(opponentLifePoints) - Number(amount || opponentLpInput);
+    let sumOpponents =
+      Number(opponentLifePoints) + Number(amount || opponentLpInput);
 
     if (who === "yours") {
       setPreviousLp(lifePoints);
       if (operation === "sum") {
-        setLifePoints(Number(lifePoints) + Number(lpInput));
+        setLifePoints(sumYours);
       } else {
-        if (Number(lifePoints) - Number(lpInput) < 1) {
+        if (reduceYours < 1) {
           setLifePoints(0);
           setTimeout(() => {
             soundPlay(FinishSound);
           }, 1100);
         } else {
-          setLifePoints(Number(lifePoints) - Number(lpInput));
+          setLifePoints(reduceYours);
         }
       }
     } else {
       setopponentPreviousLp(opponentLifePoints);
       if (operation === "sum") {
-        setOpponentLifePoints(
-          Number(opponentLifePoints) + Number(opponentLpInput)
-        );
+        setOpponentLifePoints(sumOpponents);
       } else {
-        if (Number(opponentLifePoints) - Number(opponentLpInput) < 1) {
+        if (reduceOpponents < 1) {
           setOpponentLifePoints(0);
           setTimeout(() => {
             soundPlay(FinishSound);
@@ -62,15 +70,10 @@ const ScoreBoard = () => {
             }, 1000);
           }, 1100);
         } else {
-          setOpponentLifePoints(
-            Number(opponentLifePoints) - Number(opponentLpInput)
-          );
+          setOpponentLifePoints(reduceOpponents);
         }
       }
     }
-    setTimeout(() => {
-      soundPlay(CalculatedSound);
-    }, 700);
   };
 
   const handleLpInputChange = (e) => {
@@ -87,19 +90,12 @@ const ScoreBoard = () => {
     soundPlay(StartDuelSound);
   };
 
-  const handleCalculateAttackDamage = (dif) => {
-    if (dif !== 0) {
-      soundPlay(DamageSound);
-      setTimeout(() => {
-        soundPlay(CalculatedSound);
-      }, 700);
-    }
-
-    if (dif < 0) {
-      setLifePoints(lifePoints + dif);
-    } else {
-      setOpponentLifePoints(opponentLifePoints - dif);
-    }
+  const handleCalculateDamage = (damage) => {
+    calculateDamage(
+      damage < 0 ? "yours" : "opponent",
+      "subtract",
+      damage < 0 ? -damage : damage
+    );
   };
 
   return (
@@ -108,7 +104,7 @@ const ScoreBoard = () => {
         <Grid item xs={5} container className="playerWrapper">
           <Grid className="inputsWrapper" item xs={6}>
             <Button
-              onClick={() => handleLifePoints("yours", "sum")}
+              onClick={() => calculateDamage("yours", "sum")}
               color="primary"
               className="lpButtons"
               variant="contained"
@@ -123,7 +119,7 @@ const ScoreBoard = () => {
               onChange={handleLpInputChange}
             />
             <Button
-              onClick={() => handleLifePoints("yours", "subtract")}
+              onClick={() => calculateDamage("yours", "subtract")}
               color="primary"
               className="lpButtons"
               variant="contained"
@@ -163,7 +159,7 @@ const ScoreBoard = () => {
           </Grid>
           <Grid className="inputsWrapper" item xs={6}>
             <Button
-              onClick={() => handleLifePoints("opponent", "sum")}
+              onClick={() => calculateDamage("opponent", "sum")}
               color="primary"
               className="lpButtons"
               variant="contained"
@@ -178,7 +174,7 @@ const ScoreBoard = () => {
               onChange={handleOpponentInputChange}
             />
             <Button
-              onClick={() => handleLifePoints("opponent", "subtract")}
+              onClick={() => calculateDamage("opponent", "subtract")}
               color="primary"
               className="lpButtons"
               variant="contained"
@@ -196,26 +192,11 @@ const ScoreBoard = () => {
         <CardGenerator type="magic" />
       </div>
       <div className="cardsWrapper">
-        <CardGenerator
-          calculateDamage={handleCalculateAttackDamage}
-          type="monster"
-        />
-        <CardGenerator
-          calculateDamage={handleCalculateAttackDamage}
-          type="monster"
-        />
-        <CardGenerator
-          calculateDamage={handleCalculateAttackDamage}
-          type="monster"
-        />
-        <CardGenerator
-          calculateDamage={handleCalculateAttackDamage}
-          type="monster"
-        />
-        <CardGenerator
-          calculateDamage={handleCalculateAttackDamage}
-          type="monster"
-        />
+        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
+        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
+        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
+        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
+        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
       </div>
       <ToolBar />
     </>

@@ -73,7 +73,7 @@ export const getRandomMonster = () => {
       break;
     case 6:
       monsterUrl =
-        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=normal%20monster&atk=gte1900";
+        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=normal%20monster&atk=gte1800";
       break;
     case 7:
       monsterUrl =
@@ -81,7 +81,7 @@ export const getRandomMonster = () => {
       break;
     case 8:
       monsterUrl =
-        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=normal%20monster&atk=gte2000";
+        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=fusion%20monster&atk=gte1700&startdate=01/01/2000&enddate=08/23/2002&dateregion=tcg_date";
       break;
     case 9:
       monsterUrl =

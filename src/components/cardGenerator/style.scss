@@ -49,3 +49,11 @@
 .actionIcon {
   margin-right: 10px;
 }
+
+.rotate180 {
+  transform: rotate(180deg);
+}
+
+.flip {
+  transform: scaleY(-1);
+}
