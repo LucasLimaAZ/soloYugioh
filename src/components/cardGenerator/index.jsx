@@ -118,7 +118,7 @@ const CardGenerator = (props) => {
             "aria-labelledby": "basic-button",
           }}
         >
-          {props.type === "monster" && card?.atk && (
+          {props.type === "monster" && card && (
             <div>
               <MenuItem onClick={handleAttack}>
                 <CompareArrowsIcon className="actionIcon flip" />
