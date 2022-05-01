@@ -27,21 +27,22 @@ const soundPlay = (src) => {
 const CardGenerator = (props) => {
   const [card, setCard] = useState(undefined);
   const [monsterPosition, setMonsterPosition] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [openAttack, setOpenAttack] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(false);
+  const [openAttack, setOpenAttack] = useState(false);
   const [target, setTarget] = useState("opponent");
   const openMenu = Boolean(anchorEl);
 
   const handleDestroyCard = () => {
-    setAnchorEl(null);
+    setAnchorEl(false);
     setCard(undefined);
     setMonsterPosition("");
+    props.updateField("", props.position);
     if (props.type === "monster") soundPlay(MonsterDestruction);
     else soundPlay(CardFlip);
   };
 
   const handleCloseMenu = () => {
-    setAnchorEl(null);
+    setAnchorEl(false);
   };
 
   const handleCardClick = (event) => {
@@ -53,7 +54,7 @@ const CardGenerator = (props) => {
   };
 
   const handleChangePosition = () => {
-    setAnchorEl(null);
+    setAnchorEl(false);
     soundPlay(CardFlip);
 
     if (monsterPosition === "atk") setMonsterPosition("def");
@@ -61,23 +62,31 @@ const CardGenerator = (props) => {
   };
 
   const generateCard = () => {
-    setAnchorEl(null);
+    setAnchorEl(false);
 
     if (props.type === "monster") {
       getRandomMonster().then((res) => {
         let monstersAmmount = res.data.length;
         let selectedMonster = Math.floor(Math.random() * monstersAmmount) + 1;
+        let monster = res.data[selectedMonster];
 
-        if (res.data[selectedMonster].atk < res.data[selectedMonster].def)
-          setMonsterPosition("def");
+        if (monster.atk < monster.def) setMonsterPosition("def");
         else setMonsterPosition("atk");
 
-        setCard(res.data[selectedMonster]);
+        setCard(monster);
+        props.updateField(
+          {
+            ...monster,
+            monsterPosition: monster.atk < monster.def ? "def" : "atk",
+          },
+          props.position
+        );
         soundPlay(MonsterActivation);
       });
     } else {
       getRandomDamageLpSpell().then((res) => {
         setCard(res.data[0]);
+        props.updateField(res.data[0], props.position);
         soundPlay(MagicActivation);
       });
     }
@@ -102,7 +111,7 @@ const CardGenerator = (props) => {
   };
 
   const handleCloseAttack = () => {
-    setOpenAttack(null);
+    setOpenAttack(false);
     handleCloseMenu();
   };
 

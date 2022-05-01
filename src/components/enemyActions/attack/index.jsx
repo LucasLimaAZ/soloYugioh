@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import { ShieldMoon } from "@mui/icons-material";
+import "./style.scss";
 
 const style = {
   position: "absolute",
@@ -20,34 +21,31 @@ const enemyActions = [
   "Enemy summons monster;",
   "Enemy summons monster;",
   "Enemy summons monster;",
-  "Enemy summons monster and play magic card;",
-  "Enemy summons monster and play magic card;",
-  "Enemy summons monster and play magic card;",
-  "Enemy summons monster and play magic card;",
-  "Enemy summons monster and play 2 magic cards;",
-  "Enemy summons 2 monsters;",
+  "Enemy plays magic card and summons monster;",
+  "Enemy plays magic card and summons monster;",
+  "Enemy plays magic card and summons monster;",
+  "Enemy plays magic card and summons monster;",
+  "Enemy plays 2 magic cards and summons monster;",
+  "Enemy does nothing;",
 ];
 
-const atkMonsters = [0, "Enemy attacks up to 5 lower ATK monsters;"];
-
-const defMonsters = [0, "Enemy attacks up to 5 lower DEF (face up) monsters;"];
-
-const setMonsters = [
+const atkMonsters = [
   0,
-  "Enemy attacks up to 5 set DEF monsters;",
-  "Enemy attacks 1 set DEF monster;",
-  "Enemy attacks up to 2 set DEF monster;",
-  "Enemy attacks up to 3 set DEF monster;",
-  "Enemy attacks NO set DEF monsters;",
+  "Highest ATK monster weaker than this;",
+  "Lowest ATK monster;",
 ];
 
-const tieMonsters = [
+const defMonsters = [
   0,
-  "Enemy attacks up to 5 tie ATK monsters;",
-  "Enemy does NOT attack tie monsters;",
+  "Highest DEF (face up) monster weaker than this;",
+  "Lowest DEF (face up) monster;",
 ];
 
-const EnemyTurn = () => {
+const setMonsters = [0, "1st set DEF monster;", "last set DEF monster;", ""];
+
+const tieMonsters = [0, "1st tie ATK monster;", "last tie ATK monster;", ""];
+
+const EnemyTurn = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [enemySort, setEnemySort] = useState(1);
   const [atkMonstersSort, setAtkMonstersSort] = useState(1);
@@ -65,8 +63,8 @@ const EnemyTurn = () => {
     setTimeout(() => {
       setGeneratedTurn(true);
       setEnemySort(Math.floor(Math.random() * 10) + 1);
-      setAtkMonstersSort(Math.floor(Math.random() * 1) + 1);
-      setDefMonstersSort(Math.floor(Math.random() * 1) + 1);
+      setAtkMonstersSort(Math.floor(Math.random() * 2) + 1);
+      setDefMonstersSort(Math.floor(Math.random() * 2) + 1);
       setSetMonstersSort(Math.floor(Math.random() * 5) + 1);
       setTieMonstersSort(Math.floor(Math.random() * 2) + 1);
     }, 400);
@@ -84,7 +82,7 @@ const EnemyTurn = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} className="modalBg">
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Enemy Turn
           </Typography>
@@ -101,13 +99,37 @@ const EnemyTurn = () => {
               <div style={{ marginTop: "10px" }}>
                 <b>Main Phase:</b>
                 <div>{enemyActions[enemySort]}</div>
+                <div>
+                  <small>
+                    *If there are no monsters in your side of the field your
+                    opponent changes DEF position monsters to ATK.
+                  </small>
+                </div>
               </div>
               <div style={{ marginTop: "10px" }}>
                 <b>Battle Phase:</b>
-                <div>{atkMonsters[atkMonstersSort]}</div>
-                <div>{defMonsters[defMonstersSort]}</div>
-                <div>{setMonsters[setMonstersSort]}</div>
-                <div>{tieMonsters[tieMonstersSort]}</div>
+                {props.field.map((card) =>
+                  (card.type === "Normal Monster" ||
+                    card.type === "Fusion Monster") &&
+                  card.monsterPosition === "atk" ? (
+                    <div key={card.id}>
+                      Enemy declares attack with <b>{card.name}</b>;
+                    </div>
+                  ) : (
+                    ""
+                  )
+                )}
+                <fieldset className="attack-script">
+                  <legend>Priority:</legend>
+                  To your (left to right):
+                  <div>- {atkMonsters[atkMonstersSort]}</div>
+                  <div>- {defMonsters[defMonstersSort]}</div>
+                  {setMonsters[setMonstersSort] !== "" && (
+                    <div>- {setMonsters[setMonstersSort]}</div>
+                  )}
+                  <div>- {tieMonsters[tieMonstersSort]}</div>
+                  <div>- Direct Attack;</div>
+                </fieldset>
               </div>
               <div style={{ marginTop: "10px" }}>
                 <b>Main Phase 2:</b>

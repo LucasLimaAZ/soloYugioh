@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.scss";
 import { Button, Grid, TextField } from "@mui/material";
 import CountUp from "react-countup";
@@ -19,7 +19,14 @@ const ScoreBoard = () => {
   const [opponentLifePoints, setOpponentLifePoints] = useState(8000);
   const [previousLp, setPreviousLp] = useState(8000);
   const [opponentPreviousLp, setopponentPreviousLp] = useState(8000);
+  const [field, setField] = useState([]);
   Howler.volume(1.0);
+
+  const updateField = (card, position) => {
+    let updatedField = field;
+    updatedField[position] = card;
+    setField(updatedField);
+  };
 
   const soundPlay = (src, volume = 1) => {
     const sound = new Howl({
@@ -185,20 +192,45 @@ const ScoreBoard = () => {
         </Grid>
       </Grid>
       <div className="cardsWrapper">
-        <CardGenerator type="magic" />
-        <CardGenerator type="magic" />
-        <CardGenerator type="magic" />
-        <CardGenerator type="magic" />
-        <CardGenerator type="magic" />
+        <CardGenerator updateField={updateField} position={6} type="magic" />
+        <CardGenerator updateField={updateField} position={7} type="magic" />
+        <CardGenerator updateField={updateField} position={8} type="magic" />
+        <CardGenerator updateField={updateField} position={9} type="magic" />
+        <CardGenerator updateField={updateField} position={10} type="magic" />
       </div>
       <div className="cardsWrapper">
-        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
-        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
-        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
-        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
-        <CardGenerator calculateDamage={handleCalculateDamage} type="monster" />
+        <CardGenerator
+          updateField={updateField}
+          position={1}
+          calculateDamage={handleCalculateDamage}
+          type="monster"
+        />
+        <CardGenerator
+          updateField={updateField}
+          position={2}
+          calculateDamage={handleCalculateDamage}
+          type="monster"
+        />
+        <CardGenerator
+          updateField={updateField}
+          position={3}
+          calculateDamage={handleCalculateDamage}
+          type="monster"
+        />
+        <CardGenerator
+          updateField={updateField}
+          position={4}
+          calculateDamage={handleCalculateDamage}
+          type="monster"
+        />
+        <CardGenerator
+          updateField={updateField}
+          position={5}
+          calculateDamage={handleCalculateDamage}
+          type="monster"
+        />
       </div>
-      <ToolBar />
+      <ToolBar field={field} />
     </>
   );
 };

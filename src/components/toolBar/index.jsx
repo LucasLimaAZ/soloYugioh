@@ -4,7 +4,7 @@ import { Casino, ChangeCircle } from "@mui/icons-material";
 import EnemyTurn from "../enemyActions/attack";
 import "./style.scss";
 
-const ToolBar = () => {
+const ToolBar = (props) => {
   const [coin, setCoin] = useState("Heads");
   const [dice, setDice] = useState("6");
 
@@ -47,7 +47,7 @@ const ToolBar = () => {
           <b className="toolbar-outside-info">Coin: {coin}</b>
         </div>
         <div className="buttonContent">
-          <EnemyTurn />
+          <EnemyTurn field={props.field} />
           <b className="toolbar-outside-info">Enemy Turn</b>
         </div>
       </div>

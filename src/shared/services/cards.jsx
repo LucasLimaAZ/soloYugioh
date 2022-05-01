@@ -34,11 +34,10 @@ export const getRandomCard = () => {
 };
 
 export const getRandomDamageLpSpell = () => {
+  let randomNumber = Math.floor(Math.random() * spellCards.length) + 1;
   return axios
     .get(
-      `https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${
-        spellCards[Math.floor(Math.random() * spellCards.length) + 1]
-      }`
+      `https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${spellCards[randomNumber]}`
     )
     .then((res) => res.data);
 };
