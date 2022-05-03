@@ -32,26 +32,31 @@ const ToolBar = (props) => {
   };
 
   return (
-    <>
+    <div className="toolbar-wrapper">
       <div className="toolbar-container">
-        <div className="buttonContent">
-          <Button onClick={handleDice} color="primary" variant="contained">
-            <Casino />
-          </Button>
-          <b className="toolbar-outside-info">Dice: {dice}</b>
+        <div className="card-description">
+          <p>{props.selectedCard?.desc || ""}</p>
         </div>
-        <div className="buttonContent">
-          <Button onClick={handleCoin} color="primary" variant="contained">
-            <ChangeCircle />
-          </Button>
-          <b className="toolbar-outside-info">Coin: {coin}</b>
-        </div>
-        <div className="buttonContent">
-          <EnemyTurn field={props.field} />
-          <b className="toolbar-outside-info">Enemy Turn</b>
+        <div className="buttons-container">
+          <div className="buttonContent">
+            <Button onClick={handleDice} color="primary" variant="contained">
+              <Casino />
+            </Button>
+            <b className="toolbar-outside-info">Dice: {dice}</b>
+          </div>
+          <div className="buttonContent">
+            <Button onClick={handleCoin} color="primary" variant="contained">
+              <ChangeCircle />
+            </Button>
+            <b className="toolbar-outside-info">Coin: {coin}</b>
+          </div>
+          <div className="buttonContent">
+            <EnemyTurn field={props.field} />
+            <b className="toolbar-outside-info">Enemy Turn</b>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

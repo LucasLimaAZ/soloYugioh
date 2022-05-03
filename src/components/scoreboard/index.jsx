@@ -20,6 +20,7 @@ const ScoreBoard = () => {
   const [previousLp, setPreviousLp] = useState(8000);
   const [opponentPreviousLp, setopponentPreviousLp] = useState(8000);
   const [field, setField] = useState([]);
+  const [selectedCard, setSelectedCard] = useState();
   Howler.volume(1.0);
 
   const updateField = (card, position) => {
@@ -34,6 +35,10 @@ const ScoreBoard = () => {
       volume,
     });
     sound.play();
+  };
+
+  const handleSelectCard = (card) => {
+    setSelectedCard(card);
   };
 
   const calculateDamage = (who, operation, amount = undefined) => {
@@ -73,7 +78,7 @@ const ScoreBoard = () => {
           setTimeout(() => {
             soundPlay(FinishSound);
             setTimeout(() => {
-              soundPlay(VictorySound, 0.2);
+              soundPlay(VictorySound, 0.3);
             }, 1000);
           }, 1100);
         } else {
@@ -93,6 +98,7 @@ const ScoreBoard = () => {
 
   const handleResetDuel = () => {
     setLifePoints(8000);
+    setSelectedCard(undefined);
     setOpponentLifePoints(8000);
     soundPlay(StartDuelSound);
   };
@@ -192,45 +198,75 @@ const ScoreBoard = () => {
         </Grid>
       </Grid>
       <div className="cardsWrapper">
-        <CardGenerator updateField={updateField} position={6} type="magic" />
-        <CardGenerator updateField={updateField} position={7} type="magic" />
-        <CardGenerator updateField={updateField} position={8} type="magic" />
-        <CardGenerator updateField={updateField} position={9} type="magic" />
-        <CardGenerator updateField={updateField} position={10} type="magic" />
+        <CardGenerator
+          selectCard={handleSelectCard}
+          updateField={updateField}
+          position={6}
+          type="magic"
+        />
+        <CardGenerator
+          selectCard={handleSelectCard}
+          updateField={updateField}
+          position={7}
+          type="magic"
+        />
+        <CardGenerator
+          selectCard={handleSelectCard}
+          updateField={updateField}
+          position={8}
+          type="magic"
+        />
+        <CardGenerator
+          selectCard={handleSelectCard}
+          updateField={updateField}
+          position={9}
+          type="magic"
+        />
+        <CardGenerator
+          selectCard={handleSelectCard}
+          updateField={updateField}
+          position={10}
+          type="magic"
+        />
       </div>
       <div className="cardsWrapper">
         <CardGenerator
+          selectCard={handleSelectCard}
           updateField={updateField}
           position={1}
           calculateDamage={handleCalculateDamage}
           type="monster"
         />
         <CardGenerator
+          selectCard={handleSelectCard}
           updateField={updateField}
           position={2}
           calculateDamage={handleCalculateDamage}
           type="monster"
         />
         <CardGenerator
+          selectCard={handleSelectCard}
           updateField={updateField}
           position={3}
           calculateDamage={handleCalculateDamage}
           type="monster"
         />
         <CardGenerator
+          selectCard={handleSelectCard}
           updateField={updateField}
           position={4}
           calculateDamage={handleCalculateDamage}
           type="monster"
         />
         <CardGenerator
+          selectCard={handleSelectCard}
           updateField={updateField}
           position={5}
           calculateDamage={handleCalculateDamage}
           type="monster"
         />
       </div>
-      <ToolBar field={field} />
+      <ToolBar selectedCard={selectedCard} field={field} />
     </>
   );
 };

@@ -48,6 +48,7 @@ const CardGenerator = (props) => {
   const handleCardClick = (event) => {
     if (card) {
       setAnchorEl(event.currentTarget);
+      props.selectCard(card);
     } else {
       generateCard();
     }

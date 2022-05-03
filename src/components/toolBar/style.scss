@@ -1,12 +1,38 @@
+.toolbar-wrapper {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+}
+
 .toolbar-container {
-  margin-top: 30px;
-  margin-bottom: 30px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   background: rgba($color: #ffffff, $alpha: 0.2);
-  padding: 30px;
+  padding: 10px;
   border: 2px solid rgba($color: #ffffff, $alpha: 0.4);
   border-radius: 4px;
+  margin: 0 2% 10px 2%;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-description {
+  p {
+    max-height: 35px;
+    margin: 0;
+    color: white;
+    text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000,
+      1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+  }
+  p::first-line {
+    line-height: 35px;
+  }
+  p {
+    overflow: auto;
+  }
 }
 
 .buttonContent {
