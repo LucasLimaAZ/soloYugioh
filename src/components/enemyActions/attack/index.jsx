@@ -16,7 +16,6 @@ const style = {
 };
 
 const enemyActions = [
-  0,
   "Enemy plays magic card;",
   "Enemy summons monster;",
   "Enemy summons monster;",
@@ -30,20 +29,31 @@ const enemyActions = [
 ];
 
 const atkMonsters = [
-  0,
   "Highest ATK monster weaker than this;",
   "Lowest ATK monster;",
 ];
 
 const defMonsters = [
-  0,
   "Highest DEF (face up) monster weaker than this;",
   "Lowest DEF (face up) monster;",
 ];
 
-const setMonsters = [0, "1st set DEF monster;", "last set DEF monster;", ""];
+const setMonsters = [
+  "1st set DEF monster;",
+  "last set DEF monster;",
+  "",
+  "1st set DEF monster;",
+  "last set DEF monster;",
+];
 
-const tieMonsters = [0, "1st tie ATK monster;", "last tie ATK monster;", ""];
+const tieMonsters = [
+  "1st tie ATK monster;",
+  "last tie ATK monster;",
+  "",
+  "",
+  "",
+  "",
+];
 
 const EnemyTurn = (props) => {
   const [openModal, setOpenModal] = useState(false);
@@ -62,11 +72,11 @@ const EnemyTurn = (props) => {
     setGeneratedTurn(false);
     setTimeout(() => {
       setGeneratedTurn(true);
-      setEnemySort(Math.floor(Math.random() * 10) + 1);
-      setAtkMonstersSort(Math.floor(Math.random() * 2) + 1);
-      setDefMonstersSort(Math.floor(Math.random() * 2) + 1);
-      setSetMonstersSort(Math.floor(Math.random() * 5) + 1);
-      setTieMonstersSort(Math.floor(Math.random() * 2) + 1);
+      setEnemySort(Math.floor(Math.random() * enemyActions.length));
+      setAtkMonstersSort(Math.floor(Math.random() * atkMonsters.length));
+      setDefMonstersSort(Math.floor(Math.random() * defMonsters.length));
+      setSetMonstersSort(Math.floor(Math.random() * setMonsters.length));
+      setTieMonstersSort(Math.floor(Math.random() * tieMonsters.length));
     }, 400);
   };
 
@@ -127,7 +137,9 @@ const EnemyTurn = (props) => {
                   {setMonsters[setMonstersSort] !== "" && (
                     <div>- {setMonsters[setMonstersSort]}</div>
                   )}
-                  <div>- {tieMonsters[tieMonstersSort]}</div>
+                  {tieMonsters[tieMonstersSort] !== "" && (
+                    <div>- {tieMonsters[tieMonstersSort]}</div>
+                  )}
                   <div>- Direct Attack;</div>
                 </fieldset>
               </div>
