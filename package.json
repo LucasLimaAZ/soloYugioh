@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.6.2",
@@ -21,11 +22,17 @@
     "sass": "^1.51.0",
     "web-vitals": "^2.1.4"
   },
+  "main": "public/electron.js",
+  "homepage": "./",
   "scripts": {
-    "start": "set PORT=3006 && react-scripts start",
+    "start": "set PORT=3006 && electron .",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron:serve": "concurrently -k \"cross-env BROWSER=none npm start\" \"npm electron:start\"",
+    "electron:build": "",
+    "electron:start": "wait-on tcp: 3006 && electron .",
+    "dist": "electron-builder"
   },
   "eslintConfig": {
     "extends": [
@@ -44,5 +51,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "electron": "^18.2.0",
+    "electron-builder": "^23.0.3"
+  },
+  "build": {
+    "appId": "com.jamzi.quickstart",
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    }
+  },
+  "electron-pack": "build --em.main=public/electron.js"
 }
