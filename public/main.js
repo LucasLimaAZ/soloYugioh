@@ -1,5 +1,8 @@
 const { app, BrowserWindow } = require("electron");
 
+const path = require("path");
+const isDev = require("electron-is-dev");
+
 require("@electron/remote/main").initialize();
 
 function createWindow() {
@@ -9,9 +12,12 @@ function createWindow() {
     webPreferences: {
       enableRemoteModule: true,
     },
+    autoHideMenuBar: true,
   });
 
-  win.loadURL("http://localhost:3006");
+  win.loadURL(
+    isDev ? "http://localhost:3006" : `${path.join(__dirname, "index.html")}`
+  );
 }
 
 app.on("ready", createWindow);
