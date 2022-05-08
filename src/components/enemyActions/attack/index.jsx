@@ -10,7 +10,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "2px solid #fff",
   boxShadow: 24,
   p: 4,
 };
@@ -18,14 +18,14 @@ const style = {
 const enemyActions = [
   "Enemy plays magic card;",
   "Enemy summons monster;",
-  "Enemy summons monster;",
-  "Enemy summons monster;",
-  "Enemy plays magic card and summons monster;",
-  "Enemy plays magic card and summons monster;",
-  "Enemy plays magic card and summons monster;",
   "Enemy plays magic card and summons monster;",
   "Enemy plays 2 magic cards and summons monster;",
   "Enemy does nothing;",
+];
+
+const enemyTributeActions = [
+  ...enemyActions,
+  "Enemy tribute summon a monster;",
 ];
 
 const atkMonsters = [
@@ -58,6 +58,7 @@ const tieMonsters = [
 const EnemyTurn = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [enemySort, setEnemySort] = useState(1);
+  const [enemyTributeSort, setEnemyTributeSort] = useState(1);
   const [atkMonstersSort, setAtkMonstersSort] = useState(1);
   const [defMonstersSort, setDefMonstersSort] = useState(1);
   const [setMonstersSort, setSetMonstersSort] = useState(1);
@@ -73,6 +74,9 @@ const EnemyTurn = (props) => {
     setTimeout(() => {
       setGeneratedTurn(true);
       setEnemySort(Math.floor(Math.random() * enemyActions.length));
+      setEnemyTributeSort(
+        Math.floor(Math.random() * enemyTributeActions.length)
+      );
       setAtkMonstersSort(Math.floor(Math.random() * atkMonsters.length));
       setDefMonstersSort(Math.floor(Math.random() * defMonsters.length));
       setSetMonstersSort(Math.floor(Math.random() * setMonsters.length));
@@ -82,6 +86,16 @@ const EnemyTurn = (props) => {
 
   const handleOpenEnemyTurn = () => {
     setOpenModal(true);
+  };
+
+  const enemyMainPhase = () => {
+    let lowLevelMonsters = props.field.filter(
+      (card) => card.type === "Normal Monster" && card.level < 5
+    );
+    let action = lowLevelMonsters.length
+      ? enemyTributeActions[enemyTributeSort]
+      : enemyActions[enemySort];
+    return action;
   };
 
   return (
@@ -108,7 +122,7 @@ const EnemyTurn = (props) => {
               </div>
               <div style={{ marginTop: "10px" }}>
                 <b>Main Phase:</b>
-                <div>{enemyActions[enemySort]}</div>
+                <div>{enemyMainPhase()}</div>
                 <div>
                   <small>
                     *If there are no monsters in your side of the field your

@@ -9,11 +9,13 @@ import MagicActivation from "../../assets/sounds/magicActivation.mp3";
 import {
   getRandomDamageLpSpell,
   getRandomMonster,
+  getRandomTribute,
 } from "../../shared/services/cards";
 import "./style.scss";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import SwipeRightIcon from "@mui/icons-material/SwipeRight";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import AutoAwesomeOutlined from "@mui/icons-material/AutoAwesomeOutlined";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
@@ -22,6 +24,10 @@ const soundPlay = (src) => {
     src,
   });
   sound.play();
+};
+
+const zoneStyle = {
+  border: "1px solid white",
 };
 
 const CardGenerator = (props) => {
@@ -54,6 +60,28 @@ const CardGenerator = (props) => {
     }
   };
 
+  const handleGenerateTribute = () => {
+    setAnchorEl(false);
+    getRandomTribute().then((res) => {
+      let monstersAmmount = res.data.length;
+      let selectedMonster = Math.floor(Math.random() * monstersAmmount) + 1;
+      let monster = res.data[selectedMonster];
+
+      if (monster.atk < monster.def) setMonsterPosition("def");
+      else setMonsterPosition("atk");
+
+      setCard({ ...monster, face: "up" });
+      props.updateField(
+        {
+          ...monster,
+          monsterPosition: monster.atk < monster.def ? "def" : "atk",
+        },
+        props.position
+      );
+      soundPlay(MonsterActivation);
+    });
+  };
+
   const handleChangePosition = () => {
     setAnchorEl(false);
     soundPlay(CardFlip);
@@ -74,7 +102,7 @@ const CardGenerator = (props) => {
         if (monster.atk < monster.def) setMonsterPosition("def");
         else setMonsterPosition("atk");
 
-        setCard(monster);
+        setCard({ ...monster, face: "up" });
         props.updateField(
           {
             ...monster,
@@ -92,6 +120,9 @@ const CardGenerator = (props) => {
       });
     }
   };
+
+  const cardBackUrl =
+    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/06cb28af-a15c-45d3-b1b6-fcbc1910e0c3/dbwk3sn-1ad1083a-5b15-4f77-af59-66dc07024a73.jpg/v1/fill/w_739,h_1081,q_70,strp/back_card_yugioh_hd_by_oricacardsbr_dbwk3sn-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTQ5NiIsInBhdGgiOiJcL2ZcLzA2Y2IyOGFmLWExNWMtNDVkMy1iMWI2LWZjYmMxOTEwZTBjM1wvZGJ3azNzbi0xYWQxMDgzYS01YjE1LTRmNzctYWY1OS02NmRjMDcwMjRhNzMuanBnIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.hzaBSJ4Hs23sjOCzVznIn1Qjgx2-c0BY__I1E7-rQKg";
 
   const calculateDamage = (damage) => {
     props.calculateDamage(damage);
@@ -114,6 +145,14 @@ const CardGenerator = (props) => {
   const handleCloseAttack = () => {
     setOpenAttack(false);
     handleCloseMenu();
+  };
+
+  const handleFlipCard = () => {
+    soundPlay(CardFlip);
+    setCard({
+      ...card,
+      face: card.face === "up" ? "down" : "up",
+    });
   };
 
   return (
@@ -145,12 +184,21 @@ const CardGenerator = (props) => {
               <MenuItem onClick={handleChangePosition}>
                 <SwipeRightIcon className="actionIcon" /> Change position
               </MenuItem>
+              <MenuItem onClick={handleGenerateTribute}>
+                <AutoAwesomeOutlined className="actionIcon" /> Tribute summon
+              </MenuItem>
             </div>
           )}
-          <MenuItem onClick={generateCard}>
-            <AutoAwesomeIcon className="actionIcon" />{" "}
-            {props.type === "monster" ? "Summon" : "Activate"}
-          </MenuItem>
+          {props.type === "monster" && (
+            <MenuItem onClick={generateCard}>
+              <AutoAwesomeIcon className="actionIcon" /> Summon
+            </MenuItem>
+          )}
+          {props.type === "magic" && (
+            <MenuItem onClick={handleFlipCard}>
+              <AutoAwesomeIcon className="actionIcon" /> Flip
+            </MenuItem>
+          )}
           <MenuItem onClick={handleDestroyCard}>
             <DoDisturbIcon className="actionIcon" /> Destroy
           </MenuItem>
@@ -165,19 +213,19 @@ const CardGenerator = (props) => {
           calculateDamage={calculateDamage}
         />
       </div>
-      <img
-        onClick={handleCardClick}
-        src={
-          card?.card_images?.length > 0
-            ? card?.card_images[0].image_url
-            : "https://i.pinimg.com/236x/c6/4e/a3/c64ea38e58ab38e3a340fb0b40ae8aa9--yu-gi-oh-jpg.jpg"
-        }
-        alt="magic card"
-        className={
-          monsterPosition === "def" ? "card defenseMode" : "card attackMode"
-        }
-      />
-      {props.type === "monster" && (
+      <div className={card ? "" : "zone"}>
+        <img
+          onClick={handleCardClick}
+          src={
+            card?.face === "up" ? card?.card_images[0].image_url : cardBackUrl
+          }
+          alt="magic card"
+          className={
+            monsterPosition === "def" ? "card defenseMode" : "card attackMode"
+          }
+        />
+      </div>
+      {props.type === "monster" && card && (
         <div className="monsterAtkDef">{`ATK ${card?.atk || 0} / DEF ${
           card?.def || 0
         }`}</div>
