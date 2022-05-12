@@ -10,6 +10,7 @@ import {
   getRandomDamageLpSpell,
   getRandomMonster,
   getRandomTribute,
+  getRandomTrap,
 } from "../../shared/services/cards";
 import "./style.scss";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
@@ -24,10 +25,6 @@ const soundPlay = (src) => {
     src,
   });
   sound.play();
-};
-
-const zoneStyle = {
-  border: "1px solid white",
 };
 
 const CardGenerator = (props) => {
@@ -113,11 +110,21 @@ const CardGenerator = (props) => {
         soundPlay(MonsterActivation);
       });
     } else {
-      getRandomDamageLpSpell().then((res) => {
-        setCard(res.data[0]);
-        props.updateField(res.data[0], props.position);
-        soundPlay(MagicActivation);
-      });
+      let isTrap = Math.random() >= 0.5;
+
+      if (isTrap) {
+        getRandomDamageLpSpell().then((res) => {
+          setCard(res.data[0]);
+          props.updateField(res.data[0], props.position);
+          soundPlay(MagicActivation);
+        });
+      } else {
+        getRandomTrap().then((res) => {
+          setCard(res.data[0]);
+          props.updateField(res.data[0], props.position);
+          soundPlay(MagicActivation);
+        });
+      }
     }
   };
 

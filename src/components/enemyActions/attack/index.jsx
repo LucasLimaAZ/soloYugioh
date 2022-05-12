@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import { ShieldMoon } from "@mui/icons-material";
+import CardBackIMG from "../../../assets/img/yugioh-back.jpg";
 import "./style.scss";
 
 const style = {
@@ -16,10 +17,10 @@ const style = {
 };
 
 const enemyActions = [
-  "Enemy plays magic card;",
+  "Enemy activate magic/trap card and summons monster;",
+  "Enemy set magic/trap card;",
   "Enemy summons monster;",
-  "Enemy plays magic card and summons monster;",
-  "Enemy plays 2 magic cards and summons monster;",
+  "Enemy set magic/trap card and summons monster;",
   "Enemy does nothing;",
 ];
 
@@ -69,11 +70,30 @@ const EnemyTurn = (props) => {
     setOpenModal(false);
   };
 
+  const chooseMagicCard = () => {
+    let magicCards = findForMagicCards();
+    let selectedCardPosition =
+      magicCards[Math.floor(Math.random() * magicCards.length)].fieldPosition;
+    return selectedCardPosition;
+  };
+
+  const findForMagicCards = () => {
+    let magicCards = props.field?.filter((card, index) => {
+      if (card) card.fieldPosition = index;
+      return card.type === "Spell Card";
+    });
+    return magicCards;
+  };
+
   const handleEnemyTurn = () => {
+    let magicCards = findForMagicCards();
+
     setGeneratedTurn(false);
     setTimeout(() => {
       setGeneratedTurn(true);
-      setEnemySort(Math.floor(Math.random() * enemyActions.length));
+      if (magicCards.length && magicCards.length < 5)
+        setEnemySort(Math.floor(Math.random() * enemyActions.length));
+      else setEnemySort(Math.ceil(Math.random() * enemyActions.length));
       setEnemyTributeSort(
         Math.floor(Math.random() * enemyTributeActions.length)
       );
@@ -96,6 +116,49 @@ const EnemyTurn = (props) => {
       ? enemyTributeActions[enemyTributeSort]
       : enemyActions[enemySort];
     return action;
+  };
+
+  const MiniField = () => {
+    let cardIndex = chooseMagicCard();
+
+    return (
+      <>
+        <div className="flex">
+          <img
+            className={`mini-card ${cardIndex === 6 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+          <img
+            className={`mini-card ${cardIndex === 7 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+          <img
+            className={`mini-card ${cardIndex === 8 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+          <img
+            className={`mini-card ${cardIndex === 9 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+          <img
+            className={`mini-card ${cardIndex === 10 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+        </div>
+        <div className="flex">
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+        </div>
+      </>
+    );
   };
 
   return (
@@ -122,6 +185,7 @@ const EnemyTurn = (props) => {
               </div>
               <div style={{ marginTop: "10px" }}>
                 <b>Main Phase:</b>
+                <div>{enemySort === 0 && <MiniField />}</div>
                 <div>{enemyMainPhase()}</div>
                 <div>
                   <small>

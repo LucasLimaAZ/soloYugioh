@@ -13,3 +13,17 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.flex {
+  display: flex;
+}
+
+.mini-card {
+  margin: 3px;
+  opacity: 0.5;
+  width: 45px;
+}
+
+.selected {
+  opacity: 1;
+}
