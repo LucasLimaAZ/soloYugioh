@@ -199,30 +199,35 @@ const ScoreBoard = () => {
       </Grid>
       <div className="cardsWrapper">
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={6}
           type="magic"
         />
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={7}
           type="magic"
         />
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={8}
           type="magic"
         />
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={9}
           type="magic"
         />
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={10}
@@ -231,6 +236,7 @@ const ScoreBoard = () => {
       </div>
       <div className="cardsWrapper">
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={1}
@@ -238,6 +244,7 @@ const ScoreBoard = () => {
           type="monster"
         />
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={2}
@@ -245,6 +252,7 @@ const ScoreBoard = () => {
           type="monster"
         />
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={3}
@@ -252,6 +260,7 @@ const ScoreBoard = () => {
           type="monster"
         />
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={4}
@@ -259,6 +268,7 @@ const ScoreBoard = () => {
           type="monster"
         />
         <CardGenerator
+          field={field}
           selectCard={handleSelectCard}
           updateField={updateField}
           position={5}

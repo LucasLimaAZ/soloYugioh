@@ -110,9 +110,9 @@ const CardGenerator = (props) => {
         soundPlay(MonsterActivation);
       });
     } else {
-      let isTrap = Math.random() >= 0.5;
+      let isSpell = Math.random() <= 0.6;
 
-      if (isTrap) {
+      if (isSpell) {
         getRandomDamageLpSpell().then((res) => {
           setCard(res.data[0]);
           props.updateField(res.data[0], props.position);
@@ -211,6 +211,7 @@ const CardGenerator = (props) => {
           </MenuItem>
         </Menu>
         <AttackModal
+          field={props.field}
           openAttack={openAttack}
           handleCloseAttack={handleCloseAttack}
           monsterPosition={monsterPosition}

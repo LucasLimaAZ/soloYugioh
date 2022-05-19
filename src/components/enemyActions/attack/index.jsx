@@ -1,6 +1,19 @@
 import React, { useState } from "react";
-import { Modal, Box, Typography, Button } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Typography,
+  Button,
+  Stepper,
+  Step,
+  StepLabel,
+  StepContent,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
 import { ShieldMoon } from "@mui/icons-material";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import CardBackIMG from "../../../assets/img/yugioh-back.jpg";
 import "./style.scss";
 
@@ -16,40 +29,41 @@ const style = {
   p: 4,
 };
 
-const enemyActions = [
-  "Enemy activate magic/trap card and summons monster;",
-  "Enemy set magic/trap card;",
-  "Enemy summons monster;",
-  "Enemy set magic/trap card and summons monster;",
-  "Enemy does nothing;",
+const enemyMainPhase = [
+  "Enemy summons 1 monster",
+  "Enemy does nothing",
+  "Enemy activate 1 magic/trap card and summons monster",
+  "Enemy activate 1 magic/trap card",
+  "Enemy set 1 magic/trap card and summons monster",
+  "Enemy set 1 magic/trap card",
 ];
 
-const enemyTributeActions = [
-  ...enemyActions,
-  "Enemy tribute summon a monster;",
+const enemyMainPhaseWithTribute = [
+  ...enemyMainPhase,
+  "Enemy tribute summon a monster",
 ];
 
 const atkMonsters = [
-  "Highest ATK monster weaker than this;",
-  "Lowest ATK monster;",
+  "Highest ATK monster weaker than this",
+  "Lowest ATK monster",
 ];
 
 const defMonsters = [
-  "Highest DEF (face up) monster weaker than this;",
-  "Lowest DEF (face up) monster;",
+  "Highest DEF (face up) monster weaker than this",
+  "Lowest DEF (face up) monster",
 ];
 
 const setMonsters = [
-  "1st set DEF monster;",
-  "last set DEF monster;",
+  "1st set DEF monster",
+  "last set DEF monster",
   "",
-  "1st set DEF monster;",
-  "last set DEF monster;",
+  "1st set DEF monster",
+  "last set DEF monster",
 ];
 
 const tieMonsters = [
-  "1st tie ATK monster;",
-  "last tie ATK monster;",
+  "1st tie ATK monster",
+  "last tie ATK monster",
   "",
   "",
   "",
@@ -65,19 +79,28 @@ const EnemyTurn = (props) => {
   const [setMonstersSort, setSetMonstersSort] = useState(1);
   const [tieMonstersSort, setTieMonstersSort] = useState(1);
   const [generatedTurn, setGeneratedTurn] = useState(true);
+  const [activeStep, setActiveStep] = useState(0);
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
   const chooseMagicCard = () => {
-    let magicCards = findForMagicCards();
-    let selectedCardPosition =
-      magicCards[Math.floor(Math.random() * magicCards.length)].fieldPosition;
+    let magicCards = searchForMagicCards();
+    let randomIndex = Math.floor(Math.random() * magicCards.length);
+    let selectedCardPosition = magicCards[randomIndex]?.fieldPosition;
     return selectedCardPosition;
   };
 
-  const findForMagicCards = () => {
+  const searchForMagicCards = () => {
     let magicCards = props.field?.filter((card, index) => {
       if (card) card.fieldPosition = index;
       return card.type === "Spell Card";
@@ -85,22 +108,46 @@ const EnemyTurn = (props) => {
     return magicCards;
   };
 
+  const searchForTrapCards = () => {
+    let trapCards = props.field?.filter((card, index) => {
+      if (card) card.fieldPosition = index;
+      return card.type === "Trap Card";
+    });
+    return trapCards;
+  };
+
+  const randomNumber = (max) => {
+    return Math.floor(Math.random() * max);
+  };
+
   const handleEnemyTurn = () => {
-    let magicCards = findForMagicCards();
+    let magicCards = searchForMagicCards();
+    let trapCards = searchForTrapCards();
+    let totalSetCards = magicCards.length + trapCards.length;
 
     setGeneratedTurn(false);
+    handleReset();
+
     setTimeout(() => {
       setGeneratedTurn(true);
-      if (magicCards.length && magicCards.length < 5)
-        setEnemySort(Math.floor(Math.random() * enemyActions.length));
-      else setEnemySort(Math.ceil(Math.random() * enemyActions.length));
-      setEnemyTributeSort(
-        Math.floor(Math.random() * enemyTributeActions.length)
-      );
-      setAtkMonstersSort(Math.floor(Math.random() * atkMonsters.length));
-      setDefMonstersSort(Math.floor(Math.random() * defMonsters.length));
-      setSetMonstersSort(Math.floor(Math.random() * setMonsters.length));
-      setTieMonstersSort(Math.floor(Math.random() * tieMonsters.length));
+
+      if (magicCards.length) {
+        setEnemySort(
+          randomNumber(
+            totalSetCards === 5
+              ? enemyMainPhase.length - 2
+              : enemyMainPhase.length
+          )
+        );
+      } else {
+        setEnemySort(randomNumber(enemyMainPhase.length - 4));
+      }
+
+      setEnemyTributeSort(randomNumber(enemyMainPhaseWithTribute.length));
+      setAtkMonstersSort(randomNumber(atkMonsters.length));
+      setDefMonstersSort(randomNumber(defMonsters.length));
+      setSetMonstersSort(randomNumber(setMonsters.length));
+      setTieMonstersSort(randomNumber(tieMonsters.length));
     }, 400);
   };
 
@@ -108,15 +155,88 @@ const EnemyTurn = (props) => {
     setOpenModal(true);
   };
 
-  const enemyMainPhase = () => {
+  const generateEnemyMainPhase = () => {
     let lowLevelMonsters = props.field.filter(
       (card) => card.type === "Normal Monster" && card.level < 5
     );
     let action = lowLevelMonsters.length
-      ? enemyTributeActions[enemyTributeSort]
-      : enemyActions[enemySort];
+      ? enemyMainPhaseWithTribute[enemyTributeSort]
+      : enemyMainPhase[enemySort];
     return action;
   };
+
+  const MainPhase = () => (
+    <div style={{ marginTop: "10px" }}>
+      <div>{(enemySort === 2 || enemySort === 3) && <MiniField />}</div>
+      <div>
+        <Typography variant="h6">{generateEnemyMainPhase()}</Typography>
+      </div>
+      <Accordion
+        sx={{
+          color: "white !important",
+          backgroundColor: "transparent",
+          boxShadow: "none",
+        }}
+      >
+        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />}>
+          <Typography>
+            If there are no monsters in your side of the field
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Opponent changes DEF position monsters to ATK.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    </div>
+  );
+
+  const BattlePhase = () => (
+    <div style={{ marginTop: "10px" }}>
+      <Typography variant="h6">Enemy declares attack with:</Typography>
+      {props.field.map(
+        (card) =>
+          (card.type === "Normal Monster" || card.type === "Fusion Monster") &&
+          card.monsterPosition === "atk" && (
+            <Typography variant="h6" key={card.id}>
+              <b>- {card.name}</b>
+            </Typography>
+          )
+      )}
+      <Accordion
+        sx={{
+          color: "white !important",
+          backgroundColor: "transparent",
+          boxShadow: "none",
+        }}
+      >
+        <AccordionSummary expandIcon={<ExpandMore sx={{ color: "white" }} />}>
+          <Typography>Attack priority</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            To your (left to right):
+            <div>- {atkMonsters[atkMonstersSort]}</div>
+            <div>- {defMonsters[defMonstersSort]}</div>
+            {setMonsters[setMonstersSort] !== "" && (
+              <div>- {setMonsters[setMonstersSort]}</div>
+            )}
+            {tieMonsters[tieMonstersSort] !== "" && (
+              <div>- {tieMonsters[tieMonstersSort]}</div>
+            )}
+            <div>- Direct Attack</div>
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    </div>
+  );
+
+  const MainPhase2 = () => (
+    <div style={{ marginTop: "10px" }}>
+      <Typography variant="h6">Enemy turn ends</Typography>
+    </div>
+  );
 
   const MiniField = () => {
     let cardIndex = chooseMagicCard();
@@ -161,6 +281,25 @@ const EnemyTurn = (props) => {
     );
   };
 
+  const phases = [
+    {
+      label: "Draw phase",
+      content: <Typography variant="h6">Enemy draws 1 card</Typography>,
+    },
+    {
+      label: "Main phase",
+      content: <MainPhase />,
+    },
+    {
+      label: "Battle phase",
+      content: <BattlePhase />,
+    },
+    {
+      label: "Main phase 2",
+      content: <MainPhase2 />,
+    },
+  ];
+
   return (
     <>
       <Modal
@@ -170,67 +309,59 @@ const EnemyTurn = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className="modalBg">
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Enemy Turn
-          </Typography>
-          <Button color="primary" variant="contained" onClick={handleEnemyTurn}>
-            Generate Enemy Turn
-          </Button>
-          {generatedTurn ? (
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              What does your enemy do:
-              <div style={{ marginTop: "10px" }}>
-                <b>Draw Phase:</b>
-                <div>Draws 1 card;</div>
-              </div>
-              <div style={{ marginTop: "10px" }}>
-                <b>Main Phase:</b>
-                <div>{enemySort === 0 && <MiniField />}</div>
-                <div>{enemyMainPhase()}</div>
-                <div>
-                  <small>
-                    *If there are no monsters in your side of the field your
-                    opponent changes DEF position monsters to ATK.
-                  </small>
-                </div>
-              </div>
-              <div style={{ marginTop: "10px" }}>
-                <b>Battle Phase:</b>
-                {props.field.map((card) =>
-                  (card.type === "Normal Monster" ||
-                    card.type === "Fusion Monster") &&
-                  card.monsterPosition === "atk" ? (
-                    <div key={card.id}>
-                      Enemy declares attack with <b>{card.name}</b>;
-                    </div>
-                  ) : (
-                    ""
-                  )
-                )}
-                <fieldset className="attack-script">
-                  <legend>Priority:</legend>
-                  To your (left to right):
-                  <div>- {atkMonsters[atkMonstersSort]}</div>
-                  <div>- {defMonsters[defMonstersSort]}</div>
-                  {setMonsters[setMonstersSort] !== "" && (
-                    <div>- {setMonsters[setMonstersSort]}</div>
-                  )}
-                  {tieMonsters[tieMonstersSort] !== "" && (
-                    <div>- {tieMonsters[tieMonstersSort]}</div>
-                  )}
-                  <div>- Direct Attack;</div>
-                </fieldset>
-              </div>
-              <div style={{ marginTop: "10px" }}>
-                <b>Main Phase 2:</b>
-                <div>Enemy turn ends.</div>
-              </div>
+          <div className="modal-content">
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Enemy Turn
             </Typography>
-          ) : (
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Generating simulation...
-            </Typography>
-          )}
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={handleEnemyTurn}
+            >
+              Generate Enemy Turn
+            </Button>
+            {generatedTurn ? (
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                <div>What does your enemy do:</div>
+                <Stepper activeStep={activeStep} orientation="vertical">
+                  {phases.map((step, index) => (
+                    <Step key={step.label}>
+                      <StepLabel>
+                        <Typography
+                          color="white"
+                          onClick={() => setActiveStep(index)}
+                        >
+                          {step.label}:
+                        </Typography>
+                      </StepLabel>
+                      <StepContent>
+                        {step.content}
+                        <Box sx={{ mb: 2 }}>
+                          <div>
+                            <Button
+                              variant="contained"
+                              onClick={handleNext}
+                              sx={{ mt: 1, mr: 1 }}
+                            >
+                              {index === phases.length - 1
+                                ? "End enemy turn"
+                                : `Enter ${
+                                    phases[index + 1].label || "End phase"
+                                  }`}
+                            </Button>
+                          </div>
+                        </Box>
+                      </StepContent>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Typography>
+            ) : (
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Generating simulation...
+              </Typography>
+            )}
+          </div>
         </Box>
       </Modal>
       <Button color="primary" variant="contained" onClick={handleOpenEnemyTurn}>

@@ -8,7 +8,8 @@ import {
   TextField,
   DialogActions,
 } from "@mui/material";
-import { getRandomTrap } from "../../../shared/services/cards";
+import CardBackIMG from "../../../assets/img/yugioh-back.jpg";
+import "./style.scss";
 
 const AttackModal = (props) => {
   const [attack, setAttack] = useState(undefined);
@@ -21,14 +22,24 @@ const AttackModal = (props) => {
 
   const handleConfirmAttack = () => {
     setTrapCard(undefined);
-    let hasTrap = Math.floor(Math.random() * 10) + 1 < 3;
+    let trapCards = searchForTrapCards();
+    let hasTrap;
+
+    if (trapCards) {
+      hasTrap = Math.floor(Math.random() * 10) + 1 < 3;
+    }
 
     if (props.target === "opponent" && hasTrap) {
       setOpenTrapModal(true);
-      getRandomTrap().then((res) => {
-        setTrapCard(res.data[0]);
-      });
+      setTrapCard(true);
     } else calculateDamage();
+  };
+
+  const chooseTrapCard = () => {
+    let trapCards = searchForTrapCards();
+    let randomIndex = Math.floor(Math.random() * trapCards.length);
+    let selectedCardPosition = trapCards[randomIndex]?.fieldPosition;
+    return selectedCardPosition;
   };
 
   const handleCloseTrapModal = () => {
@@ -39,6 +50,14 @@ const AttackModal = (props) => {
   const handleContinueAttack = () => {
     handleCloseTrapModal();
     calculateDamage();
+  };
+
+  const searchForTrapCards = () => {
+    let trapCards = props.field?.filter((card, index) => {
+      if (card) card.fieldPosition = index;
+      return card.type === "Trap Card";
+    });
+    return trapCards;
   };
 
   const calculateDamage = () => {
@@ -61,23 +80,60 @@ const AttackModal = (props) => {
     }
   };
 
+  const MiniField = () => {
+    let cardIndex = chooseTrapCard();
+
+    return (
+      <>
+        <div className="flex trap-mini-field">
+          <img
+            className={`mini-card ${cardIndex === 6 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+          <img
+            className={`mini-card ${cardIndex === 7 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+          <img
+            className={`mini-card ${cardIndex === 8 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+          <img
+            className={`mini-card ${cardIndex === 9 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+          <img
+            className={`mini-card ${cardIndex === 10 ? "selected" : ""}`}
+            src={CardBackIMG}
+            alt="mini-card"
+          />
+        </div>
+        <div className="flex trap-mini-field">
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
+        </div>
+      </>
+    );
+  };
+
   return (
     <>
       <Dialog open={openTrapModal} onClose={handleCloseTrapModal}>
         <DialogTitle>Your opponent used a TRAP CARD!</DialogTitle>
         <DialogContent>
-          {trapCard && (
-            <img
-              width="400px"
-              alt="trap card"
-              src={trapCard.card_images[0].image_url}
-            />
-          )}
+          {trapCard && <MiniField />}
           <DialogContentText>Continue Attack?</DialogContentText>
         </DialogContent>
         <DialogActions>
+          <Button onClick={handleContinueAttack}>Attack</Button>
           <Button onClick={handleCloseTrapModal}>Cancel</Button>
-          <Button onClick={handleContinueAttack}>Continue Attack</Button>
         </DialogActions>
       </Dialog>
       <Dialog open={props.openAttack} onClose={props.handleCloseAttack}>
