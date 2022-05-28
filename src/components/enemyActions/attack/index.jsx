@@ -15,6 +15,14 @@ import {
 import { ShieldMoon } from "@mui/icons-material";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import CardBackIMG from "../../../assets/img/yugioh-back.jpg";
+import {
+  enemyMainPhase,
+  enemyMainPhaseWithTribute,
+  atkMonsters,
+  defMonsters,
+  tieMonsters,
+  setMonsters,
+} from "../../../shared/actions";
 import "./style.scss";
 
 const style = {
@@ -28,47 +36,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-const enemyMainPhase = [
-  "Enemy summons 1 monster",
-  "Enemy does nothing",
-  "Enemy activate 1 magic/trap card and summons monster",
-  "Enemy activate 1 magic/trap card",
-  "Enemy set 1 magic/trap card and summons monster",
-  "Enemy set 1 magic/trap card",
-];
-
-const enemyMainPhaseWithTribute = [
-  ...enemyMainPhase,
-  "Enemy tribute summon a monster",
-];
-
-const atkMonsters = [
-  "Highest ATK monster weaker than this",
-  "Lowest ATK monster",
-];
-
-const defMonsters = [
-  "Highest DEF (face up) monster weaker than this",
-  "Lowest DEF (face up) monster",
-];
-
-const setMonsters = [
-  "1st set DEF monster",
-  "last set DEF monster",
-  "",
-  "1st set DEF monster",
-  "last set DEF monster",
-];
-
-const tieMonsters = [
-  "1st tie ATK monster",
-  "last tie ATK monster",
-  "",
-  "",
-  "",
-  "",
-];
 
 const EnemyTurn = (props) => {
   const [openModal, setOpenModal] = useState(false);

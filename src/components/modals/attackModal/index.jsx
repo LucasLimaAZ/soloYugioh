@@ -23,10 +23,10 @@ const AttackModal = (props) => {
   const handleConfirmAttack = () => {
     setTrapCard(undefined);
     let trapCards = searchForTrapCards();
-    let hasTrap;
+    let hasTrap = undefined;
 
     if (trapCards) {
-      hasTrap = Math.floor(Math.random() * 10) + 1 < 3;
+      hasTrap = Math.floor(Math.random() * 10) + 1 < 5;
     }
 
     if (props.target === "opponent" && hasTrap) {
@@ -43,6 +43,7 @@ const AttackModal = (props) => {
   };
 
   const handleCloseTrapModal = () => {
+    setTrapCard(undefined);
     setOpenTrapModal(false);
     props.handleCloseAttack();
   };

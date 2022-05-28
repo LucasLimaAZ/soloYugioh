@@ -95,7 +95,7 @@ export const getRandomMonster = () => {
       break;
     case 7:
       monsterUrl =
-        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=fusion%20monster&atk=gte1700&startdate=01/01/2000&enddate=08/23/2002&dateregion=tcg_date";
+        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=fusion%20monster&atk=gte2000&startdate=01/01/2000&enddate=08/23/2002&dateregion=tcg_date";
       break;
     default:
       monsterUrl += "";
