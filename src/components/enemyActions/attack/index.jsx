@@ -16,8 +16,8 @@ import { ShieldMoon } from "@mui/icons-material";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import CardBackIMG from "../../../assets/img/yugioh-back.jpg";
 import {
-  enemyMainPhase,
-  enemyMainPhaseWithTribute,
+  mainPhaseMonster,
+  mainPhaseMonsterWithTribute,
   atkMonsters,
   defMonsters,
   tieMonsters,
@@ -40,13 +40,13 @@ const style = {
 const EnemyTurn = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [enemySort, setEnemySort] = useState(1);
-  const [enemyTributeSort, setEnemyTributeSort] = useState(1);
   const [atkMonstersSort, setAtkMonstersSort] = useState(1);
   const [defMonstersSort, setDefMonstersSort] = useState(1);
   const [setMonstersSort, setSetMonstersSort] = useState(1);
   const [tieMonstersSort, setTieMonstersSort] = useState(1);
   const [generatedTurn, setGeneratedTurn] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
+  const [showMinifield, setShowMinifield] = useState(false);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -83,34 +83,24 @@ const EnemyTurn = (props) => {
     return trapCards;
   };
 
+  const searchForLowLevelMonster = () => {
+    let lowLevelMonsters = props.field.filter(
+      (card) => card.type === "Normal Monster" && card.level < 5
+    );
+    return lowLevelMonsters;
+  };
+
   const randomNumber = (max) => {
     return Math.floor(Math.random() * max);
   };
 
   const handleEnemyTurn = () => {
-    let magicCards = searchForMagicCards();
-    let trapCards = searchForTrapCards();
-    let totalSetCards = magicCards.length + trapCards.length;
-
     setGeneratedTurn(false);
     handleReset();
 
     setTimeout(() => {
       setGeneratedTurn(true);
-
-      if (magicCards.length) {
-        setEnemySort(
-          randomNumber(
-            totalSetCards === 5
-              ? enemyMainPhase.length - 2
-              : enemyMainPhase.length
-          )
-        );
-      } else {
-        setEnemySort(randomNumber(enemyMainPhase.length - 4));
-      }
-
-      setEnemyTributeSort(randomNumber(enemyMainPhaseWithTribute.length));
+      setEnemySort(randomNumber(mainPhaseMonster.length));
       setAtkMonstersSort(randomNumber(atkMonsters.length));
       setDefMonstersSort(randomNumber(defMonsters.length));
       setSetMonstersSort(randomNumber(setMonsters.length));
@@ -123,18 +113,22 @@ const EnemyTurn = (props) => {
   };
 
   const generateEnemyMainPhase = () => {
-    let lowLevelMonsters = props.field.filter(
-      (card) => card.type === "Normal Monster" && card.level < 5
-    );
-    let action = lowLevelMonsters.length
-      ? enemyMainPhaseWithTribute[enemyTributeSort]
-      : enemyMainPhase[enemySort];
+    let magicCards = searchForMagicCards();
+    let trapCards = searchForTrapCards();
+    let lowLevelMonsters = searchForLowLevelMonster();
+    let action = mainPhaseMonster[enemySort];
+
+    if (lowLevelMonsters.length) {
+      setShowMinifield(enemySort === 2 || enemySort === 3);
+      action = mainPhaseMonsterWithTribute[enemySort];
+    }
+
     return action;
   };
 
   const MainPhase = () => (
     <div style={{ marginTop: "10px" }}>
-      <div>{(enemySort === 2 || enemySort === 3) && <MiniField />}</div>
+      <div>{showMinifield && <MiniField />}</div>
       <div>
         <Typography variant="h6">{generateEnemyMainPhase()}</Typography>
       </div>

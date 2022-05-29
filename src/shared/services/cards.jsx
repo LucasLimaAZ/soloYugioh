@@ -42,25 +42,23 @@ const trapCards = [
   "56120475",
 ];
 
+const baseUrl = "https://db.ygoprodeck.com/api/v7";
+
 export const getRandomCard = () => {
-  return axios
-    .get("https://db.ygoprodeck.com/api/v7/randomcard.php")
-    .then((res) => res.data);
+  return axios.get(`${baseUrl}/randomcard.php`).then((res) => res.data);
 };
 
 export const getRandomDamageLpSpell = () => {
   let randomNumber = Math.floor(Math.random() * spellCards.length);
   return axios
-    .get(
-      `https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${spellCards[randomNumber]}`
-    )
+    .get(`${baseUrl}/cardinfo.php?id=${spellCards[randomNumber]}`)
     .then((res) => res.data);
 };
 
 export const getRandomTrap = () => {
   return axios
     .get(
-      `https://db.ygoprodeck.com/api/v7/cardinfo.php?id=${
+      `${baseUrl}/cardinfo.php?id=${
         trapCards[Math.floor(Math.random() * trapCards.length)]
       }`
     )
@@ -68,22 +66,21 @@ export const getRandomTrap = () => {
 };
 
 export const getRandomTribute = () => {
-  let monsterUrl = `https://db.ygoprodeck.com/api/v7/cardinfo.php?type=normal%20monster&level=${
-    Math.random() >= 0.5 ? "5" : "6"
-  }`;
+  let monsterUrl = `${baseUrl}/cardinfo.php?type=normal%20monster&${
+    Math.random() >= 0.3 ? "atk" : "def"
+  }=gte2000&level=${Math.random() >= 0.5 ? "5" : "6"}`;
   return axios.get(monsterUrl).then((res) => res.data);
 };
 
 export const getRandomDualTribute = () => {
-  let monsterUrl = `https://db.ygoprodeck.com/api/v7/cardinfo.php?type=normal%20monster&level=${
+  let monsterUrl = `${baseUrl}/cardinfo.php?type=normal%20monster&level=${
     Math.random() >= 0.5 ? "7" : "8"
   }`;
   return axios.get(monsterUrl).then((res) => res.data);
 };
 
 export const getRandomMonster = () => {
-  let monsterUrl =
-    "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=normal%20monster&level=lte4";
+  let monsterUrl = `${baseUrl}/cardinfo.php?type=normal%20monster&level=lte4`;
   let sort = Math.floor(Math.random() * 7) + 1;
 
   switch (sort) {
@@ -94,8 +91,7 @@ export const getRandomMonster = () => {
       monsterUrl += "&atk=gte1600";
       break;
     case 7:
-      monsterUrl =
-        "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=fusion%20monster&atk=gte2000&startdate=01/01/2000&enddate=08/23/2002&dateregion=tcg_date";
+      monsterUrl = `${baseUrl}/cardinfo.php?type=fusion%20monster&atk=gte2000&startdate=01/01/2000&enddate=08/23/2002&dateregion=tcg_date`;
       break;
     default:
       monsterUrl += "";

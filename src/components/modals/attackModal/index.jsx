@@ -25,8 +25,8 @@ const AttackModal = (props) => {
     let trapCards = searchForTrapCards();
     let hasTrap = undefined;
 
-    if (trapCards) {
-      hasTrap = Math.floor(Math.random() * 10) + 1 < 5;
+    if (trapCards.length) {
+      hasTrap = Math.floor(Math.random() * 10) + 1 < 6;
     }
 
     if (props.target === "opponent" && hasTrap) {
@@ -49,6 +49,7 @@ const AttackModal = (props) => {
   };
 
   const handleContinueAttack = () => {
+    setTrapCard(undefined);
     handleCloseTrapModal();
     calculateDamage();
   };
@@ -70,7 +71,7 @@ const AttackModal = (props) => {
       if (atkDif >= 0) {
         props.handleDestroyCard();
       }
-      props.calculateDamage(atkDif);
+      if (atkDif !== 0) props.calculateDamage(atkDif);
     } else {
       if (defDif > 0) {
         props.handleDestroyCard();
@@ -134,7 +135,7 @@ const AttackModal = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleContinueAttack}>Attack</Button>
-          <Button onClick={handleCloseTrapModal}>Cancel</Button>
+          <Button onClick={handleCloseTrapModal}>Ok</Button>
         </DialogActions>
       </Dialog>
       <Dialog open={props.openAttack} onClose={props.handleCloseAttack}>

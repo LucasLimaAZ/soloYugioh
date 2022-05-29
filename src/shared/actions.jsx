@@ -1,16 +1,13 @@
-export const enemyMainPhase = [
-  "Enemy summons 1 monster",
-  "Enemy set 1 magic/trap card and summons monster",
-  "Enemy activate 1 magic/trap card and summons monster",
-  "Enemy activate 1 magic/trap card",
-  "Enemy set 1 magic/trap card and summons monster",
+export const mainPhaseMonster = ["Enemy summons 1 monster"];
+
+export const mainPhaseMonsterWithTribute = ["Enemy tribute summon a monster"];
+
+export const mainPhaseMagicTrap = [
+  "Enemy activates 1 magic/trap card",
   "Enemy set 1 magic/trap card",
 ];
 
-export const enemyMainPhaseWithTribute = [
-  ...enemyMainPhase,
-  "Enemy tribute summon a monster",
-];
+export const mainPhaseMagicTrapFull = ["Enemy activates 1 magic/trap card"];
 
 export const atkMonsters = [
   "Highest ATK monster weaker than this",

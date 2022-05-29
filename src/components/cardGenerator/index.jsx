@@ -19,6 +19,7 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import AutoAwesomeOutlined from "@mui/icons-material/AutoAwesomeOutlined";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 
 const soundPlay = (src) => {
   const sound = new Howl({
@@ -67,7 +68,7 @@ const CardGenerator = (props) => {
       if (monster.atk < monster.def) setMonsterPosition("def");
       else setMonsterPosition("atk");
 
-      setCard({ ...monster, face: "up" });
+      setCard({ ...monster, face: monster.atk < monster.def ? "down" : "up" });
       props.updateField(
         {
           ...monster,
@@ -99,7 +100,10 @@ const CardGenerator = (props) => {
         if (monster.atk < monster.def) setMonsterPosition("def");
         else setMonsterPosition("atk");
 
-        setCard({ ...monster, face: "up" });
+        setCard({
+          ...monster,
+          face: monster.atk < monster.def ? "down" : "up",
+        });
         props.updateField(
           {
             ...monster,
@@ -201,11 +205,9 @@ const CardGenerator = (props) => {
               <AutoAwesomeIcon className="actionIcon" /> Summon
             </MenuItem>
           )}
-          {props.type === "magic" && (
-            <MenuItem onClick={handleFlipCard}>
-              <AutoAwesomeIcon className="actionIcon" /> Flip
-            </MenuItem>
-          )}
+          <MenuItem onClick={handleFlipCard}>
+            <ChangeCircleIcon className="actionIcon" /> Flip
+          </MenuItem>
           <MenuItem onClick={handleDestroyCard}>
             <DoDisturbIcon className="actionIcon" /> Destroy
           </MenuItem>
@@ -233,7 +235,7 @@ const CardGenerator = (props) => {
           }
         />
       </div>
-      {props.type === "monster" && card && (
+      {props.type === "monster" && card?.face === "up" && (
         <div className="monsterAtkDef">{`ATK ${card?.atk || 0} / DEF ${
           card?.def || 0
         }`}</div>
