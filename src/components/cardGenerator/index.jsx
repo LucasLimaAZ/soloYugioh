@@ -6,6 +6,7 @@ import MonsterDestruction from "../../assets/sounds/monsterDestruction.mp3";
 import CardFlip from "../../assets/sounds/flipCard.mp3";
 import MonsterActivation from "../../assets/sounds/monsterActivation.mp3";
 import MagicActivation from "../../assets/sounds/magicActivation.mp3";
+import ChageStatsModal from "../../components/chageStatsModal";
 import {
   getRandomDamageLpSpell,
   getRandomMonster,
@@ -33,8 +34,17 @@ const CardGenerator = (props) => {
   const [monsterPosition, setMonsterPosition] = useState("");
   const [anchorEl, setAnchorEl] = useState(false);
   const [openAttack, setOpenAttack] = useState(false);
+  const [openStatsModal, setOpenStatsModal] = useState(false);
   const [target, setTarget] = useState("opponent");
   const openMenu = Boolean(anchorEl);
+
+  const handleOpenStatsModal = () => {
+    setOpenStatsModal(true);
+  };
+
+  const handleCloseStatsModal = () => {
+    setOpenStatsModal(false);
+  };
 
   const handleDestroyCard = () => {
     setAnchorEl(false);
@@ -118,7 +128,7 @@ const CardGenerator = (props) => {
 
       if (isSpell) {
         getRandomDamageLpSpell().then((res) => {
-          setCard({...res.data[0], face: "up"});
+          setCard({ ...res.data[0], face: "up" });
           props.updateField(res.data[0], props.position);
           soundPlay(MagicActivation);
         });
@@ -130,6 +140,15 @@ const CardGenerator = (props) => {
         });
       }
     }
+  };
+
+  const updateStats = (atk, def) => {
+    let newCard = { ...card };
+
+    if (atk) newCard.atk = atk;
+    if (def) newCard.def = def;
+
+    setCard(newCard);
   };
 
   const cardBackUrl =
@@ -169,6 +188,12 @@ const CardGenerator = (props) => {
   return (
     <div className="cardGenerator">
       <div className="cardButtonsContainer">
+        <ChageStatsModal
+          openStatsModal={openStatsModal}
+          handleCloseStatsModal={handleCloseStatsModal}
+          card={card}
+          updateStats={updateStats}
+        />
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -235,11 +260,13 @@ const CardGenerator = (props) => {
           }
         />
       </div>
-      {props.type === "monster" && card?.face === "up" && (
-        <div className="monsterAtkDef">{`ATK ${card?.atk || 0} / DEF ${
-          card?.def || 0
-        }`}</div>
-      )}
+      <div onClick={handleOpenStatsModal}>
+        {props.type === "monster" && card?.face === "up" && (
+          <div className="monsterAtkDef">{`ATK ${card?.atk || 0} / DEF ${
+            card?.def || 0
+          }`}</div>
+        )}
+      </div>
     </div>
   );
 };

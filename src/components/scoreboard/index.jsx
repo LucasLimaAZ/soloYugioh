@@ -21,6 +21,7 @@ const ScoreBoard = () => {
   const [opponentPreviousLp, setopponentPreviousLp] = useState(8000);
   const [field, setField] = useState([]);
   const [selectedCard, setSelectedCard] = useState();
+
   Howler.volume(1.0);
 
   const updateField = (card, position) => {
