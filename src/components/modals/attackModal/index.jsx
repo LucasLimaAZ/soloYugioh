@@ -178,19 +178,21 @@ const AttackModal = (props) => {
                   LP.
                 </>
               ) : (
-                <>
-                  The difference will be of{" "}
-                  <b
-                    className={
-                      Number(attack - props.card?.def) < 0
-                        ? "negative"
-                        : "positive"
-                    }
-                  >
-                    {attack - props.card?.def}
-                  </b>{" "}
-                  .
-                </>
+                props.card?.face === "up" && (
+                  <>
+                    The difference will be of{" "}
+                    <b
+                      className={
+                        Number(attack - props.card?.def) < 0
+                          ? "negative"
+                          : "positive"
+                      }
+                    >
+                      {attack - props.card?.def}
+                    </b>{" "}
+                    .
+                  </>
+                )
               )}
             </DialogContentText>
           )}
