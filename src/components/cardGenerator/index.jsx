@@ -118,7 +118,7 @@ const CardGenerator = (props) => {
 
       if (isSpell) {
         getRandomDamageLpSpell().then((res) => {
-          setCard(res.data[0]);
+          setCard({...res.data[0], face: "up"});
           props.updateField(res.data[0], props.position);
           soundPlay(MagicActivation);
         });

@@ -18,6 +18,8 @@ import CardBackIMG from "../../../assets/img/yugioh-back.jpg";
 import {
   mainPhaseMonster,
   mainPhaseMonsterWithTribute,
+  mainPhaseMagicTrap,
+  mainPhaseMagicTrapFull,
   atkMonsters,
   defMonsters,
   tieMonsters,
@@ -40,6 +42,7 @@ const style = {
 const EnemyTurn = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [enemySort, setEnemySort] = useState(1);
+  const [magicTrapSort, setMagicTrapSort] = useState(1);
   const [atkMonstersSort, setAtkMonstersSort] = useState(1);
   const [defMonstersSort, setDefMonstersSort] = useState(1);
   const [setMonstersSort, setSetMonstersSort] = useState(1);
@@ -101,6 +104,7 @@ const EnemyTurn = (props) => {
     setTimeout(() => {
       setGeneratedTurn(true);
       setEnemySort(randomNumber(mainPhaseMonster.length));
+      setMagicTrapSort(randomNumber(mainPhaseMagicTrap.length));
       setAtkMonstersSort(randomNumber(atkMonsters.length));
       setDefMonstersSort(randomNumber(defMonsters.length));
       setSetMonstersSort(randomNumber(setMonsters.length));
@@ -123,7 +127,7 @@ const EnemyTurn = (props) => {
       action = mainPhaseMonsterWithTribute[enemySort];
     }
 
-    return action;
+    return <><div>{mainPhaseMagicTrap[magicTrapSort]}</div><div>{action}</div></>;
   };
 
   const MainPhase = () => (
