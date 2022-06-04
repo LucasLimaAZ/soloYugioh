@@ -14,12 +14,11 @@ import {
 } from "@mui/material";
 import { ShieldMoon } from "@mui/icons-material";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import CardBackIMG from "../../../assets/img/yugioh-back.jpg";
+import MiniField from "../../MiniField";
 import {
   mainPhaseMonster,
   mainPhaseMonsterWithTribute,
   mainPhaseMagicTrap,
-  mainPhaseMagicTrapFull,
   atkMonsters,
   defMonsters,
   tieMonsters,
@@ -78,13 +77,13 @@ const EnemyTurn = (props) => {
     return magicCards;
   };
 
-  const searchForTrapCards = () => {
-    let trapCards = props.field?.filter((card, index) => {
-      if (card) card.fieldPosition = index;
-      return card.type === "Trap Card";
-    });
-    return trapCards;
-  };
+  // const searchForTrapCards = () => {
+  //   let trapCards = props.field?.filter((card, index) => {
+  //     if (card) card.fieldPosition = index;
+  //     return card.type === "Trap Card";
+  //   });
+  //   return trapCards;
+  // };
 
   const searchForLowLevelMonster = () => {
     let lowLevelMonsters = props.field.filter(
@@ -117,8 +116,6 @@ const EnemyTurn = (props) => {
   };
 
   const generateEnemyMainPhase = () => {
-    let magicCards = searchForMagicCards();
-    let trapCards = searchForTrapCards();
     let lowLevelMonsters = searchForLowLevelMonster();
     let action = mainPhaseMonster[enemySort];
 
@@ -127,12 +124,17 @@ const EnemyTurn = (props) => {
       action = mainPhaseMonsterWithTribute[enemySort];
     }
 
-    return <><div>{mainPhaseMagicTrap[magicTrapSort]}</div><div>{action}</div></>;
+    return (
+      <>
+        <div>{mainPhaseMagicTrap[magicTrapSort]}</div>
+        <div>{action}</div>
+      </>
+    );
   };
 
   const MainPhase = () => (
     <div style={{ marginTop: "10px" }}>
-      <div>{showMinifield && <MiniField />}</div>
+      <div>{showMinifield && <FlippedCardField />}</div>
       <div>
         <Typography variant="h6">{generateEnemyMainPhase()}</Typography>
       </div>
@@ -203,47 +205,10 @@ const EnemyTurn = (props) => {
     </div>
   );
 
-  const MiniField = () => {
+  const FlippedCardField = () => {
     let cardIndex = chooseMagicCard();
 
-    return (
-      <>
-        <div className="flex">
-          <img
-            className={`mini-card ${cardIndex === 6 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-          <img
-            className={`mini-card ${cardIndex === 7 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-          <img
-            className={`mini-card ${cardIndex === 8 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-          <img
-            className={`mini-card ${cardIndex === 9 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-          <img
-            className={`mini-card ${cardIndex === 10 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-        </div>
-        <div className="flex">
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-        </div>
-      </>
-    );
+    return <MiniField cardIndex={cardIndex} />;
   };
 
   const phases = [

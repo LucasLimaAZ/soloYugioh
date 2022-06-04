@@ -8,8 +8,8 @@ import {
   TextField,
   DialogActions,
 } from "@mui/material";
-import CardBackIMG from "../../../assets/img/yugioh-back.jpg";
 import "./style.scss";
+import MiniField from "../../MiniField";
 
 const AttackModal = (props) => {
   const [attack, setAttack] = useState(undefined);
@@ -82,47 +82,10 @@ const AttackModal = (props) => {
     }
   };
 
-  const MiniField = () => {
+  const FlippeTrapCard = () => {
     let cardIndex = chooseTrapCard();
 
-    return (
-      <>
-        <div className="flex trap-mini-field">
-          <img
-            className={`mini-card ${cardIndex === 6 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-          <img
-            className={`mini-card ${cardIndex === 7 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-          <img
-            className={`mini-card ${cardIndex === 8 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-          <img
-            className={`mini-card ${cardIndex === 9 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-          <img
-            className={`mini-card ${cardIndex === 10 ? "selected" : ""}`}
-            src={CardBackIMG}
-            alt="mini-card"
-          />
-        </div>
-        <div className="flex trap-mini-field">
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-          <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-        </div>
-      </>
-    );
+    return <MiniField cardIndex={cardIndex} />;
   };
 
   return (
@@ -130,7 +93,7 @@ const AttackModal = (props) => {
       <Dialog open={openTrapModal} onClose={handleCloseTrapModal}>
         <DialogTitle>Your opponent used a TRAP CARD!</DialogTitle>
         <DialogContent>
-          {trapCard && <MiniField />}
+          {trapCard && <FlippeTrapCard />}
           <DialogContentText>Continue Attack?</DialogContentText>
         </DialogContent>
         <DialogActions>

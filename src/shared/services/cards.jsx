@@ -14,18 +14,9 @@ const spellCards = [
   "18144507",
   "19613556",
   "95051344",
-  "73134082",
-  "46130346",
-  "19523799",
-  "76103675",
-  "46918794",
-  "38199696",
-  "20871001",
-  "84257640",
-  "11868825",
-  "18144507",
-  "19613556",
-  "95051344",
+  "12580477",
+  "72892473",
+  "5318639",
 ];
 
 const trapCards = [
@@ -40,6 +31,9 @@ const trapCards = [
   "14315573",
   "17814387",
   "56120475",
+  "126218",
+  "74137509",
+  "24068492",
 ];
 
 const baseUrl = "https://db.ygoprodeck.com/api/v7";
@@ -87,9 +81,9 @@ export const getRandomMonster = () => {
     case 3:
     case 4:
     case 5:
-    case 6:
-      monsterUrl += "&atk=gte1600";
+      monsterUrl += "&atk=gte1700";
       break;
+    case 6:
     case 7:
       monsterUrl = `${baseUrl}/cardinfo.php?type=fusion%20monster&atk=gte2000&startdate=01/01/2000&enddate=08/23/2002&dateregion=tcg_date`;
       break;
