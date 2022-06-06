@@ -101,7 +101,7 @@ const CardGenerator = (props) => {
   const generateMonsterCard = () => {
     getRandomMonster().then((res) => {
       let monstersAmmount = res.data.length;
-      let selectedMonster = Math.floor(Math.random() * monstersAmmount) + 1;
+      let selectedMonster = Math.floor(Math.random() * monstersAmmount);
       let monster = res.data[selectedMonster];
       let isDefenseMonster = monster.atk < monster.def;
 
