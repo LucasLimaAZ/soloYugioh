@@ -36,6 +36,7 @@ const CardGenerator = (props) => {
   const [openAttack, setOpenAttack] = useState(false);
   const [openStatsModal, setOpenStatsModal] = useState(false);
   const [target, setTarget] = useState("opponent");
+  const [contextMenu, setContextMenu] = useState(false);
   const openMenu = Boolean(anchorEl);
 
   const handleOpenStatsModal = () => {
@@ -48,9 +49,10 @@ const CardGenerator = (props) => {
 
   const handleDestroyCard = () => {
     setAnchorEl(false);
+    props.updateField("", props.position);
+    props.sendToGraveyard(card.name);
     setCard(undefined);
     setMonsterPosition("");
-    props.updateField("", props.position);
     if (props.type === "monster") soundPlay(MonsterDestruction);
     else soundPlay(CardFlip);
   };
@@ -191,8 +193,17 @@ const CardGenerator = (props) => {
     });
   };
 
+  const handleContextMenu = (event) => {
+    event = event || window.event;
+    setContextMenu(true);
+    if (event.stopPropagation) event.stopPropagation();
+
+    event.cancelBubble = true;
+    return false;
+  };
+
   return (
-    <div className="cardGenerator">
+    <div className="cardGenerator" onContextMenu={handleContextMenu}>
       <div className="cardButtonsContainer">
         <ChageStatsModal
           openStatsModal={openStatsModal}
@@ -201,6 +212,7 @@ const CardGenerator = (props) => {
           updateStats={updateStats}
         />
         <Menu
+          disableScrollLock={true}
           id="basic-menu"
           anchorEl={anchorEl}
           open={openMenu}
@@ -231,7 +243,7 @@ const CardGenerator = (props) => {
               </MenuItem>
             </div>
           )}
-          {props.type === "monster" && (
+          {(contextMenu || props.type === "monster") && (
             <MenuItem onClick={generateCard}>
               <AutoAwesomeIcon className="actionIcon" /> Summon
             </MenuItem>
@@ -266,7 +278,7 @@ const CardGenerator = (props) => {
           }
         />
       </div>
-      <div onClick={handleOpenStatsModal}>
+      <div onClick={handleOpenStatsModal} onContextMenu={handleContextMenu}>
         {props.type === "monster" && card?.face === "up" && (
           <div className="monsterAtkDef">{`ATK ${card?.atk || 0} / DEF ${
             card?.def || 0

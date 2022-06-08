@@ -97,6 +97,7 @@ const EnemyTurn = (props) => {
   };
 
   const handleEnemyTurn = () => {
+    props.handleDeck();
     setGeneratedTurn(false);
     handleReset();
 

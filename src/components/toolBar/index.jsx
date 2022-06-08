@@ -51,7 +51,7 @@ const ToolBar = (props) => {
             <b className="toolbar-outside-info">Coin: {coin}</b>
           </div>
           <div className="buttonContent">
-            <EnemyTurn field={props.field} />
+            <EnemyTurn handleDeck={props.handleDeck} field={props.field} />
             <b className="toolbar-outside-info">Enemy Turn</b>
           </div>
         </div>

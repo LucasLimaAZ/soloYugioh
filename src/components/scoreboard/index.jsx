@@ -7,10 +7,13 @@ import CalculatedSound from "../../assets/sounds/calculated.mp3";
 import FinishSound from "../../assets/sounds/endedDuel.mp3";
 import StartDuelSound from "../../assets/sounds/duelStart.mp3";
 import VictorySound from "../../assets/sounds/victory.mp3";
+import CardFlip from "../../assets/sounds/flipCard.mp3";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Howl, Howler } from "howler";
 import CardGenerator from "../cardGenerator";
 import ToolBar from "../toolBar";
+import Deck from "../Deck";
+import Graveyard from "../Graveyard";
 
 const ScoreBoard = () => {
   const [lpInput, setLpInput] = useState();
@@ -21,6 +24,8 @@ const ScoreBoard = () => {
   const [opponentPreviousLp, setopponentPreviousLp] = useState(8000);
   const [field, setField] = useState([]);
   const [selectedCard, setSelectedCard] = useState();
+  const [deck, setDeck] = useState(40);
+  const [graveyard, setGraveyard] = useState([]);
 
   Howler.volume(1.0);
 
@@ -98,10 +103,31 @@ const ScoreBoard = () => {
   };
 
   const handleResetDuel = () => {
+    setGraveyard([]);
+    setDeck(40);
     setLifePoints(8000);
     setSelectedCard(undefined);
     setOpponentLifePoints(8000);
     soundPlay(StartDuelSound);
+  };
+
+  const handleDeck = () => {
+    soundPlay(CardFlip);
+
+    if (deck < 1) {
+      setOpponentLifePoints(0);
+      setDeck(0);
+      soundPlay(DamageSound);
+      setTimeout(() => {
+        soundPlay(FinishSound);
+        setTimeout(() => {
+          soundPlay(VictorySound, 0.3);
+        }, 1000);
+      }, 1100);
+      return;
+    }
+
+    setDeck(deck - 1);
   };
 
   const handleCalculateDamage = (damage) => {
@@ -110,6 +136,11 @@ const ScoreBoard = () => {
       "subtract",
       damage < 0 ? -damage : damage
     );
+  };
+
+  const handleGraveyard = (cardName) => {
+    let gy = graveyard.concat(cardName);
+    setGraveyard(gy);
   };
 
   return (
@@ -198,86 +229,108 @@ const ScoreBoard = () => {
           </Grid>
         </Grid>
       </Grid>
-      <div className="cardsWrapper">
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={6}
-          type="magic"
-        />
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={7}
-          type="magic"
-        />
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={8}
-          type="magic"
-        />
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={9}
-          type="magic"
-        />
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={10}
-          type="magic"
-        />
-      </div>
-      <div className="cardsWrapper">
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={1}
-          calculateDamage={handleCalculateDamage}
-          type="monster"
-        />
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={2}
-          calculateDamage={handleCalculateDamage}
-          type="monster"
-        />
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={3}
-          calculateDamage={handleCalculateDamage}
-          type="monster"
-        />
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={4}
-          calculateDamage={handleCalculateDamage}
-          type="monster"
-        />
-        <CardGenerator
-          field={field}
-          selectCard={handleSelectCard}
-          updateField={updateField}
-          position={5}
-          calculateDamage={handleCalculateDamage}
-          type="monster"
-        />
-      </div>
-      <ToolBar selectedCard={selectedCard} field={field} />
+      <Grid container>
+        <Grid item xs={2} sx={{ padding: "2%" }}>
+          <Deck remainingCards={deck} />
+          <Graveyard graveyardList={graveyard} />
+        </Grid>
+        <Grid item xs={8}>
+          <div className="cardsWrapper">
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={6}
+              type="magic"
+            />
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={7}
+              type="magic"
+            />
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={8}
+              type="magic"
+            />
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={9}
+              type="magic"
+            />
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={10}
+              type="magic"
+            />
+          </div>
+          <div className="cardsWrapper">
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={1}
+              calculateDamage={handleCalculateDamage}
+              type="monster"
+            />
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={2}
+              calculateDamage={handleCalculateDamage}
+              type="monster"
+            />
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={3}
+              calculateDamage={handleCalculateDamage}
+              type="monster"
+            />
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={4}
+              calculateDamage={handleCalculateDamage}
+              type="monster"
+            />
+            <CardGenerator
+              sendToGraveyard={handleGraveyard}
+              field={field}
+              selectCard={handleSelectCard}
+              updateField={updateField}
+              position={5}
+              calculateDamage={handleCalculateDamage}
+              type="monster"
+            />
+          </div>
+        </Grid>
+      </Grid>
+      <ToolBar
+        handleDeck={handleDeck}
+        selectedCard={selectedCard}
+        field={field}
+      />
     </>
   );
 };

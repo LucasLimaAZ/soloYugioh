@@ -20,6 +20,7 @@ body {
   background-image: url("../../assets/img/allBg3.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  padding-right: 0px !important;
 }
 
 .playerWrapper {
@@ -60,5 +61,6 @@ body {
 }
 
 .cardsWrapper {
-  margin: 0 100px 0 100px;
+  padding: 0 2%;
+  width: 100%;
 }
