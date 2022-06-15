@@ -5,9 +5,13 @@ import CardIMG from "../../assets/img/yugioh-back.jpg";
 const Deck = (props) => {
   const cardsPercentage = `${(100 * props.remainingCards) / 40}%`;
 
+  const handleDraw = () => {
+    props.handleDeck();
+  };
+
   return (
     <>
-      <div className="deck-wrapper">
+      <div className="deck-wrapper" onClick={handleDraw}>
         <img src={CardIMG} alt="deckcard" />
         <img src={CardIMG} alt="deckcard" />
         <img src={CardIMG} alt="deckcard" />

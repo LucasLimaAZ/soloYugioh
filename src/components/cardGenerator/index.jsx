@@ -105,7 +105,8 @@ const CardGenerator = (props) => {
       let monstersAmmount = res.data.length;
       let selectedMonster = Math.floor(Math.random() * monstersAmmount);
       let monster = res.data[selectedMonster];
-      let isDefenseMonster = monster.atk < monster.def;
+      let isDefenseMonster =
+        monster.atk + 400 < monster.def || monster.atk < 1000;
 
       if (isDefenseMonster) setMonsterPosition("def");
       else setMonsterPosition("atk");

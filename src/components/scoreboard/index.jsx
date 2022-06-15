@@ -231,7 +231,7 @@ const ScoreBoard = () => {
       </Grid>
       <Grid container>
         <Grid item xs={2} sx={{ padding: "2%" }}>
-          <Deck remainingCards={deck} />
+          <Deck remainingCards={deck} handleDeck={handleDeck} />
           <Graveyard graveyardList={graveyard} />
         </Grid>
         <Grid item xs={8}>

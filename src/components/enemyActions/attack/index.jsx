@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { ShieldMoon } from "@mui/icons-material";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import MiniField from "../../MiniField";
 import {
   mainPhaseMonster,
   mainPhaseMonsterWithTribute,
@@ -48,7 +47,6 @@ const EnemyTurn = (props) => {
   const [tieMonstersSort, setTieMonstersSort] = useState(1);
   const [generatedTurn, setGeneratedTurn] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
-  const [showMinifield, setShowMinifield] = useState(false);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -121,7 +119,6 @@ const EnemyTurn = (props) => {
     let action = mainPhaseMonster[enemySort];
 
     if (lowLevelMonsters.length) {
-      setShowMinifield(enemySort === 2 || enemySort === 3);
       action = mainPhaseMonsterWithTribute[enemySort];
     }
 
@@ -135,7 +132,6 @@ const EnemyTurn = (props) => {
 
   const MainPhase = () => (
     <div style={{ marginTop: "10px" }}>
-      <div>{showMinifield && <FlippedCardField />}</div>
       <div>
         <Typography variant="h6">{generateEnemyMainPhase()}</Typography>
       </div>
@@ -205,12 +201,6 @@ const EnemyTurn = (props) => {
       <Typography variant="h6">Enemy turn ends</Typography>
     </div>
   );
-
-  const FlippedCardField = () => {
-    let cardIndex = chooseMagicCard();
-
-    return <MiniField cardIndex={cardIndex} />;
-  };
 
   const phases = [
     {
