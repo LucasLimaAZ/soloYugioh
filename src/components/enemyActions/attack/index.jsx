@@ -156,10 +156,14 @@ const EnemyTurn = (props) => {
     </div>
   );
 
+  const orderBattlePhase = () => {
+    return props.field.sort((a, b) => a.atk - b.atk);
+  };
+
   const BattlePhase = () => (
     <div style={{ marginTop: "10px" }}>
       <Typography variant="h6">Enemy declares attack with:</Typography>
-      {props.field.map(
+      {orderBattlePhase().map(
         (card) =>
           (card.type === "Normal Monster" || card.type === "Fusion Monster") &&
           card.monsterPosition === "atk" && (
