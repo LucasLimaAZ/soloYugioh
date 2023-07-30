@@ -21,6 +21,7 @@ import AutoAwesomeOutlined from "@mui/icons-material/AutoAwesomeOutlined";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
+import { useAtom } from "jotai";
 
 const soundPlay = (src) => {
   const sound = new Howl({
@@ -37,6 +38,7 @@ const CardGenerator = (props) => {
   const [openStatsModal, setOpenStatsModal] = useState(false);
   const [target, setTarget] = useState("opponent");
   const [contextMenu, setContextMenu] = useState(false);
+  const [field, setField] = useAtom("field");
   const openMenu = Boolean(anchorEl);
 
   const handleOpenStatsModal = () => {
@@ -49,7 +51,7 @@ const CardGenerator = (props) => {
 
   const handleDestroyCard = () => {
     setAnchorEl(false);
-    props.updateField("", props.position);
+    setField("", props.position);
     props.sendToGraveyard(card.name);
     setCard(undefined);
     setMonsterPosition("");
@@ -83,7 +85,7 @@ const CardGenerator = (props) => {
       else setMonsterPosition("atk");
 
       setCard({ ...monster, face: isDefenseMonster ? "down" : "up" });
-      props.updateField(
+      setField(
         {
           ...monster,
           monsterPosition: isDefenseMonster ? "def" : "atk",
@@ -117,7 +119,7 @@ const CardGenerator = (props) => {
         ...monster,
         face: isDefenseMonster ? "down" : "up",
       });
-      props.updateField(
+      setField(
         {
           ...monster,
           monsterPosition: isDefenseMonster ? "def" : "atk",
@@ -134,13 +136,13 @@ const CardGenerator = (props) => {
     if (isSpell) {
       getRandomDamageLpSpell().then((res) => {
         setCard({ ...res.data[0], face: "up" });
-        props.updateField(res.data[0], props.position);
+        setField(res.data[0], props.position);
         soundPlay(MagicActivation);
       });
     } else {
       getRandomTrap().then((res) => {
         setCard(res.data[0]);
-        props.updateField(res.data[0], props.position);
+        setField(res.data[0], props.position);
         soundPlay(MagicActivation);
       });
     }
@@ -163,7 +165,7 @@ const CardGenerator = (props) => {
   };
 
   const cardBackUrl =
-    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/06cb28af-a15c-45d3-b1b6-fcbc1910e0c3/dbwk3sn-1ad1083a-5b15-4f77-af59-66dc07024a73.jpg/v1/fill/w_739,h_1081,q_70,strp/back_card_yugioh_hd_by_oricacardsbr_dbwk3sn-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTQ5NiIsInBhdGgiOiJcL2ZcLzA2Y2IyOGFmLWExNWMtNDVkMy1iMWI2LWZjYmMxOTEwZTBjM1wvZGJ3azNzbi0xYWQxMDgzYS01YjE1LTRmNzctYWY1OS02NmRjMDcwMjRhNzMuanBnIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.hzaBSJ4Hs23sjOCzVznIn1Qjgx2-c0BY__I1E7-rQKg";
+    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/0c32abf8-be5d-4ec1-b6c5-f7d4a4b0217c/d5jx1o5-173bd53d-729f-4219-ba41-eb582af12bb0.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzBjMzJhYmY4LWJlNWQtNGVjMS1iNmM1LWY3ZDRhNGIwMjE3Y1wvZDVqeDFvNS0xNzNiZDUzZC03MjlmLTQyMTktYmE0MS1lYjU4MmFmMTJiYjAuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.qMDSNjIIWPOTCgX1Pq-OvZx8lFDaaXRc5I2r5eMxnE8";
 
   const calculateDamage = (damage) => {
     props.calculateDamage(damage);
