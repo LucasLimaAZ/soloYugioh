@@ -1,74 +1,48 @@
-import { useState } from "react";
-import { atom } from "jotai";
-import CardGenerator from "../cardGenerator";
-import { Button, Grid, TextField } from "@mui/material";
+import Card from "../card";
+import { Link } from "@mui/material";
+import { useField } from "../../shared/hooks";
+import { useAtom } from "jotai";
+import { fieldAtom } from "../../shared/state";
 
 const Field = () => {
-  const fieldAtom = atom("field");
-  const [graveyard, setGraveyard] = useState([]);
+  const { generateMonster, generateMagic } = useField();
+  const [field] = useAtom(fieldAtom);
 
-  const handleGraveyard = (cardName) => {
-    let gy = graveyard.concat(cardName);
-    setGraveyard(gy);
+  const handleMonsterClick = (position) => {
+    if (field[position]) return;
+    generateMonster(position);
+  };
+
+  const handleMagicClick = (position) => {
+    if (field[position]) return;
+    generateMagic(position);
   };
 
   return (
-    <Grid item xs={8}>
+    <>
       <div className="cardsWrapper">
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={6}
-          type="magic"
-        />
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={7}
-          type="magic"
-        />
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={8}
-          type="magic"
-        />
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={9}
-          type="magic"
-        />
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={10}
-          type="magic"
-        />
+        {[...Array(5)].map((e, i) => (
+          <Link
+            key={i}
+            sx={{ margin: "50px 10px" }}
+            onClick={() => handleMagicClick(i)}
+          >
+            <Card type="monster" position={i} card={field[i]} />
+          </Link>
+        ))}
       </div>
       <div className="cardsWrapper">
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={1}
-          type="monster"
-        />
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={2}
-          type="monster"
-        />
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={3}
-          type="monster"
-        />
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={4}
-          type="monster"
-        />
-        <CardGenerator
-          sendToGraveyard={handleGraveyard}
-          position={5}
-          type="monster"
-        />
+        {[...Array(5)].map((e, i) => (
+          <Link
+            key={i}
+            sx={{ margin: "50px 10px" }}
+            onClick={() => handleMonsterClick(5 + i)}
+          >
+            <Card type="magic" position={5 + i} card={field[5 + i]} />
+          </Link>
+        ))}
       </div>
-    </Grid>
+    </>
   );
 };
 

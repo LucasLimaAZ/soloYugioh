@@ -10,17 +10,15 @@ const Deck = (props) => {
   };
 
   return (
-    <>
-      <div className="deck-wrapper" onClick={handleDraw}>
-        <img src={CardIMG} alt="deckcard" />
-        <img src={CardIMG} alt="deckcard" />
-        <img src={CardIMG} alt="deckcard" />
-        <img src={CardIMG} alt="deckcard" />
-        <div style={{ width: cardsPercentage }} className="remaining-cards">
-          {props.remainingCards}
-        </div>
+    <div className="deck-wrapper" onClick={handleDraw}>
+      <img src={CardIMG} alt="deckcard" />
+      <img src={CardIMG} alt="deckcard" />
+      <img src={CardIMG} alt="deckcard" />
+      <img src={CardIMG} alt="deckcard" />
+      <div style={{ width: cardsPercentage }} className="remaining-cards">
+        {props.remainingCards}
       </div>
-    </>
+    </div>
   );
 };
 

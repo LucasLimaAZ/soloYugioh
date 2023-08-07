@@ -9,7 +9,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import "./style.scss";
-import MiniField from "../../MiniField";
+import MiniField from "../../miniField";
 
 const AttackModal = (props) => {
   const [attack, setAttack] = useState(undefined);
