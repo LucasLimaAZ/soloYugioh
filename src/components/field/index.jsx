@@ -27,7 +27,7 @@ const Field = () => {
             sx={{ margin: "50px 10px" }}
             onClick={() => handleMagicClick(i)}
           >
-            <Card type="monster" position={i} card={field[i]} />
+            <Card type="magic" position={i} card={field[i]} />
           </Link>
         ))}
       </div>
@@ -38,7 +38,7 @@ const Field = () => {
             sx={{ margin: "50px 10px" }}
             onClick={() => handleMonsterClick(5 + i)}
           >
-            <Card type="magic" position={5 + i} card={field[5 + i]} />
+            <Card type="monster" position={5 + i} card={field[5 + i]} />
           </Link>
         ))}
       </div>

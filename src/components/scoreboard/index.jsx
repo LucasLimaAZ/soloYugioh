@@ -2,77 +2,36 @@ import React, { useState } from "react";
 import "./style.scss";
 import { Button, Grid, TextField } from "@mui/material";
 import CountUp from "react-countup";
-import DamageSound from "../../assets/sounds/calculating.mp3";
-import CalculatedSound from "../../assets/sounds/calculated.mp3";
-import FinishSound from "../../assets/sounds/endedDuel.mp3";
-import StartDuelSound from "../../assets/sounds/duelStart.mp3";
-import VictorySound from "../../assets/sounds/victory.mp3";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { Howl, Howler } from "howler";
+import { playSound } from "../../shared/helper";
+import { useLifePoints } from "../../shared/hooks";
 
 const ScoreBoard = () => {
-  const [lpInput, setLpInput] = useState();
-  const [opponentLpInput, setOpponentLpInput] = useState();
-  const [lifePoints, setLifePoints] = useState(8000);
-  const [opponentLifePoints, setOpponentLifePoints] = useState(8000);
+  const [lpInput, setLpInput] = useState(0);
+  const [opponentLpInput, setOpponentLpInput] = useState(0);
   const [previousLp, setPreviousLp] = useState(8000);
-  const [opponentPreviousLp, setopponentPreviousLp] = useState(8000);
+  const [opponentPreviousLp, setOpponentPreviousLp] = useState(8000);
 
-  Howler.volume(1.0);
+  const { playerLp, setPlayerLp, opponentLp, setOpponentLp } = useLifePoints();
 
-  const soundPlay = (src, volume = 1) => {
-    const sound = new Howl({
-      src,
-      volume,
-    });
-    sound.play();
+  const handleAddPlayerLp = () => {
+    setPreviousLp(playerLp);
+    setPlayerLp(Number(playerLp) + Number(lpInput));
   };
 
-  const calculateDamage = (who, operation, amount = undefined) => {
-    soundPlay(DamageSound);
-    setTimeout(() => {
-      soundPlay(CalculatedSound);
-    }, 700);
+  const handleSubtractPlayerLp = () => {
+    setPreviousLp(playerLp);
+    setPlayerLp(Number(playerLp) - Number(lpInput));
+  };
 
-    let reduceYours = Number(lifePoints) - Number(amount || lpInput);
-    let sumYours = Number(lifePoints) + Number(amount || lpInput);
-    let reduceOpponents =
-      Number(opponentLifePoints) - Number(amount || opponentLpInput);
-    let sumOpponents =
-      Number(opponentLifePoints) + Number(amount || opponentLpInput);
+  const handleAddOpponentLp = () => {
+    setOpponentPreviousLp(opponentLp);
+    setOpponentLp(Number(opponentLp) + Number(opponentLpInput));
+  };
 
-    if (who === "yours") {
-      setPreviousLp(lifePoints);
-      if (operation === "sum") {
-        setLifePoints(sumYours);
-      } else {
-        if (reduceYours < 1) {
-          setLifePoints(0);
-          setTimeout(() => {
-            soundPlay(FinishSound);
-          }, 1100);
-        } else {
-          setLifePoints(reduceYours);
-        }
-      }
-    } else {
-      setopponentPreviousLp(opponentLifePoints);
-      if (operation === "sum") {
-        setOpponentLifePoints(sumOpponents);
-      } else {
-        if (reduceOpponents < 1) {
-          setOpponentLifePoints(0);
-          setTimeout(() => {
-            soundPlay(FinishSound);
-            setTimeout(() => {
-              soundPlay(VictorySound, 0.3);
-            }, 1000);
-          }, 1100);
-        } else {
-          setOpponentLifePoints(reduceOpponents);
-        }
-      }
-    }
+  const handleSubtractOpponentLp = () => {
+    setOpponentPreviousLp(opponentLp);
+    setOpponentLp(Number(opponentLp) - Number(opponentLpInput));
   };
 
   const handleLpInputChange = (e) => {
@@ -84,9 +43,9 @@ const ScoreBoard = () => {
   };
 
   const handleResetDuel = () => {
-    setLifePoints(8000);
-    setOpponentLifePoints(8000);
-    soundPlay(StartDuelSound);
+    setPlayerLp(8000);
+    setOpponentLp(8000);
+    playSound("start-duel");
   };
 
   return (
@@ -95,7 +54,7 @@ const ScoreBoard = () => {
         <Grid item xs={5} container className="playerWrapper">
           <Grid className="inputsWrapper" item xs={6}>
             <Button
-              onClick={() => calculateDamage("yours", "sum")}
+              onClick={handleAddPlayerLp}
               color="primary"
               className="lpButtons"
               variant="contained"
@@ -110,7 +69,7 @@ const ScoreBoard = () => {
               onChange={handleLpInputChange}
             />
             <Button
-              onClick={() => calculateDamage("yours", "subtract")}
+              onClick={handleSubtractPlayerLp}
               color="primary"
               className="lpButtons"
               variant="contained"
@@ -121,7 +80,7 @@ const ScoreBoard = () => {
           <Grid item xs={6}>
             <div className="lifepointsBg">
               <h1>
-                <CountUp duration={0.875} start={previousLp} end={lifePoints} />
+                <CountUp duration={0.875} start={previousLp} end={playerLp} />
               </h1>
             </div>
           </Grid>
@@ -143,14 +102,14 @@ const ScoreBoard = () => {
                 <CountUp
                   duration={0.875}
                   start={opponentPreviousLp}
-                  end={opponentLifePoints}
+                  end={opponentLp}
                 />
               </h1>
             </div>
           </Grid>
           <Grid className="inputsWrapper" item xs={6}>
             <Button
-              onClick={() => calculateDamage("opponent", "sum")}
+              onClick={handleAddOpponentLp}
               color="primary"
               className="lpButtons"
               variant="contained"
@@ -165,7 +124,7 @@ const ScoreBoard = () => {
               onChange={handleOpponentInputChange}
             />
             <Button
-              onClick={() => calculateDamage("opponent", "subtract")}
+              onClick={handleSubtractOpponentLp}
               color="primary"
               className="lpButtons"
               variant="contained"
