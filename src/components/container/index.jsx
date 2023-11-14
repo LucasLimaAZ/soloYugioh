@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 import ScoreBoard from "../scoreboard";
 import Deck from "../deck";
 import Graveyard from "../graveyard";
@@ -7,21 +7,30 @@ import Field from "../field";
 
 const Container = () => {
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <ScoreBoard />
+    <Box
+      sx={{
+        backgroundColor: "#F3F6F9",
+        minHeight: "100vh",
+        paddingX: "4%",
+        paddingY: "1%",
+      }}
+    >
+      <Grid container>
+        <Grid item xs={12}>
+          <ScoreBoard />
+        </Grid>
+        <Grid item xs={2}>
+          <Deck />
+          <Graveyard />
+        </Grid>
+        <Grid item xs={10}>
+          <Field />
+        </Grid>
+        <Grid item xs={12}>
+          {/* <ToolBar /> */}
+        </Grid>
       </Grid>
-      <Grid item xs={2}>
-        <Deck remainingCards={40} />
-        <Graveyard graveyardList={[]} />
-      </Grid>
-      <Grid item xs={9}>
-        <Field />
-      </Grid>
-      <Grid item xs={12}>
-        <ToolBar />
-      </Grid>
-    </Grid>
+    </Box>
   );
 };
 

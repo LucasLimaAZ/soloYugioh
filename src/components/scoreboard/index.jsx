@@ -1,10 +1,23 @@
 import React, { useState } from "react";
-import "./style.scss";
-import { Button, Grid, TextField } from "@mui/material";
+import {
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  Box,
+  Paper,
+  CardMedia,
+  Card,
+} from "@mui/material";
 import CountUp from "react-countup";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import {
+  AddCircleOutline as AddCircleIcon,
+  RemoveCircleOutline as RemoveCircleIcon,
+  RestartAlt as RestartAltIcon,
+} from "@mui/icons-material";
 import { playSound } from "../../shared/helper";
-import { useLifePoints } from "../../shared/hooks/hooks";
+import useLifePoints from "../../shared/hooks/lifepoints";
+import lpImage from "../../assets/img/lifepointsBg.png";
 
 const ScoreBoard = () => {
   const [lpInput, setLpInput] = useState(0);
@@ -49,17 +62,23 @@ const ScoreBoard = () => {
   };
 
   return (
-    <>
-      <Grid className="scoreBoard" container>
-        <Grid item xs={5} container className="playerWrapper">
-          <Grid className="inputsWrapper" item xs={6}>
+    <Grid container>
+      <Paper
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
+          padding: "1%",
+        }}
+      >
+        <Grid item xs={5}>
+          <Box display="flex" justifyContent="space-around">
             <Button
               onClick={handleAddPlayerLp}
               color="primary"
-              className="lpButtons"
               variant="contained"
             >
-              +
+              <AddCircleIcon />
             </Button>
             <TextField
               id="outlined-basic"
@@ -71,50 +90,59 @@ const ScoreBoard = () => {
             <Button
               onClick={handleSubtractPlayerLp}
               color="primary"
-              className="lpButtons"
               variant="contained"
             >
-              -
+              <RemoveCircleIcon />
             </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <div className="lifepointsBg">
-              <h1>
-                <CountUp duration={0.875} start={previousLp} end={playerLp} />
-              </h1>
-            </div>
-          </Grid>
+            <Card>
+              <CardMedia sx={{ paddingX: "10px" }} image={lpImage}>
+                <Typography
+                  sx={{ textShadow: "0 0 2px #000" }}
+                  variant="h3"
+                  color="yellow"
+                  textAlign="center"
+                >
+                  <CountUp duration={0.875} start={previousLp} end={playerLp} />
+                </Typography>
+              </CardMedia>
+            </Card>
+          </Box>
         </Grid>
-        <Grid item xs={2} className="resetDuel">
-          <Button
-            onClick={handleResetDuel}
-            color="primary"
-            className="resetDuelButton"
-            variant="contained"
-          >
-            <RestartAltIcon />
-          </Button>
+        <Grid item xs={2}>
+          <Box display="flex" justifyContent="center">
+            <Button
+              onClick={handleResetDuel}
+              color="primary"
+              variant="contained"
+            >
+              <RestartAltIcon />
+            </Button>
+          </Box>
         </Grid>
-        <Grid item xs={5} container className="playerWrapper">
-          <Grid item xs={6}>
-            <div className="lifepointsBg">
-              <h1>
-                <CountUp
-                  duration={0.875}
-                  start={opponentPreviousLp}
-                  end={opponentLp}
-                />
-              </h1>
-            </div>
-          </Grid>
-          <Grid className="inputsWrapper" item xs={6}>
+        <Grid item xs={5}>
+          <Box display="flex" justifyContent="space-around">
+            <Card>
+              <CardMedia sx={{ paddingX: "10px" }} image={lpImage}>
+                <Typography
+                  sx={{ textShadow: "0 0 2px #000" }}
+                  variant="h3"
+                  color="yellow"
+                  textAlign="center"
+                >
+                  <CountUp
+                    duration={0.875}
+                    start={opponentPreviousLp}
+                    end={opponentLp}
+                  />
+                </Typography>
+              </CardMedia>
+            </Card>
             <Button
               onClick={handleAddOpponentLp}
               color="primary"
-              className="lpButtons"
               variant="contained"
             >
-              +
+              <AddCircleIcon />
             </Button>
             <TextField
               id="outlined-basic"
@@ -126,15 +154,14 @@ const ScoreBoard = () => {
             <Button
               onClick={handleSubtractOpponentLp}
               color="primary"
-              className="lpButtons"
               variant="contained"
             >
-              -
+              <RemoveCircleIcon />
             </Button>
-          </Grid>
+          </Box>
         </Grid>
-      </Grid>
-    </>
+      </Paper>
+    </Grid>
   );
 };
 

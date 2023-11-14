@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { getRandomDamageLpSpell, getRandomMonster } from "../services/cards";
-import { fieldAtom, opponentLpAtom, playerLpAtom } from "../state";
+import { fieldAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { playSound } from "../helper";
 
-export const useField = () => {
+const useField = () => {
   const [field, setField] = useAtom(fieldAtom);
   const [loading, setLoading] = useState(false);
 
@@ -63,6 +63,7 @@ export const useField = () => {
   };
 
   return {
+    field,
     generateMonster,
     generateMagic,
     changeMonsterPosition,
@@ -71,30 +72,4 @@ export const useField = () => {
   };
 };
 
-export const useLifePoints = () => {
-  const [playerLp, setPlayerLifePoints] = useAtom(playerLpAtom);
-  const [opponentLp, setOpponentLifePoints] = useAtom(opponentLpAtom);
-
-  const setPlayerLp = (newLp) => {
-    setPlayerLifePoints(newLp);
-    playSound("lp-damage");
-    setTimeout(() => {
-      playSound("calculated-damage");
-    }, 700);
-  };
-
-  const setOpponentLp = (newLp) => {
-    setOpponentLifePoints(newLp);
-    playSound("lp-damage");
-    setTimeout(() => {
-      playSound("calculated-damage");
-    }, 700);
-  };
-
-  return {
-    playerLp,
-    setPlayerLp,
-    opponentLp,
-    setOpponentLp,
-  };
-};
+export default useField;

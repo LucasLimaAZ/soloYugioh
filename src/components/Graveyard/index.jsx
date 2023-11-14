@@ -1,14 +1,28 @@
 import React from "react";
-import "./style.scss";
+import useGraveyard from "../../shared/hooks/graveyard";
+import { Box, Typography, Paper } from "@mui/material";
 
-const Graveyard = (props) => {
+const Graveyard = () => {
+  const { graveyard } = useGraveyard();
+
   return (
-    <div className="graveyard-wrapper">
-      <b>Graveyard({props.graveyardList.length}): </b>
-      {props.graveyardList?.map((card, index) => (
-        <div key={index}>{card}</div>
-      ))}
-    </div>
+    <Paper sx={{ paddingX: "2%", margin: "30px 0 2% 0" }}>
+      <Box
+        sx={{
+          marginTop: "30px",
+          maxHeight: "300px",
+          overflow: "auto",
+          padding: "2%",
+        }}
+      >
+        <Typography variant="body1">Graveyard({graveyard.length}): </Typography>
+        {graveyard?.map((card, index) => (
+          <Box key={index}>
+            <Typography variant="caption">{card.name}</Typography>
+          </Box>
+        ))}
+      </Box>
+    </Paper>
   );
 };
 

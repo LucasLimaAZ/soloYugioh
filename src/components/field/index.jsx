@@ -1,12 +1,9 @@
 import Card from "../card";
-import { Link } from "@mui/material";
-import { useField } from "../../shared/hooks/hooks";
-import { useAtom } from "jotai";
-import { fieldAtom } from "../../shared/state";
+import useField from "../../shared/hooks/field";
+import { Box, Link, Paper } from "@mui/material";
 
 const Field = () => {
-  const { generateMonster, generateMagic } = useField();
-  const [field] = useAtom(fieldAtom);
+  const { generateMonster, generateMagic, field } = useField();
 
   const handleMonsterClick = (position) => {
     if (field[position]) return;
@@ -19,8 +16,8 @@ const Field = () => {
   };
 
   return (
-    <>
-      <div className="cardsWrapper">
+    <Paper sx={{ paddingX: "2%", margin: "30px 0 0 2%" }}>
+      <Box display="flex" justifyContent="space-between">
         {[...Array(5)].map((e, i) => (
           <Link
             key={i}
@@ -30,8 +27,8 @@ const Field = () => {
             <Card type="magic" position={i} card={field[i]} />
           </Link>
         ))}
-      </div>
-      <div className="cardsWrapper">
+      </Box>
+      <Box display="flex" justifyContent="space-between">
         {[...Array(5)].map((e, i) => (
           <Link
             key={i}
@@ -41,8 +38,8 @@ const Field = () => {
             <Card type="monster" position={5 + i} card={field[5 + i]} />
           </Link>
         ))}
-      </div>
-    </>
+      </Box>
+    </Paper>
   );
 };
 

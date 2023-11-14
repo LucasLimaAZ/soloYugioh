@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Menu, MenuItem } from "@mui/material";
-import "./style.scss";
+import { Menu, MenuItem, Box } from "@mui/material";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import SwipeRightIcon from "@mui/icons-material/SwipeRight";
 import AutoAwesomeOutlined from "@mui/icons-material/AutoAwesomeOutlined";
@@ -8,10 +7,12 @@ import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import backCard from "../../assets/img/yugioh-back.jpg";
-import { useField } from "../../shared/hooks/hooks";
+import useField from "../../shared/hooks/field";
+import useGraveyard from "../../shared/hooks/graveyard";
 
 const Card = ({ card, type, position }) => {
   const { changeMonsterPosition, destroyCard, flipCard } = useField();
+  const { sendToGraveyard } = useGraveyard();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -30,6 +31,7 @@ const Card = ({ card, type, position }) => {
 
   const handleDestroy = () => {
     destroyCard(position);
+    sendToGraveyard(card);
     handleClose();
   };
 
@@ -72,8 +74,13 @@ const Card = ({ card, type, position }) => {
   );
 
   return (
-    <div
-      className="card"
+    <Box
+      sx={{
+        width: "188px",
+        height: "300px",
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        cursor: "pointer",
+      }}
       id="card-context"
       aria-controls={open ? "card-menu" : undefined}
       aria-haspopup="true"
@@ -91,14 +98,19 @@ const Card = ({ card, type, position }) => {
         <ContextMenuItems />
       </Menu>
       {card && (
-        <img
+        <Box
+          component="img"
           onClick={handleClick}
           src={card.face_down ? backCard : card.card_images[0].image_url}
           alt="magic card"
-          className={card.def_mode ? "card defenseMode" : "card"}
+          sx={{
+            transform: card.def_mode ? "rotate(90deg)" : "",
+            width: "188px",
+            height: "300px",
+          }}
         />
       )}
-    </div>
+    </Box>
   );
 };
 
