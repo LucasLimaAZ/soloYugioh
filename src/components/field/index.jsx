@@ -1,6 +1,6 @@
 import Card from "../card";
 import { Link } from "@mui/material";
-import { useField } from "../../shared/hooks";
+import { useField } from "../../shared/hooks/hooks";
 import { useAtom } from "jotai";
 import { fieldAtom } from "../../shared/state";
 

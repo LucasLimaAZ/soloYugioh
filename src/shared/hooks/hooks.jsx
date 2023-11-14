@@ -1,11 +1,8 @@
 import { useState } from "react";
-import {
-  getRandomDamageLpSpell,
-  getRandomMonster,
-} from "../shared/services/cards";
-import { fieldAtom, opponentLpAtom, playerLpAtom } from "../shared/state";
+import { getRandomDamageLpSpell, getRandomMonster } from "../services/cards";
+import { fieldAtom, opponentLpAtom, playerLpAtom } from "../state";
 import { useAtom } from "jotai";
-import { playSound } from "./helper";
+import { playSound } from "../helper";
 
 export const useField = () => {
   const [field, setField] = useAtom(fieldAtom);

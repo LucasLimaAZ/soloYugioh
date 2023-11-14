@@ -8,7 +8,7 @@ import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import backCard from "../../assets/img/yugioh-back.jpg";
-import { useField } from "../../shared/hooks";
+import { useField } from "../../shared/hooks/hooks";
 
 const Card = ({ card, type, position }) => {
   const { changeMonsterPosition, destroyCard, flipCard } = useField();

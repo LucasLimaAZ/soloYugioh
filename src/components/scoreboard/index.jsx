@@ -4,7 +4,7 @@ import { Button, Grid, TextField } from "@mui/material";
 import CountUp from "react-countup";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { playSound } from "../../shared/helper";
-import { useLifePoints } from "../../shared/hooks";
+import { useLifePoints } from "../../shared/hooks/hooks";
 
 const ScoreBoard = () => {
   const [lpInput, setLpInput] = useState(0);
