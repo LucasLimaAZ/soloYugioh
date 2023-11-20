@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AppBar, Toolbar, IconButton, Box, Typography } from "@mui/material";
 import { More, ChangeCircle, Casino } from "@mui/icons-material";
-import EnemyTurn from "../enemyActions/attack";
+import EnemyTurn from "../enemyTurn";
 
 const ToolBar = (props) => {
   const [coin, setCoin] = useState("Heads");

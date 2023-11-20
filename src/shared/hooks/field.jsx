@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { getRandomDamageLpSpell, getRandomMonster } from "../services/cards";
+import {
+  getRandomDamageLpSpell,
+  getRandomMonster,
+  getRandomTrap,
+} from "../services/cards";
 import { fieldAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { playSound } from "../helper";
@@ -29,11 +33,28 @@ const useField = () => {
     playSound("magic-activation");
     getRandomDamageLpSpell()
       .then((response) => {
+        let card = response.data[0];
         let newField = [...field];
-        newField[position] = response.data[0];
+        newField[position] = card;
         setField(newField);
       })
-      .catch((err) => console.error("Could not generate spell or trap", err))
+      .catch((err) => console.error("Could not generate spell", err))
+      .finally(() => setLoading(false));
+  };
+
+  const generateTrap = (position) => {
+    if (loading) return;
+    setLoading(true);
+    playSound("magic-activation");
+    getRandomTrap()
+      .then((response) => {
+        let card = response.data[0];
+        card = { ...card, face_down: true };
+        let newField = [...field];
+        newField[position] = card;
+        setField(newField);
+      })
+      .catch((err) => console.error("Could not generate trap", err))
       .finally(() => setLoading(false));
   };
 
@@ -62,10 +83,21 @@ const useField = () => {
     setField(newField);
   };
 
+  const generateMagicTrap = (position) => {
+    let isTrap = Math.floor(Math.random() * 10) > 5;
+
+    if (isTrap) {
+      generateTrap(position);
+      return;
+    }
+
+    generateMagic(position);
+  };
+
   return {
     field,
     generateMonster,
-    generateMagic,
+    generateMagicTrap,
     changeMonsterPosition,
     destroyCard,
     flipCard,

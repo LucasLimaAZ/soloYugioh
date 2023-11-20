@@ -3,7 +3,7 @@ import useField from "../../shared/hooks/field";
 import { Box, Link, Paper } from "@mui/material";
 
 const Field = () => {
-  const { generateMonster, generateMagic, field } = useField();
+  const { generateMonster, generateMagicTrap, field } = useField();
 
   const handleMonsterClick = (position) => {
     if (field[position]) return;
@@ -12,7 +12,7 @@ const Field = () => {
 
   const handleMagicClick = (position) => {
     if (field[position]) return;
-    generateMagic(position);
+    generateMagicTrap(position);
   };
 
   return (
