@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "@mui/material";
-import { Casino, ChangeCircle } from "@mui/icons-material";
+import { AppBar, Toolbar, IconButton, Box, Typography } from "@mui/material";
+import { More, ChangeCircle, Casino } from "@mui/icons-material";
 import EnemyTurn from "../enemyActions/attack";
-import "./style.scss";
 
 const ToolBar = (props) => {
   const [coin, setCoin] = useState("Heads");
@@ -32,31 +31,36 @@ const ToolBar = (props) => {
   };
 
   return (
-    <div className="toolbar-wrapper">
-      <div className="toolbar-container">
-        <div className="card-description">
-          <p>{props.selectedCard?.desc || ""}</p>
-        </div>
-        <div className="buttons-container">
-          <div className="buttonContent">
-            <Button onClick={handleDice} color="primary" variant="contained">
-              <Casino />
-            </Button>
-            <b className="toolbar-outside-info">Dice: {dice}</b>
-          </div>
-          <div className="buttonContent">
-            <Button onClick={handleCoin} color="primary" variant="contained">
+    <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
+      <Toolbar>
+        <Box
+          sx={{ width: "100%" }}
+          display="flex"
+          justifyContent="space-around"
+        >
+          <Box display="flex" alignItems="center">
+            <IconButton
+              onClick={handleCoin}
+              color="inherit"
+              aria-label="open drawer"
+            >
               <ChangeCircle />
-            </Button>
-            <b className="toolbar-outside-info">Coin: {coin}</b>
-          </div>
-          <div className="buttonContent">
-            <EnemyTurn handleDeck={props.handleDeck} field={props.field} />
-            <b className="toolbar-outside-info">Enemy Turn</b>
-          </div>
-        </div>
-      </div>
-    </div>
+            </IconButton>
+            <Typography>Coin: {coin}</Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <IconButton onClick={handleDice} color="inherit">
+              <Casino />
+            </IconButton>
+            <Typography>Dice: {dice}</Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <EnemyTurn />
+            <Typography>Enemy turn</Typography>
+          </Box>
+        </Box>
+      </Toolbar>
+    </AppBar>
   );
 };
 

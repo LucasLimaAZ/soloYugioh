@@ -27,7 +27,7 @@ const Container = () => {
           <Field />
         </Grid>
         <Grid item xs={12}>
-          {/* <ToolBar /> */}
+          <ToolBar />
         </Grid>
       </Grid>
     </Box>

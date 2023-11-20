@@ -11,6 +11,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  IconButton,
 } from "@mui/material";
 import { ShieldMoon } from "@mui/icons-material";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -24,6 +25,8 @@ import {
   setMonsters,
 } from "../../../shared/actions";
 import "./style.scss";
+import useField from "../../../shared/hooks/field";
+import useDeck from "../../../shared/hooks/deck";
 
 const style = {
   position: "absolute",
@@ -37,7 +40,7 @@ const style = {
   p: 4,
 };
 
-const EnemyTurn = (props) => {
+const EnemyTurn = () => {
   const [openModal, setOpenModal] = useState(false);
   const [enemySort, setEnemySort] = useState(1);
   const [magicTrapSort, setMagicTrapSort] = useState(1);
@@ -47,6 +50,9 @@ const EnemyTurn = (props) => {
   const [tieMonstersSort, setTieMonstersSort] = useState(1);
   const [generatedTurn, setGeneratedTurn] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
+
+  const { field } = useField();
+  const { drawCard } = useDeck();
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -68,7 +74,7 @@ const EnemyTurn = (props) => {
   };
 
   const searchForMagicCards = () => {
-    let magicCards = props.field?.filter((card, index) => {
+    let magicCards = field?.filter((card, index) => {
       if (card) card.fieldPosition = index;
       return card.type === "Spell Card";
     });
@@ -76,7 +82,7 @@ const EnemyTurn = (props) => {
   };
 
   // const searchForTrapCards = () => {
-  //   let trapCards = props.field?.filter((card, index) => {
+  //   let trapCards = field?.filter((card, index) => {
   //     if (card) card.fieldPosition = index;
   //     return card.type === "Trap Card";
   //   });
@@ -84,7 +90,7 @@ const EnemyTurn = (props) => {
   // };
 
   const searchForLowLevelMonster = () => {
-    let lowLevelMonsters = props.field.filter(
+    let lowLevelMonsters = field.filter(
       (card) => card.type === "Normal Monster" && card.level < 5
     );
     return lowLevelMonsters;
@@ -95,7 +101,7 @@ const EnemyTurn = (props) => {
   };
 
   const handleEnemyTurn = () => {
-    props.handleDeck();
+    drawCard();
     setGeneratedTurn(false);
     handleReset();
 
@@ -157,7 +163,7 @@ const EnemyTurn = (props) => {
   );
 
   const orderBattlePhase = () => {
-    return props.field.sort((a, b) => a.atk - b.atk);
+    return field.sort((a, b) => a.atk - b.atk);
   };
 
   const BattlePhase = () => (
@@ -289,9 +295,9 @@ const EnemyTurn = (props) => {
           </div>
         </Box>
       </Modal>
-      <Button color="primary" variant="contained" onClick={handleOpenEnemyTurn}>
+      <IconButton color="inherit" onClick={handleOpenEnemyTurn}>
         <ShieldMoon />
-      </Button>
+      </IconButton>
     </>
   );
 };
