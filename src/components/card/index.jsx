@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, MenuItem, Box } from "@mui/material";
+import { Menu, MenuItem, Box, Typography } from "@mui/material";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import SwipeRightIcon from "@mui/icons-material/SwipeRight";
 import AutoAwesomeOutlined from "@mui/icons-material/AutoAwesomeOutlined";
@@ -11,6 +11,7 @@ import useField from "../../shared/hooks/field";
 import useGraveyard from "../../shared/hooks/graveyard";
 import useLifePoints from "../../shared/hooks/lifepoints";
 import AttackModal from "../attackCard";
+import ChangeStatsModal from "../chageStatsModal";
 
 const Card = ({ card, type, position }) => {
   const {
@@ -24,12 +25,13 @@ const Card = ({ card, type, position }) => {
   const { setPlayerLp } = useLifePoints();
   const [anchorEl, setAnchorEl] = useState(null);
   const [openAttackModal, setOpenAttackModal] = useState();
+  const [openChangeStatsModal, setOpenChangeStatsModal] = useState();
   const [target, setTarget] = useState();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    selectCard(card);
+    if (!card.face_down) selectCard(card);
   };
 
   const handleTribute = () => {
@@ -70,6 +72,16 @@ const Card = ({ card, type, position }) => {
     setOpenAttackModal(true);
   };
 
+  const handleStatsClick = () => {
+    setOpenChangeStatsModal(true);
+  };
+
+  const handleUpdateStats = (newAtk, newDef) => {
+    if (newAtk) card.atk = newAtk;
+    if (newDef) card.atk = newDef;
+    setOpenChangeStatsModal(false);
+  };
+
   const ContextMenuItems = () => (
     <>
       {type === "monster" && (
@@ -101,49 +113,66 @@ const Card = ({ card, type, position }) => {
   );
 
   return (
-    <Box
-      sx={{
-        width: "188px",
-        height: "300px",
-        backgroundColor: "rgba(0, 0, 0, 0.3)",
-        cursor: "pointer",
-      }}
-      id="card-context"
-      aria-controls={open ? "card-menu" : undefined}
-      aria-haspopup="true"
-      aria-expanded={open ? "true" : undefined}
-    >
-      <Menu
-        id="card-menu"
-        MenuListProps={{
-          "aria-labelledby": "card-context",
+    <Box>
+      <Box
+        sx={{
+          width: "188px",
+          height: "300px",
+          backgroundColor: "rgba(0, 0, 0, 0.3)",
+          cursor: "pointer",
         }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+        id="card-context"
+        aria-controls={open ? "card-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
       >
-        <ContextMenuItems />
-      </Menu>
-      {card && (
-        <Box
-          component="img"
-          onClick={handleClick}
-          src={card.face_down ? backCard : card.card_images[0].image_url}
-          alt="magic card"
-          sx={{
-            transform: card.def_mode ? "rotate(90deg)" : "",
-            width: "188px",
-            height: "300px",
+        <Menu
+          id="card-menu"
+          MenuListProps={{
+            "aria-labelledby": "card-context",
           }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <ContextMenuItems />
+        </Menu>
+        {card && (
+          <Box
+            component="img"
+            onClick={handleClick}
+            src={card.face_down ? backCard : card.card_images[0].image_url}
+            alt="magic card"
+            sx={{
+              transform: card.def_mode ? "rotate(90deg)" : "",
+              width: "188px",
+              height: "300px",
+            }}
+          />
+        )}
+        <AttackModal
+          card={card}
+          openAttack={openAttackModal}
+          handleCloseAttack={() => setOpenAttackModal(false)}
+          handleDestroyCard={handleDestroy}
+          target={target}
         />
+        <ChangeStatsModal
+          card={card}
+          handleCloseStatsModal={() => setOpenChangeStatsModal(false)}
+          openStatsModal={openChangeStatsModal}
+          updateStats={handleUpdateStats}
+        />
+      </Box>
+      {card?.atk && (
+        <Typography
+          onClick={handleStatsClick}
+          textAlign="center"
+          color="#0f0f0f"
+        >
+          {card.atk} / {card.def}
+        </Typography>
       )}
-      <AttackModal
-        card={card}
-        openAttack={openAttackModal}
-        handleCloseAttack={() => setOpenAttackModal(false)}
-        handleDestroyCard={handleDestroy}
-        target={target}
-      />
     </Box>
   );
 };

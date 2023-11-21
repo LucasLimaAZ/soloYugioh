@@ -115,6 +115,12 @@ const useField = () => {
     setSelectedCard(card);
   };
 
+  const updateCard = (updatedCard, position) => {
+    let newField = [...field];
+    newField[position] = updatedCard;
+    setField(newField);
+  };
+
   return {
     field,
     generateMonster,
@@ -125,6 +131,7 @@ const useField = () => {
     flipCard,
     selectCard,
     selectedCard,
+    updateCard,
   };
 };
 

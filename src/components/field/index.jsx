@@ -21,7 +21,7 @@ const Field = () => {
         {[...Array(5)].map((e, i) => (
           <Link
             key={i}
-            sx={{ margin: "50px 10px" }}
+            sx={{ margin: "50px 10px", textDecoration: "none" }}
             onClick={() => handleMagicClick(i)}
           >
             <Card type="magic" position={i} card={field[i]} />
@@ -32,7 +32,7 @@ const Field = () => {
         {[...Array(5)].map((e, i) => (
           <Link
             key={i}
-            sx={{ margin: "50px 10px" }}
+            sx={{ margin: "50px 10px", textDecoration: "none" }}
             onClick={() => handleMonsterClick(5 + i)}
           >
             <Card type="monster" position={5 + i} card={field[5 + i]} />
