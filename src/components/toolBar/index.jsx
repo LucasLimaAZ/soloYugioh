@@ -1,11 +1,20 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, IconButton, Box, Typography } from "@mui/material";
-import { More, ChangeCircle, Casino } from "@mui/icons-material";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Box,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { ChangeCircle, Casino, Description } from "@mui/icons-material";
 import EnemyTurn from "../enemyTurn";
+import useField from "../../shared/hooks/field";
 
-const ToolBar = (props) => {
+const ToolBar = () => {
   const [coin, setCoin] = useState("Heads");
   const [dice, setDice] = useState("6");
+  const { selectedCard } = useField();
 
   const handleDice = () => {
     setDice("Rolling...");
@@ -33,32 +42,49 @@ const ToolBar = (props) => {
   return (
     <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
       <Toolbar>
-        <Box
-          sx={{ width: "100%" }}
-          display="flex"
-          justifyContent="space-around"
-        >
-          <Box display="flex" alignItems="center">
-            <IconButton
-              onClick={handleCoin}
-              color="inherit"
-              aria-label="open drawer"
+        <Grid container>
+          <Grid item xs={6}>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap="16px"
             >
-              <ChangeCircle />
-            </IconButton>
-            <Typography>Coin: {coin}</Typography>
-          </Box>
-          <Box display="flex" alignItems="center">
-            <IconButton onClick={handleDice} color="inherit">
-              <Casino />
-            </IconButton>
-            <Typography>Dice: {dice}</Typography>
-          </Box>
-          <Box display="flex" alignItems="center">
-            <EnemyTurn />
-            <Typography>Enemy turn</Typography>
-          </Box>
-        </Box>
+              <Box display="flex" alignItems="center">
+                <IconButton
+                  onClick={handleCoin}
+                  color="inherit"
+                  aria-label="open drawer"
+                >
+                  <ChangeCircle />
+                </IconButton>
+                <Typography>Coin: {coin}</Typography>
+              </Box>
+              <Box display="flex" alignItems="center">
+                <IconButton onClick={handleDice} color="inherit">
+                  <Casino />
+                </IconButton>
+                <Typography>Dice: {dice}</Typography>
+              </Box>
+              <Box display="flex" alignItems="center">
+                <EnemyTurn />
+                <Typography>Enemy turn</Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            item
+            xs={6}
+          >
+            <Description />
+            <Typography fontSize="9px" paddingLeft="5px">
+              {selectedCard?.desc || "Card description"}
+            </Typography>
+          </Grid>
+        </Grid>
       </Toolbar>
     </AppBar>
   );

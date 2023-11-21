@@ -3,13 +3,15 @@ import {
   getRandomDamageLpSpell,
   getRandomMonster,
   getRandomTrap,
+  getRandomTribute,
 } from "../services/cards";
-import { fieldAtom } from "../atoms";
+import { fieldAtom, selectedCardAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { playSound } from "../helper";
 
 const useField = () => {
   const [field, setField] = useAtom(fieldAtom);
+  const [selectedCard, setSelectedCard] = useAtom(selectedCardAtom);
   const [loading, setLoading] = useState(false);
 
   const generateMonster = (position) => {
@@ -17,6 +19,21 @@ const useField = () => {
     setLoading(true);
     playSound("summon-monster");
     getRandomMonster()
+      .then((response) => {
+        let newField = [...field];
+        let randomCard = Math.floor(Math.random() * response.data.length);
+        newField[position] = response.data[randomCard];
+        setField(newField);
+      })
+      .catch((err) => console.error("Could not generate monster", err))
+      .finally(() => setLoading(false));
+  };
+
+  const generateTributeMonster = (position) => {
+    if (loading) return;
+    setLoading(true);
+    playSound("summon-monster");
+    getRandomTribute()
       .then((response) => {
         let newField = [...field];
         let randomCard = Math.floor(Math.random() * response.data.length);
@@ -94,13 +111,20 @@ const useField = () => {
     generateMagic(position);
   };
 
+  const selectCard = (card) => {
+    setSelectedCard(card);
+  };
+
   return {
     field,
     generateMonster,
+    generateTributeMonster,
     generateMagicTrap,
     changeMonsterPosition,
     destroyCard,
     flipCard,
+    selectCard,
+    selectedCard,
   };
 };
 

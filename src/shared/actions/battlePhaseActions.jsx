@@ -5,8 +5,8 @@ export const attackMonster = [
 
 export const attackTieMonster = [
   "1st tie ATK monster",
-  "last tie ATK monster",
-  "do NOT attack tie monsters",
+  "Last tie ATK monster",
+  "Do NOT attack tie monsters",
 ];
 
 export const attackDefenseMonster = [
@@ -16,6 +16,6 @@ export const attackDefenseMonster = [
 
 export const attackSetMonster = [
   "1st set DEF monster",
-  "last set DEF monster",
-  "do NOT attack set monsters",
+  "Last set DEF monster",
+  "Do NOT attack set monsters",
 ];

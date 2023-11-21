@@ -38,10 +38,10 @@ const useEnemyActions = () => {
 
     setBattlePhasePriority(
       <Box>
-        <Typography>{attackMonsterAction}</Typography>
-        <Typography>{attackDefenseMonsterAction}</Typography>
-        <Typography>{attackSetMonsterAction}</Typography>
-        <Typography>{attackTieMonsterAction}</Typography>
+        <Typography>- {attackMonsterAction}</Typography>
+        <Typography>- {attackDefenseMonsterAction}</Typography>
+        <Typography>- {attackSetMonsterAction}</Typography>
+        <Typography>- {attackTieMonsterAction}</Typography>
       </Box>
     );
   };

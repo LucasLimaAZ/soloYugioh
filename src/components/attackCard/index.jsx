@@ -7,32 +7,71 @@ import {
   DialogContentText,
   TextField,
   DialogActions,
+  Typography,
 } from "@mui/material";
-import "./style.scss";
-import MiniField from "../../miniField";
+import MiniField from "../miniField";
+import useField from "../../shared/hooks/field";
+import useLifePoints from "../../shared/hooks/lifepoints";
 
 const AttackModal = (props) => {
   const [attack, setAttack] = useState(undefined);
   const [openTrapModal, setOpenTrapModal] = useState(false);
-  const [trapCard, setTrapCard] = useState(undefined);
+  const { field } = useField();
+  const { setOpponentLp, setPlayerLp } = useLifePoints();
 
   const handleAttackChange = (e) => {
     setAttack(e.target.value);
   };
 
   const handleConfirmAttack = () => {
-    setTrapCard(undefined);
-    let trapCards = searchForTrapCards();
-    let hasTrap = undefined;
+    let willUseTrapCard = undefined;
+    let trapCardsOnField = searchForTrapCards();
 
-    if (trapCards.length) {
-      hasTrap = Math.floor(Math.random() * 10) + 1 < 6;
+    if (trapCardsOnField.length) {
+      willUseTrapCard = Math.floor(Math.random() * 10) + 1 < 6;
     }
 
-    if (props.target === "opponent" && hasTrap) {
+    if (props.target === "opponent" && willUseTrapCard) {
       setOpenTrapModal(true);
-      setTrapCard(true);
     } else calculateDamage();
+  };
+
+  const handleCloseTrapModal = () => {
+    setOpenTrapModal(false);
+    props.handleCloseAttack();
+  };
+
+  const calculateDamage = () => {
+    props.handleCloseAttack();
+    let atkDif = Number(attack - props.card?.atk);
+    let defDif = Number(attack - props.card?.def);
+
+    if (props.card.def_mode) {
+      if (defDif === 0) return;
+
+      defDif > 0
+        ? props.handleDestroyCard()
+        : setPlayerLp((prevLp) => prevLp + defDif);
+
+      return;
+    }
+
+    if (atkDif >= 0) {
+      props.handleDestroyCard();
+      if (atkDif > 0) setOpponentLp((prevLp) => prevLp - atkDif);
+    }
+
+    if (atkDif < 0) {
+      setPlayerLp((prevLp) => prevLp + atkDif);
+    }
+  };
+
+  const searchForTrapCards = () => {
+    let trapCards = field?.filter((card, index) => {
+      if (card) card.fieldPosition = index;
+      return card?.type === "Trap Card";
+    });
+    return trapCards;
   };
 
   const chooseTrapCard = () => {
@@ -42,50 +81,15 @@ const AttackModal = (props) => {
     return selectedCardPosition;
   };
 
-  const handleCloseTrapModal = () => {
-    setTrapCard(undefined);
-    setOpenTrapModal(false);
-    props.handleCloseAttack();
-  };
-
-  const handleContinueAttack = () => {
-    setTrapCard(undefined);
-    handleCloseTrapModal();
-    calculateDamage();
-  };
-
-  const searchForTrapCards = () => {
-    let trapCards = props.field?.filter((card, index) => {
-      if (card) card.fieldPosition = index;
-      return card.type === "Trap Card";
-    });
-    return trapCards;
-  };
-
-  const calculateDamage = () => {
-    props.handleCloseAttack();
-    let atkDif = Number(attack - props.card?.atk);
-    let defDif = Number(attack - props.card?.def);
-
-    if (props.monsterPosition === "atk") {
-      if (atkDif >= 0) {
-        props.handleDestroyCard();
-      }
-      if (atkDif !== 0) props.calculateDamage(atkDif);
-    } else {
-      if (defDif > 0) {
-        props.handleDestroyCard();
-      }
-      if (defDif < 0) {
-        props.calculateDamage(defDif);
-      }
-    }
-  };
-
-  const FlippeTrapCard = () => {
+  const FlippedTrapCard = () => {
     let cardIndex = chooseTrapCard();
 
     return <MiniField cardIndex={cardIndex} />;
+  };
+
+  const handleContinueAttack = () => {
+    handleCloseTrapModal();
+    calculateDamage();
   };
 
   return (
@@ -93,7 +97,7 @@ const AttackModal = (props) => {
       <Dialog open={openTrapModal} onClose={handleCloseTrapModal}>
         <DialogTitle>Your opponent used a TRAP CARD!</DialogTitle>
         <DialogContent>
-          {trapCard && <FlippeTrapCard />}
+          <FlippedTrapCard />
           <DialogContentText>Continue Attack?</DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -126,35 +130,15 @@ const AttackModal = (props) => {
           {attack && (
             <DialogContentText>
               {props.monsterPosition === "atk" ? (
-                <>
+                <Typography>
                   The {props.target === "you" ? "taken" : "given"} damage will
-                  be of{" "}
-                  <b
-                    className={
-                      Number(attack - props.card?.atk) < 0
-                        ? "negative"
-                        : "positive"
-                    }
-                  >
-                    {attack - props.card?.atk}
-                  </b>{" "}
-                  LP.
-                </>
+                  be of {attack - props.card?.atk} LP.
+                </Typography>
               ) : (
                 props.card?.face === "up" && (
-                  <>
-                    The difference will be of{" "}
-                    <b
-                      className={
-                        Number(attack - props.card?.def) < 0
-                          ? "negative"
-                          : "positive"
-                      }
-                    >
-                      {attack - props.card?.def}
-                    </b>{" "}
-                    .
-                  </>
+                  <Typography>
+                    The difference will be of {attack - props.card?.def}.
+                  </Typography>
                 )
               )}
             </DialogContentText>

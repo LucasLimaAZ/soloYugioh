@@ -9,15 +9,31 @@ import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import backCard from "../../assets/img/yugioh-back.jpg";
 import useField from "../../shared/hooks/field";
 import useGraveyard from "../../shared/hooks/graveyard";
+import useLifePoints from "../../shared/hooks/lifepoints";
+import AttackModal from "../attackCard";
 
 const Card = ({ card, type, position }) => {
-  const { changeMonsterPosition, destroyCard, flipCard } = useField();
+  const {
+    changeMonsterPosition,
+    destroyCard,
+    flipCard,
+    generateTributeMonster,
+    selectCard,
+  } = useField();
   const { sendToGraveyard } = useGraveyard();
+  const { setPlayerLp } = useLifePoints();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openAttackModal, setOpenAttackModal] = useState();
+  const [target, setTarget] = useState();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    selectCard(card);
+  };
+
+  const handleTribute = () => {
+    generateTributeMonster(position);
   };
 
   const handleClose = () => {
@@ -40,27 +56,38 @@ const Card = ({ card, type, position }) => {
     handleClose();
   };
 
+  const handleDirectAttack = () => {
+    setPlayerLp((prevLp) => prevLp - card.atk);
+  };
+
+  const handleAttack = () => {
+    setTarget("opponent");
+    setOpenAttackModal(true);
+  };
+
+  const handleMonsterAttack = () => {
+    setTarget("you");
+    setOpenAttackModal(true);
+  };
+
   const ContextMenuItems = () => (
     <>
       {type === "monster" && (
         <>
-          <MenuItem onClick={() => {}}>
-            <CompareArrowsIcon className="actionIcon flip" />
-            Attack
+          <MenuItem onClick={handleAttack}>
+            <CompareArrowsIcon /> Attack
           </MenuItem>
-          <MenuItem onClick={() => {}}>
-            <CompareArrowsIcon className="actionIcon" />
-            Monster attack
+          <MenuItem onClick={handleMonsterAttack}>
+            <CompareArrowsIcon /> Monster attack
           </MenuItem>
-          <MenuItem onClick={() => {}}>
-            <ArrowRightAltIcon className="actionIcon rotate180" />
-            Direct attack
+          <MenuItem onClick={handleDirectAttack}>
+            <ArrowRightAltIcon /> Direct attack
           </MenuItem>
           <MenuItem onClick={handleChangePosition}>
             <SwipeRightIcon className="actionIcon" /> Change position
           </MenuItem>
-          <MenuItem onClick={() => {}}>
-            <AutoAwesomeOutlined className="actionIcon" /> Tribute summon
+          <MenuItem onClick={handleTribute}>
+            <AutoAwesomeOutlined /> Tribute summon
           </MenuItem>
         </>
       )}
@@ -110,6 +137,13 @@ const Card = ({ card, type, position }) => {
           }}
         />
       )}
+      <AttackModal
+        card={card}
+        openAttack={openAttackModal}
+        handleCloseAttack={() => setOpenAttackModal(false)}
+        handleDestroyCard={handleDestroy}
+        target={target}
+      />
     </Box>
   );
 };

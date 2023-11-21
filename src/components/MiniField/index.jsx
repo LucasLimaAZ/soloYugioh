@@ -1,44 +1,95 @@
 import React from "react";
+import { Box } from "@mui/material";
 import CardBackIMG from "../../assets/img/yugioh-back.jpg";
 
 const MiniField = (props) => {
   return (
-    <>
-      <div className="flex">
-        <img
-          className={`mini-card ${props.cardIndex === 6 ? "selected" : ""}`}
+    <Box>
+      <Box display="flex" justifyContent="space-between">
+        <Box
+          component="img"
+          sx={{
+            width: "45px",
+            opacity: props.cardIndex === 0 ? "1" : "0.5",
+            margin: "3px",
+          }}
           src={CardBackIMG}
           alt="mini-card"
         />
-        <img
-          className={`mini-card ${props.cardIndex === 7 ? "selected" : ""}`}
+        <Box
+          component="img"
+          sx={{
+            width: "45px",
+            opacity: props.cardIndex === 1 ? "1" : "0.5",
+            margin: "3px",
+          }}
           src={CardBackIMG}
           alt="mini-card"
         />
-        <img
-          className={`mini-card ${props.cardIndex === 8 ? "selected" : ""}`}
+        <Box
+          component="img"
+          sx={{
+            width: "45px",
+            opacity: props.cardIndex === 2 ? "1" : "0.5",
+            margin: "3px",
+          }}
           src={CardBackIMG}
           alt="mini-card"
         />
-        <img
-          className={`mini-card ${props.cardIndex === 9 ? "selected" : ""}`}
+        <Box
+          component="img"
+          sx={{
+            width: "45px",
+            opacity: props.cardIndex === 3 ? "1" : "0.5",
+            margin: "3px",
+          }}
           src={CardBackIMG}
           alt="mini-card"
         />
-        <img
-          className={`mini-card ${props.cardIndex === 10 ? "selected" : ""}`}
+        <Box
+          component="img"
+          sx={{
+            width: "45px",
+            opacity: props.cardIndex === 4 ? "1" : "0.5",
+            margin: "3px",
+          }}
           src={CardBackIMG}
           alt="mini-card"
         />
-      </div>
-      <div className="flex">
-        <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-        <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-        <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-        <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-        <img className="mini-card" src={CardBackIMG} alt="mini-card" />
-      </div>
-    </>
+      </Box>
+      <Box display="flex" justifyContent="space-between">
+        <Box
+          component="img"
+          sx={{ width: "45px", opacity: "0.5", margin: "3px" }}
+          src={CardBackIMG}
+          alt="mini-card"
+        />
+        <Box
+          component="img"
+          sx={{ width: "45px", opacity: "0.5", margin: "3px" }}
+          src={CardBackIMG}
+          alt="mini-card"
+        />
+        <Box
+          component="img"
+          sx={{ width: "45px", opacity: "0.5", margin: "3px" }}
+          src={CardBackIMG}
+          alt="mini-card"
+        />
+        <Box
+          component="img"
+          sx={{ width: "45px", opacity: "0.5", margin: "3px" }}
+          src={CardBackIMG}
+          alt="mini-card"
+        />
+        <Box
+          component="img"
+          sx={{ width: "45px", opacity: "0.5", margin: "3px" }}
+          src={CardBackIMG}
+          alt="mini-card"
+        />
+      </Box>
+    </Box>
   );
 };
 
