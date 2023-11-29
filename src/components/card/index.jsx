@@ -9,7 +9,7 @@ import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import backCard from "../../assets/img/yugioh-back.jpg";
 import useField from "../../shared/hooks/field";
 import useGraveyard from "../../shared/hooks/graveyard";
-import useLifePoints from "../../shared/hooks/lifepoints";
+import useLifePoints from "../../shared/hooks/lifePoints";
 import AttackModal from "../attackCard";
 import ChangeStatsModal from "../changeStatsModal";
 

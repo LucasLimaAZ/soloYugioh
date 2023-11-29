@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import MiniField from "../miniField";
 import useField from "../../shared/hooks/field";
-import useLifePoints from "../../shared/hooks/lifepoints";
+import useLifePoints from "../../shared/hooks/lifePoints";
 
 const AttackModal = (props) => {
   const [attack, setAttack] = useState(undefined);

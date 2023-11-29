@@ -16,7 +16,7 @@ import {
   RestartAlt as RestartAltIcon,
 } from "@mui/icons-material";
 import { playSound } from "../../shared/helper";
-import useLifePoints from "../../shared/hooks/lifepoints";
+import useLifePoints from "../../shared/hooks/lifePoints";
 import lpImage from "../../assets/img/lifepointsBg.png";
 
 const ScoreBoard = () => {
