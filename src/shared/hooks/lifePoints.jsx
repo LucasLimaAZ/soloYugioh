@@ -6,20 +6,39 @@ const useLifePoints = () => {
   const [playerLp, setPlayerLifePoints] = useAtom(playerLpAtom);
   const [opponentLp, setOpponentLifePoints] = useAtom(opponentLpAtom);
 
-  const setPlayerLp = (newLp) => {
-    setPlayerLifePoints(newLp);
+  const playDamageSound = () => {
     playSound("lp-damage");
     setTimeout(() => {
       playSound("calculated-damage");
     }, 700);
   };
 
+  const setPlayerLp = (newLp) => {
+    if (newLp <= 0) {
+      setPlayerLifePoints(0);
+      playDamageSound();
+      setTimeout(() => {
+        playSound("finish-duel");
+      }, 1200);
+      return;
+    }
+
+    setPlayerLifePoints(newLp);
+    playDamageSound();
+  };
+
   const setOpponentLp = (newLp) => {
+    if (newLp <= 0) {
+      playDamageSound();
+      setOpponentLifePoints(0);
+      setTimeout(() => {
+        playSound("finish-duel");
+      }, 1200);
+      return;
+    }
+
     setOpponentLifePoints(newLp);
-    playSound("lp-damage");
-    setTimeout(() => {
-      playSound("calculated-damage");
-    }, 700);
+    playDamageSound();
   };
 
   return {

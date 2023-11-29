@@ -21,8 +21,13 @@ const useField = () => {
     getRandomMonster()
       .then((response) => {
         let newField = [...field];
-        let randomCard = Math.floor(Math.random() * response.data.length);
-        newField[position] = response.data[randomCard];
+        let randomCardIndex = Math.floor(Math.random() * response.data.length);
+        let card = response.data[randomCardIndex];
+        newField[position] = {
+          ...card,
+          def_mode: card.atk < card.def,
+          face_down: card.atk < card.def,
+        };
         setField(newField);
       })
       .catch((err) => console.error("Could not generate monster", err))
@@ -36,8 +41,13 @@ const useField = () => {
     getRandomTribute()
       .then((response) => {
         let newField = [...field];
-        let randomCard = Math.floor(Math.random() * response.data.length);
-        newField[position] = response.data[randomCard];
+        let randomCardIndex = Math.floor(Math.random() * response.data.length);
+        let card = response.data[randomCardIndex];
+        newField[position] = {
+          ...card,
+          def_mode: card.atk < card.def,
+          face_down: card.atk < card.def,
+        };
         setField(newField);
       })
       .catch((err) => console.error("Could not generate monster", err))

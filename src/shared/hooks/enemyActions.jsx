@@ -22,7 +22,7 @@ const useEnemyActions = () => {
   const { field } = useField();
 
   const hasLowLevelMonster = () => {
-    let lowLevelMonsters = field.filter((card) => card.level < 5);
+    let lowLevelMonsters = field.filter((card) => card?.level < 5);
     return lowLevelMonsters.length > 0;
   };
 
@@ -50,7 +50,7 @@ const useEnemyActions = () => {
     const magicTrapAction = randomAction(mainPhaseMagicTrap);
     let mainPhaseMonsterArray = mainPhaseMonster;
 
-    if (hasLowLevelMonster) {
+    if (hasLowLevelMonster()) {
       mainPhaseMonsterArray = mainPhaseMonster.concat(
         mainPhaseMonsterWithTribute
       );
