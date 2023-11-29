@@ -8,5 +8,4 @@ export const mainPhaseMonsterWithTribute = [
 export const mainPhaseMagicTrap = [
   "Enemy set NO magic/trap cards",
   "Enemy set 1 magic/trap card",
-  "Enemy set 2 magic/trap cards",
 ];

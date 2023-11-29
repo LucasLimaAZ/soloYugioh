@@ -86,7 +86,6 @@ export const getRandomMonster = () => {
       monsterUrl += "&atk=gte1700";
       break;
     case 6:
-    case 7:
       monsterUrl = `${baseUrl}/cardinfo.php?type=fusion%20monster&atk=gte2000&has_effect=false`;
       break;
     default:
