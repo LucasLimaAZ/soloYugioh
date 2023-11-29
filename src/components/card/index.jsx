@@ -11,7 +11,7 @@ import useField from "../../shared/hooks/field";
 import useGraveyard from "../../shared/hooks/graveyard";
 import useLifePoints from "../../shared/hooks/lifepoints";
 import AttackModal from "../attackCard";
-import ChangeStatsModal from "../chageStatsModal";
+import ChangeStatsModal from "../changeStatsModal";
 
 const Card = ({ card, type, position }) => {
   const {
@@ -78,7 +78,7 @@ const Card = ({ card, type, position }) => {
 
   const handleUpdateStats = (newAtk, newDef) => {
     if (newAtk) card.atk = newAtk;
-    if (newDef) card.atk = newDef;
+    if (newDef) card.def = newDef;
     setOpenChangeStatsModal(false);
   };
 
@@ -164,7 +164,7 @@ const Card = ({ card, type, position }) => {
           updateStats={handleUpdateStats}
         />
       </Box>
-      {card?.atk && (
+      {card?.level && !card?.face_down && (
         <Typography
           onClick={handleStatsClick}
           textAlign="center"
