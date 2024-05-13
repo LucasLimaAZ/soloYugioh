@@ -1,6 +1,5 @@
 import { enemyMainPhaseActions, enemyBattlePhaseActions } from "../atoms";
 import { useAtom } from "jotai";
-import { Box, Typography } from "@mui/material";
 import {
   mainPhaseMagicTrap,
   mainPhaseMonster,
@@ -36,14 +35,13 @@ const useEnemyActions = () => {
     const attackSetMonsterAction = randomAction(attackSetMonster);
     const attackTieMonsterAction = randomAction(attackTieMonster);
 
-    setBattlePhasePriority(
-      <Box>
-        <Typography>- {attackMonsterAction}</Typography>
-        <Typography>- {attackDefenseMonsterAction}</Typography>
-        <Typography>- {attackSetMonsterAction}</Typography>
-        <Typography>- {attackTieMonsterAction}</Typography>
-      </Box>
-    );
+    setBattlePhasePriority([
+      attackMonsterAction,
+      attackDefenseMonsterAction,
+      attackSetMonsterAction,
+      attackTieMonsterAction,
+      "Direct attack",
+    ]);
   };
 
   const generateMainPhase = () => {
@@ -56,12 +54,7 @@ const useEnemyActions = () => {
       );
     }
     const monsterAction = randomAction(mainPhaseMonsterArray);
-    setMainPhase(
-      <Box>
-        <Typography>{magicTrapAction}</Typography>
-        <Typography>{monsterAction}</Typography>
-      </Box>
-    );
+    setMainPhase([magicTrapAction, monsterAction]);
   };
 
   return {

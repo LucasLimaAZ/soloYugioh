@@ -13,7 +13,11 @@ const MainPhase = () => {
 
   return (
     <Box style={{ marginTop: "10px" }}>
-      <Box>{mainPhase}</Box>
+      <Box>
+        {mainPhase.map((action) => (
+          <Typography>{action}</Typography>
+        ))}
+      </Box>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMore />}>
           <Typography>

@@ -20,8 +20,11 @@ const BattlePhase = () => {
           <Typography>Attack priority</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {battlePhasePriority}
-          <Typography>- Direct Attack</Typography>
+          {battlePhasePriority.map((priority, index) => (
+            <Typography>
+              {index + 1} - {priority}
+            </Typography>
+          ))}
         </AccordionDetails>
       </Accordion>
     </Box>

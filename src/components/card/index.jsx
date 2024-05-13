@@ -22,7 +22,7 @@ const Card = ({ card, type, position }) => {
     selectCard,
   } = useField();
   const { sendToGraveyard } = useGraveyard();
-  const { setPlayerLp } = useLifePoints();
+  const { playerLp, setPlayerLp } = useLifePoints();
   const [anchorEl, setAnchorEl] = useState(null);
   const [openAttackModal, setOpenAttackModal] = useState();
   const [openChangeStatsModal, setOpenChangeStatsModal] = useState();
@@ -59,7 +59,7 @@ const Card = ({ card, type, position }) => {
   };
 
   const handleDirectAttack = () => {
-    setPlayerLp((prevLp) => prevLp - card.atk);
+    setPlayerLp(playerLp - card.atk);
   };
 
   const handleAttack = () => {
