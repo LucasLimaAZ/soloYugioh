@@ -17,7 +17,7 @@ const AttackModal = (props) => {
   const [attack, setAttack] = useState(undefined);
   const [openTrapModal, setOpenTrapModal] = useState(false);
   const { field } = useField();
-  const { setOpponentLp, setPlayerLp } = useLifePoints();
+  const { playerLp, opponentLp, setOpponentLp, setPlayerLp } = useLifePoints();
 
   const handleAttackChange = (e) => {
     setAttack(e.target.value);
@@ -49,20 +49,18 @@ const AttackModal = (props) => {
     if (props.card.def_mode) {
       if (defDif === 0) return;
 
-      defDif > 0
-        ? props.handleDestroyCard()
-        : setPlayerLp((prevLp) => prevLp + defDif);
+      defDif > 0 ? props.handleDestroyCard() : setPlayerLp(playerLp + defDif);
 
       return;
     }
 
     if (atkDif >= 0) {
       props.handleDestroyCard();
-      if (atkDif > 0) setOpponentLp((prevLp) => prevLp - atkDif);
+      if (atkDif > 0) setOpponentLp(opponentLp - atkDif);
     }
 
     if (atkDif < 0) {
-      setPlayerLp((prevLp) => prevLp + atkDif);
+      setPlayerLp(playerLp + atkDif);
     }
   };
 
