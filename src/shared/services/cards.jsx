@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const spellCards = [
+const damageSpellCards = [
   "73134082",
   "46130346",
   "19523799",
@@ -21,6 +21,17 @@ const spellCards = [
   "82003859",
 ];
 
+const equipSpellCards = [
+  "64047146",
+  "65169794",
+  "40619825",
+  "83746708",
+  "56747793",
+  "61127349",
+  "34664411",
+  "32022366",
+];
+
 const trapCards = [
   "96355986",
   "62279055",
@@ -36,6 +47,7 @@ const trapCards = [
   "126218",
   "74137509",
   "24068492",
+  "55713623",
 ];
 
 const baseUrl = "https://db.ygoprodeck.com/api/v7";
@@ -45,9 +57,16 @@ export const getRandomCard = () => {
 };
 
 export const getRandomDamageLpSpell = () => {
-  let randomNumber = Math.floor(Math.random() * spellCards.length);
+  let randomNumber = Math.floor(Math.random() * damageSpellCards.length);
   return axios
-    .get(`${baseUrl}/cardinfo.php?id=${spellCards[randomNumber]}`)
+    .get(`${baseUrl}/cardinfo.php?id=${damageSpellCards[randomNumber]}`)
+    .then((res) => res.data);
+};
+
+export const getRandomEquipSpell = () => {
+  let randomNumber = Math.floor(Math.random() * equipSpellCards.length);
+  return axios
+    .get(`${baseUrl}/cardinfo.php?id=${equipSpellCards[randomNumber]}`)
     .then((res) => res.data);
 };
 

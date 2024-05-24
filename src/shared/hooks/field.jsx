@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   getRandomDamageLpSpell,
+  getRandomEquipSpell,
   getRandomMonster,
   getRandomTrap,
   getRandomTribute,
@@ -14,6 +15,17 @@ const useField = () => {
   const [selectedCard, setSelectedCard] = useAtom(selectedCardAtom);
   const [loading, setLoading] = useState(false);
 
+  const getFreePosition = () => {
+    const spellCardZones = [0, 1, 2, 3, 4];
+
+    for (let position of spellCardZones) {
+      if (!field[position]) {
+        return position;
+      }
+    }
+
+    return null;
+  };
   const generateMonster = (position) => {
     if (loading) return;
     setLoading(true);
@@ -66,6 +78,23 @@ const useField = () => {
         setField(newField);
       })
       .catch((err) => console.error("Could not generate spell", err))
+      .finally(() => setLoading(false));
+  };
+
+  const generateEquipCard = () => {
+    let position = getFreePosition();
+
+    if (loading) return;
+    setLoading(true);
+    playSound("magic-activation");
+    getRandomEquipSpell()
+      .then((response) => {
+        let card = response.data[0];
+        let newField = [...field];
+        newField[position] = card;
+        setField(newField);
+      })
+      .catch((err) => console.error("Could not generate equip spell", err))
       .finally(() => setLoading(false));
   };
 
@@ -136,6 +165,7 @@ const useField = () => {
     generateMonster,
     generateTributeMonster,
     generateMagicTrap,
+    generateEquipCard,
     changeMonsterPosition,
     destroyCard,
     flipCard,

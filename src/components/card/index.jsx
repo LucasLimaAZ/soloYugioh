@@ -3,6 +3,7 @@ import { Menu, MenuItem, Box, Typography } from "@mui/material";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import SwipeRightIcon from "@mui/icons-material/SwipeRight";
 import AutoAwesomeOutlined from "@mui/icons-material/AutoAwesomeOutlined";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
@@ -20,6 +21,7 @@ const Card = ({ card, type, position }) => {
     flipCard,
     generateTributeMonster,
     selectCard,
+    generateEquipCard,
   } = useField();
   const { sendToGraveyard } = useGraveyard();
   const { playerLp, setPlayerLp } = useLifePoints();
@@ -82,6 +84,10 @@ const Card = ({ card, type, position }) => {
     setOpenChangeStatsModal(false);
   };
 
+  const handleEquip = () => {
+    generateEquipCard();
+  };
+
   const ContextMenuItems = () => (
     <>
       {type === "monster" && (
@@ -100,6 +106,9 @@ const Card = ({ card, type, position }) => {
           </MenuItem>
           <MenuItem onClick={handleTribute}>
             <AutoAwesomeOutlined /> Tribute summon
+          </MenuItem>
+          <MenuItem onClick={handleEquip}>
+            <AddCircleOutlineIcon /> Equip card
           </MenuItem>
         </>
       )}
