@@ -1,5 +1,7 @@
 export const mainPhaseMonster = [
   "Enemy summons 1 monster",
+  "Enemy summons 1 monster",
+  "Enemy summons 1 monster",
   "Enemy summons NO monster",
   "Enemy summons 1 monster and equip this monster",
   "Enemy normal summons 1 monster and special summons 1 monster",
