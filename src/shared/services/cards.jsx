@@ -1,54 +1,7 @@
 import axios from "axios";
-
-const damageSpellCards = [
-  "73134082",
-  "46130346",
-  "19523799",
-  "76103675",
-  "46918794",
-  "53129443",
-  "38199696",
-  "20871001",
-  "84257640",
-  "11868825",
-  "18144507",
-  "19613556",
-  "95051344",
-  "12580477",
-  "72892473",
-  "5318639",
-  "88279736",
-  "82003859",
-];
-
-const equipSpellCards = [
-  "64047146",
-  "65169794",
-  "40619825",
-  "83746708",
-  "56747793",
-  "61127349",
-  "34664411",
-  "32022366",
-];
-
-const trapCards = [
-  "96355986",
-  "62279055",
-  "14315573",
-  "17814387",
-  "44095762",
-  "56120475",
-  "96355986",
-  "62279055",
-  "14315573",
-  "17814387",
-  "56120475",
-  "126218",
-  "74137509",
-  "24068492",
-  "55713623",
-];
+import trapCards from "../cardLists/trapCards.json";
+import damageSpellCards from "../cardLists/damageSpellCards.json";
+import equipSpellCards from "../cardLists/equipSpellCards.json";
 
 const baseUrl = "https://db.ygoprodeck.com/api/v7";
 

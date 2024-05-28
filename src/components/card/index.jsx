@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, MenuItem, Box, Typography } from "@mui/material";
+import { Menu, MenuItem, Box, Typography, Grow } from "@mui/material";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import SwipeRightIcon from "@mui/icons-material/SwipeRight";
 import AutoAwesomeOutlined from "@mui/icons-material/AutoAwesomeOutlined";
@@ -147,17 +147,17 @@ const Card = ({ card, type, position }) => {
           <ContextMenuItems />
         </Menu>
         {card && (
-          <Box
-            component="img"
-            onClick={handleClick}
-            src={card.face_down ? backCard : card.card_images[0].image_url}
-            alt="magic card"
-            sx={{
-              transform: card.def_mode ? "rotate(90deg)" : "",
-              width: "188px",
-              height: "300px",
-            }}
-          />
+          <Box sx={{ transform: card.def_mode && "rotate(90deg)" }}>
+            <Grow in>
+              <Box
+                component="img"
+                onClick={handleClick}
+                src={card.face_down ? backCard : card.card_images[0].image_url}
+                alt="magic card"
+                sx={{ width: "188px", height: "300px" }}
+              />
+            </Grow>
+          </Box>
         )}
         <AttackModal
           card={card}
