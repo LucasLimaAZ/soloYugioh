@@ -160,6 +160,10 @@ const useField = () => {
     setField(newField);
   };
 
+  const resetField = () => {
+    setField([]);
+  };
+
   return {
     field,
     generateMonster,
@@ -172,6 +176,7 @@ const useField = () => {
     selectCard,
     selectedCard,
     updateCard,
+    resetField,
   };
 };
 

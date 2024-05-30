@@ -11,7 +11,11 @@ const useDeck = () => {
     playSound("flip-card");
   };
 
-  return { drawCard, deck };
+  const resetDeck = () => {
+    setDeck(35);
+  };
+
+  return { drawCard, deck, resetDeck };
 };
 
 export default useDeck;

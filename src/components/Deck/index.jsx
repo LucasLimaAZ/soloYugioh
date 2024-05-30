@@ -12,7 +12,7 @@ const Deck = () => {
         sx={{
           cursor: "pointer",
           img: {
-            width: "170px",
+            width: "70%",
           },
         }}
         onClick={drawCard}

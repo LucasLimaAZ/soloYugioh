@@ -1,6 +1,6 @@
 import Card from "../card";
 import useField from "../../shared/hooks/field";
-import { Box, Link, Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 
 const Field = () => {
   const { generateMonster, generateMagicTrap, field } = useField();
@@ -16,27 +16,32 @@ const Field = () => {
   };
 
   return (
-    <Paper sx={{ paddingX: "2%", margin: "30px 0 0 2%" }}>
-      <Box display="flex" justifyContent="space-between">
-        {[...Array(5)].map((e, i) => (
-          <Link
-            key={i}
-            sx={{ margin: "50px 10px", textDecoration: "none" }}
+    <Paper sx={{ padding: "2%", margin: "30px 0 0 2%" }}>
+      <Box display="flex" gap="64px" justifyContent="space-between">
+        {[...Array(5)].map((_, i) => (
+          <Box
+            sx={{ width: "100%" }}
             onClick={() => handleMagicClick(i)}
+            key={i}
           >
             <Card type="magic" position={i} card={field[i]} />
-          </Link>
+          </Box>
         ))}
       </Box>
-      <Box display="flex" justifyContent="space-between">
-        {[...Array(5)].map((e, i) => (
-          <Link
-            key={i}
-            sx={{ margin: "50px 10px", textDecoration: "none" }}
+      <Box
+        marginY="50px"
+        display="flex"
+        gap="64px"
+        justifyContent="space-between"
+      >
+        {[...Array(5)].map((_, i) => (
+          <Box
+            sx={{ width: "100%" }}
             onClick={() => handleMonsterClick(5 + i)}
+            key={i}
           >
             <Card type="monster" position={5 + i} card={field[5 + i]} />
-          </Link>
+          </Box>
         ))}
       </Box>
     </Paper>

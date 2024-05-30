@@ -8,7 +8,11 @@ const useGraveyard = () => {
     setGraveyard(graveyard.concat(card));
   };
 
-  return { sendToGraveyard, graveyard };
+  const resetGraveyard = () => {
+    setGraveyard([]);
+  };
+
+  return { sendToGraveyard, graveyard, resetGraveyard };
 };
 
 export default useGraveyard;

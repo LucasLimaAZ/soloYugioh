@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import {
   Button,
-  Grid,
   TextField,
   Typography,
   Box,
   Paper,
   CardMedia,
-  Card,
 } from "@mui/material";
 import CountUp from "react-countup";
 import {
@@ -17,6 +15,9 @@ import {
 } from "@mui/icons-material";
 import { playSound } from "../../shared/helper";
 import useLifePoints from "../../shared/hooks/lifePoints";
+import useField from "../../shared/hooks/field";
+import useDeck from "../../shared/hooks/deck";
+import useGraveyard from "../../shared/hooks/graveyard";
 import lpImage from "../../assets/img/lifepointsBg.png";
 
 const ScoreBoard = () => {
@@ -26,6 +27,9 @@ const ScoreBoard = () => {
   const [opponentPreviousLp, setOpponentPreviousLp] = useState(8000);
 
   const { playerLp, setPlayerLp, opponentLp, setOpponentLp } = useLifePoints();
+  const { resetField } = useField();
+  const { resetDeck } = useDeck();
+  const { resetGraveyard } = useGraveyard();
 
   const handleAddPlayerLp = () => {
     setPreviousLp(playerLp);
@@ -58,110 +62,113 @@ const ScoreBoard = () => {
   const handleResetDuel = () => {
     setPlayerLp(8000);
     setOpponentLp(8000);
-    playSound("start-duel");
+    resetField();
+    resetDeck();
+    resetGraveyard();
+    setTimeout(() => playSound("start-duel"), 1400);
   };
 
   return (
-    <Grid container>
-      <Paper
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          padding: "1%",
-        }}
-      >
-        <Grid item xs={5}>
-          <Box display="flex" justifyContent="space-around">
-            <Button
-              onClick={handleAddPlayerLp}
-              color="primary"
-              variant="contained"
-            >
-              <AddCircleIcon />
-            </Button>
-            <TextField
-              id="outlined-basic"
-              label="You"
-              variant="outlined"
-              type="number"
-              onChange={handleLpInputChange}
+    <Paper
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        width: "100%",
+        padding: "1%",
+      }}
+    >
+      <Box display="flex" justifyContent="space-around">
+        <Button onClick={handleAddPlayerLp} color="primary" variant="contained">
+          <AddCircleIcon />
+        </Button>
+        <TextField
+          id="outlined-basic"
+          label="You"
+          variant="outlined"
+          type="number"
+          onChange={handleLpInputChange}
+        />
+        <Button
+          onClick={handleSubtractPlayerLp}
+          color="primary"
+          variant="contained"
+        >
+          <RemoveCircleIcon />
+        </Button>
+
+        <CardMedia
+          sx={{
+            height: "100%",
+            display: "flex",
+            paddingX: "5%",
+            borderRadius: "4px",
+            marginX: "2px",
+          }}
+          image={lpImage}
+        >
+          <Typography
+            sx={{ textShadow: "0 0 2px #000", marginY: "auto" }}
+            color="yellow"
+            textAlign="center"
+            variant="h4"
+          >
+            <CountUp duration={0.875} start={previousLp} end={playerLp} />
+          </Typography>
+        </CardMedia>
+      </Box>
+      <Box display="flex" justifyContent="center">
+        <Button onClick={handleResetDuel} color="primary" variant="contained">
+          <RestartAltIcon />
+        </Button>
+      </Box>
+      <Box display="flex" justifyContent="space-around">
+        <CardMedia
+          sx={{
+            height: "100%",
+            display: "flex",
+            paddingX: "5%",
+            borderRadius: "4px",
+            marginX: "2px",
+          }}
+          image={lpImage}
+        >
+          <Typography
+            sx={{ textShadow: "0 0 2px #000", marginY: "auto" }}
+            color="yellow"
+            textAlign="center"
+            variant="h4"
+          >
+            <CountUp
+              duration={0.875}
+              start={opponentPreviousLp}
+              end={opponentLp}
             />
-            <Button
-              onClick={handleSubtractPlayerLp}
-              color="primary"
-              variant="contained"
-            >
-              <RemoveCircleIcon />
-            </Button>
-            <Card>
-              <CardMedia sx={{ paddingX: "10px" }} image={lpImage}>
-                <Typography
-                  sx={{ textShadow: "0 0 2px #000" }}
-                  variant="h3"
-                  color="yellow"
-                  textAlign="center"
-                >
-                  <CountUp duration={0.875} start={previousLp} end={playerLp} />
-                </Typography>
-              </CardMedia>
-            </Card>
-          </Box>
-        </Grid>
-        <Grid item xs={2}>
-          <Box display="flex" justifyContent="center">
-            <Button
-              onClick={handleResetDuel}
-              color="primary"
-              variant="contained"
-            >
-              <RestartAltIcon />
-            </Button>
-          </Box>
-        </Grid>
-        <Grid item xs={5}>
-          <Box display="flex" justifyContent="space-around">
-            <Card>
-              <CardMedia sx={{ paddingX: "10px" }} image={lpImage}>
-                <Typography
-                  sx={{ textShadow: "0 0 2px #000" }}
-                  variant="h3"
-                  color="yellow"
-                  textAlign="center"
-                >
-                  <CountUp
-                    duration={0.875}
-                    start={opponentPreviousLp}
-                    end={opponentLp}
-                  />
-                </Typography>
-              </CardMedia>
-            </Card>
-            <Button
-              onClick={handleAddOpponentLp}
-              color="primary"
-              variant="contained"
-            >
-              <AddCircleIcon />
-            </Button>
-            <TextField
-              id="outlined-basic"
-              label="Opponent"
-              variant="outlined"
-              type="number"
-              onChange={handleOpponentInputChange}
-            />
-            <Button
-              onClick={handleSubtractOpponentLp}
-              color="primary"
-              variant="contained"
-            >
-              <RemoveCircleIcon />
-            </Button>
-          </Box>
-        </Grid>
-      </Paper>
-    </Grid>
+          </Typography>
+        </CardMedia>
+
+        <Button
+          onClick={handleAddOpponentLp}
+          color="primary"
+          variant="contained"
+        >
+          <AddCircleIcon />
+        </Button>
+        <TextField
+          id="outlined-basic"
+          label="Opponent"
+          variant="outlined"
+          type="number"
+          onChange={handleOpponentInputChange}
+        />
+        <Button
+          onClick={handleSubtractOpponentLp}
+          color="primary"
+          variant="contained"
+        >
+          <RemoveCircleIcon />
+        </Button>
+      </Box>
+    </Paper>
   );
 };
 

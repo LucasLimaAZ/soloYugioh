@@ -122,14 +122,15 @@ const Card = ({ card, type, position }) => {
   );
 
   return (
-    <Box>
+    <Box
+      sx={{
+        width: "100%",
+        paddingBottom: !card && "146%",
+        backgroundColor: !card && "rgba(0, 0, 0, 0.3)",
+        cursor: "pointer",
+      }}
+    >
       <Box
-        sx={{
-          width: "188px",
-          height: "300px",
-          backgroundColor: "rgba(0, 0, 0, 0.3)",
-          cursor: "pointer",
-        }}
         id="card-context"
         aria-controls={open ? "card-menu" : undefined}
         aria-haspopup="true"
@@ -154,7 +155,7 @@ const Card = ({ card, type, position }) => {
                 onClick={handleClick}
                 src={card.face_down ? backCard : card.card_images[0].image_url}
                 alt="magic card"
-                sx={{ width: "188px", height: "300px" }}
+                sx={{ width: "100%" }}
               />
             </Grow>
           </Box>
