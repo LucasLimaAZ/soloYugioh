@@ -9,7 +9,7 @@ const Container = () => {
   return (
     <Box
       sx={{
-        backgroundColor: "#F3F6F9",
+        background: "linear-gradient(to right bottom, #090979, #00d4ff)",
         minHeight: "100vh",
         paddingX: "4%",
         paddingY: "1%",

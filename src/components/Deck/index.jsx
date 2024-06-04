@@ -7,7 +7,13 @@ const Deck = () => {
   const { drawCard, deck } = useDeck();
 
   return (
-    <Paper sx={{ paddingX: "2%", margin: "30px 0 2% 0" }}>
+    <Paper
+      sx={{
+        paddingX: "2%",
+        margin: "30px 0 2% 0",
+        backgroundColor: "rgba(255, 255, 255, 0.2);",
+      }}
+    >
       <Box
         sx={{
           cursor: "pointer",

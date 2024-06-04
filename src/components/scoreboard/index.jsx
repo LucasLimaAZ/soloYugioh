@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  TextField,
-  Typography,
-  Box,
-  Paper,
-  CardMedia,
-} from "@mui/material";
+import { Button, TextField, Typography, Box, Paper } from "@mui/material";
 import CountUp from "react-countup";
 import {
   AddCircleOutline as AddCircleIcon,
@@ -18,7 +11,6 @@ import useLifePoints from "../../shared/hooks/lifePoints";
 import useField from "../../shared/hooks/field";
 import useDeck from "../../shared/hooks/deck";
 import useGraveyard from "../../shared/hooks/graveyard";
-import lpImage from "../../assets/img/lifepointsBg.png";
 
 const ScoreBoard = () => {
   const [lpInput, setLpInput] = useState(0);
@@ -71,6 +63,7 @@ const ScoreBoard = () => {
   return (
     <Paper
       sx={{
+        backgroundColor: "rgba(255, 255, 255, 0.2);",
         display: "flex",
         justifyContent: "space-between",
         width: "100%",
@@ -82,9 +75,10 @@ const ScoreBoard = () => {
           <AddCircleIcon />
         </Button>
         <TextField
+          sx={{ input: { color: "white" }, label: { color: "white" } }}
           id="outlined-basic"
           label="You"
-          variant="outlined"
+          variant="filled"
           type="number"
           onChange={handleLpInputChange}
         />
@@ -95,26 +89,18 @@ const ScoreBoard = () => {
         >
           <RemoveCircleIcon />
         </Button>
-
-        <CardMedia
+        <Typography
           sx={{
-            height: "100%",
-            display: "flex",
+            textShadow: "0 0 2px #000",
+            marginY: "auto",
             paddingX: "5%",
-            borderRadius: "4px",
-            marginX: "2px",
           }}
-          image={lpImage}
+          color="yellow"
+          textAlign="center"
+          variant="h4"
         >
-          <Typography
-            sx={{ textShadow: "0 0 2px #000", marginY: "auto" }}
-            color="yellow"
-            textAlign="center"
-            variant="h4"
-          >
-            <CountUp duration={0.875} start={previousLp} end={playerLp} />
-          </Typography>
-        </CardMedia>
+          <CountUp duration={0.875} start={previousLp} end={playerLp} />
+        </Typography>
       </Box>
       <Box display="flex" justifyContent="center">
         <Button onClick={handleResetDuel} color="primary" variant="contained">
@@ -122,30 +108,22 @@ const ScoreBoard = () => {
         </Button>
       </Box>
       <Box display="flex" justifyContent="space-around">
-        <CardMedia
+        <Typography
           sx={{
-            height: "100%",
-            display: "flex",
+            textShadow: "0 0 2px #000",
+            marginY: "auto",
             paddingX: "5%",
-            borderRadius: "4px",
-            marginX: "2px",
           }}
-          image={lpImage}
+          color="yellow"
+          textAlign="center"
+          variant="h4"
         >
-          <Typography
-            sx={{ textShadow: "0 0 2px #000", marginY: "auto" }}
-            color="yellow"
-            textAlign="center"
-            variant="h4"
-          >
-            <CountUp
-              duration={0.875}
-              start={opponentPreviousLp}
-              end={opponentLp}
-            />
-          </Typography>
-        </CardMedia>
-
+          <CountUp
+            duration={0.875}
+            start={opponentPreviousLp}
+            end={opponentLp}
+          />
+        </Typography>
         <Button
           onClick={handleAddOpponentLp}
           color="primary"
@@ -154,9 +132,10 @@ const ScoreBoard = () => {
           <AddCircleIcon />
         </Button>
         <TextField
+          sx={{ input: { color: "white" }, label: { color: "white" } }}
           id="outlined-basic"
           label="Opponent"
-          variant="outlined"
+          variant="filled"
           type="number"
           onChange={handleOpponentInputChange}
         />

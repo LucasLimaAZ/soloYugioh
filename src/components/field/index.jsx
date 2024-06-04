@@ -16,7 +16,13 @@ const Field = () => {
   };
 
   return (
-    <Paper sx={{ padding: "2%", margin: "30px 0 0 2%" }}>
+    <Paper
+      sx={{
+        padding: "2%",
+        margin: "30px 0 0 2%",
+        backgroundColor: "rgba(255, 255, 255, 0.2);",
+      }}
+    >
       <Box display="flex" gap="64px" justifyContent="space-between">
         {[...Array(5)].map((_, i) => (
           <Box
@@ -29,7 +35,7 @@ const Field = () => {
         ))}
       </Box>
       <Box
-        marginY="50px"
+        marginY="32px"
         display="flex"
         gap="64px"
         justifyContent="space-between"
