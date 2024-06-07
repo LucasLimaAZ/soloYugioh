@@ -22,6 +22,7 @@ const Card = ({ card, type, position }) => {
     generateTributeMonster,
     selectCard,
     generateEquipCard,
+    rotateBoard,
   } = useField();
   const { sendToGraveyard } = useGraveyard();
   const { playerLp, setPlayerLp } = useLifePoints();
@@ -135,6 +136,7 @@ const Card = ({ card, type, position }) => {
         aria-controls={open ? "card-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
+        sx={{ transform: rotateBoard && "rotate(180deg)" }}
       >
         <Menu
           id="card-menu"

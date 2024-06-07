@@ -7,14 +7,19 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { ChangeCircle, Casino, Description } from "@mui/icons-material";
+import {
+  ChangeCircle,
+  Casino,
+  Description,
+  ScreenRotation,
+} from "@mui/icons-material";
 import EnemyTurn from "../enemyTurn";
 import useField from "../../shared/hooks/field";
 
 const ToolBar = () => {
   const [coin, setCoin] = useState("Heads");
   const [dice, setDice] = useState("6");
-  const { selectedCard } = useField();
+  const { selectedCard, setRotateBoard, rotateBoard } = useField();
 
   const handleDice = () => {
     setDice("Rolling...");
@@ -39,6 +44,11 @@ const ToolBar = () => {
     }
   };
 
+  const handleRotateBoard = () => {
+    console.log(rotateBoard);
+    setRotateBoard(!rotateBoard);
+  };
+
   return (
     <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
       <Toolbar>
@@ -50,6 +60,15 @@ const ToolBar = () => {
               alignItems="center"
               gap="16px"
             >
+              <Box display="flex" alignItems="center">
+                <IconButton
+                  onClick={handleRotateBoard}
+                  color="inherit"
+                  aria-label="open drawer"
+                >
+                  <ScreenRotation />
+                </IconButton>
+              </Box>
               <Box display="flex" alignItems="center">
                 <IconButton
                   onClick={handleCoin}

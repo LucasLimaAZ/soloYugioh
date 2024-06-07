@@ -6,12 +6,13 @@ import {
   getRandomTrap,
   getRandomTribute,
 } from "../services/cards";
-import { fieldAtom, selectedCardAtom } from "../atoms";
+import { fieldAtom, selectedCardAtom, rotateBoardAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { playSound } from "../helper";
 
 const useField = () => {
   const [field, setField] = useAtom(fieldAtom);
+  const [rotateBoard, setRotateBoard] = useAtom(rotateBoardAtom);
   const [selectedCard, setSelectedCard] = useAtom(selectedCardAtom);
   const [loading, setLoading] = useState(false);
 
@@ -166,6 +167,8 @@ const useField = () => {
 
   return {
     field,
+    rotateBoard,
+    setRotateBoard,
     generateMonster,
     generateTributeMonster,
     generateMagicTrap,
