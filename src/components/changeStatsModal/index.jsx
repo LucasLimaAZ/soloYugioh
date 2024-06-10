@@ -15,6 +15,8 @@ const ChangeStatsModal = (props) => {
 
   const handleUpdateStats = () => {
     props.updateStats(newAtk, newDef);
+    setNewAtk(undefined);
+    setNewDef(undefined);
   };
 
   return (
