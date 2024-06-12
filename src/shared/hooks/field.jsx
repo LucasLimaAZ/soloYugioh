@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  getCard,
   getRandomDamageLpSpell,
   getRandomEquipSpell,
   getRandomMonster,
@@ -79,6 +80,21 @@ const useField = () => {
         setField(newField);
       })
       .catch((err) => console.error("Could not generate spell", err))
+      .finally(() => setLoading(false));
+  };
+
+  const generateCard = (position, id) => {
+    if (loading) return;
+    setLoading(true);
+    playSound("magic-activation");
+    getCard(id)
+      .then((response) => {
+        let card = response.data[0];
+        let newField = [...field];
+        newField[position] = card;
+        setField(newField);
+      })
+      .catch((err) => console.error("Could not generate card", err))
       .finally(() => setLoading(false));
   };
 
@@ -169,6 +185,7 @@ const useField = () => {
     field,
     rotateBoard,
     setRotateBoard,
+    generateCard,
     generateMonster,
     generateTributeMonster,
     generateMagicTrap,

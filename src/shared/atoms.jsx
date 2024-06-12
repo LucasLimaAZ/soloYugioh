@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 
 const fieldAtom = atom([]);
-const rotateBoardAtom = atom(false);
+const rotateBoardAtom = atom(true);
 const deckAtom = atom(35);
 const graveyardAtom = atom([]);
 const playerLpAtom = atom(8000);

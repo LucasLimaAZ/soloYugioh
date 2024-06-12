@@ -5,6 +5,7 @@ import SwipeRightIcon from "@mui/icons-material/SwipeRight";
 import AutoAwesomeOutlined from "@mui/icons-material/AutoAwesomeOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
+import SearchIcon from "@mui/icons-material/Search";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import backCard from "../../assets/img/yugioh-back.jpg";
@@ -13,6 +14,7 @@ import useGraveyard from "../../shared/hooks/graveyard";
 import useLifePoints from "../../shared/hooks/lifePoints";
 import AttackModal from "../attackCard";
 import ChangeStatsModal from "../changeStatsModal";
+import SearchCardModal from "../searchCardModal";
 
 const Card = ({ card, type, position }) => {
   const {
@@ -29,6 +31,7 @@ const Card = ({ card, type, position }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openAttackModal, setOpenAttackModal] = useState();
   const [openChangeStatsModal, setOpenChangeStatsModal] = useState();
+  const [openSearchModal, setOpenSearchModal] = useState();
   const [target, setTarget] = useState();
   const open = Boolean(anchorEl);
 
@@ -89,6 +92,10 @@ const Card = ({ card, type, position }) => {
     generateEquipCard();
   };
 
+  const handleSearchCard = () => {
+    setOpenSearchModal(true);
+  };
+
   const ContextMenuItems = () => (
     <>
       {type === "monster" && (
@@ -113,6 +120,9 @@ const Card = ({ card, type, position }) => {
           </MenuItem>
         </>
       )}
+      <MenuItem onClick={handleSearchCard}>
+        <SearchIcon className="actionIcon" /> Search card
+      </MenuItem>
       <MenuItem onClick={handleFlip}>
         <ChangeCircleIcon className="actionIcon" /> Flip
       </MenuItem>
@@ -174,6 +184,11 @@ const Card = ({ card, type, position }) => {
           handleCloseStatsModal={() => setOpenChangeStatsModal(false)}
           openStatsModal={openChangeStatsModal}
           updateStats={handleUpdateStats}
+        />
+        <SearchCardModal
+          position={position}
+          handleCloseSearchModal={() => setOpenSearchModal(false)}
+          openSearchModal={openSearchModal}
         />
       </Box>
       {card?.level && !card?.face_down && (

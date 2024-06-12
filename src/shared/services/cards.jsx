@@ -5,6 +5,16 @@ import equipSpellCards from "../cardLists/equipSpellCards.json";
 
 const baseUrl = "https://db.ygoprodeck.com/api/v7";
 
+export const searchCard = (name) => {
+  return axios
+    .get(`${baseUrl}/cardinfo.php?fname=${name}&num=20&offset=0`)
+    .then((res) => res.data);
+};
+
+export const getCard = (id) => {
+  return axios.get(`${baseUrl}/cardinfo.php?id=${id}`).then((res) => res.data);
+};
+
 export const getRandomCard = () => {
   return axios.get(`${baseUrl}/randomcard.php`).then((res) => res.data);
 };

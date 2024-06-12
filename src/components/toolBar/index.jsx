@@ -45,7 +45,6 @@ const ToolBar = () => {
   };
 
   const handleRotateBoard = () => {
-    console.log(rotateBoard);
     setRotateBoard(!rotateBoard);
   };
 
