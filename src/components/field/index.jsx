@@ -1,6 +1,8 @@
 import Card from "../card";
 import useField from "../../shared/hooks/field";
 import { Box, Paper } from "@mui/material";
+import Deck from "../deck";
+import Graveyard from "../graveyard";
 
 const Field = () => {
   const { generateMonster, generateMagicTrap, field, rotateBoard } = useField();
@@ -21,7 +23,7 @@ const Field = () => {
         rotateBoard && {
           perspective: "1200px",
           maxWidth: "90%",
-          marginLeft: "5%",
+          margin: "auto",
         }
       }
     >
@@ -34,6 +36,9 @@ const Field = () => {
         }}
       >
         <Box display="flex" gap="64px" justifyContent="space-between">
+          <Box sx={{ width: "100%" }} key={"deck"}>
+            <Deck />
+          </Box>
           {[...Array(5)].map((_, i) => (
             <Box
               sx={{ width: "100%" }}
@@ -50,6 +55,9 @@ const Field = () => {
           gap="64px"
           justifyContent="space-between"
         >
+          <Box sx={{ width: "100%" }} key={"grave"}>
+            <Graveyard />
+          </Box>
           {[...Array(5)].map((_, i) => (
             <Box
               sx={{ width: "100%" }}

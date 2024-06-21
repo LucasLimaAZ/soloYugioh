@@ -58,16 +58,20 @@ const ScoreBoard = () => {
     setLpInput(e.target.value);
   };
 
-  const handleLpOptionChange = (_, newInputValue) => {
-    setLpInput(newInputValue);
+  const handleLpOptionChange = ({ _reactName }, newInputValue) => {
+    if (_reactName !== "onBlur") {
+      setLpInput(newInputValue);
+    }
   };
 
   const handleOpponentInputChange = (e) => {
     setOpponentLpInput(e.target.value);
   };
 
-  const handleOpponentOptionChange = (_, newInputValue) => {
-    setOpponentLpInput(newInputValue);
+  const handleOpponentOptionChange = ({ _reactName }, newInputValue) => {
+    if (_reactName !== "onBlur") {
+      setOpponentLpInput(newInputValue);
+    }
   };
 
   const handleResetDuel = () => {

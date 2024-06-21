@@ -144,7 +144,11 @@ const AttackModal = (props) => {
                 variant="h4"
                 sx={{ color: "red", textShadow: "2px 2px rgba(0,0,0,0.3)" }}
               >
-                - {Math.abs(attack - props.card?.atk) || 0}
+                -{" "}
+                {Math.abs(
+                  attack -
+                    (props.card.def_mode ? props.card?.def : props.card?.atk)
+                ) || 0}
               </Typography>
             )}
           </Box>

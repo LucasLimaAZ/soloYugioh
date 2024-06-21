@@ -1,57 +1,33 @@
 import React from "react";
 import CardIMG from "../../assets/img/yugioh-back.jpg";
 import useDeck from "../../shared/hooks/deck";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import useField from "../../shared/hooks/field";
 
 const Deck = () => {
   const { drawCard, deck } = useDeck();
+  const { rotateBoard } = useField();
 
   return (
-    <Paper
+    <Box
       sx={{
-        paddingX: "2%",
-        margin: "30px 0 2% 0",
-        backgroundColor: "rgba(255, 255, 255, 0.2);",
+        cursor: "pointer",
       }}
+      onClick={drawCard}
     >
       <Box
         sx={{
-          cursor: "pointer",
-          img: {
-            width: "70%",
-          },
+          width: "100%",
+          transform: rotateBoard && "rotate(180deg)",
         }}
-        onClick={drawCard}
-      >
-        <Box
-          sx={{ marginTop: "15%" }}
-          component="img"
-          src={CardIMG}
-          alt="deckcard"
-        />
-        <Box
-          sx={{ marginTop: "-300px", marginLeft: "5px" }}
-          component="img"
-          src={CardIMG}
-          alt="deckcard"
-        />
-        <Box
-          sx={{ marginTop: "-298px", marginLeft: "7px" }}
-          component="img"
-          src={CardIMG}
-          alt="deckcard"
-        />
-        <Box
-          sx={{ marginTop: "-296px", marginLeft: "9px" }}
-          component="img"
-          src={CardIMG}
-          alt="deckcard"
-        />
-        <Box>
-          <Typography>{deck}</Typography>
-        </Box>
+        component="img"
+        src={CardIMG}
+        alt="deckcard"
+      />
+      <Box>
+        <Typography textAlign="center">{deck}</Typography>
       </Box>
-    </Paper>
+    </Box>
   );
 };
 

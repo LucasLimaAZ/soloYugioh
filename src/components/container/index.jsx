@@ -1,7 +1,5 @@
 import { Grid, Box } from "@mui/material";
 import ScoreBoard from "../scoreboard";
-import Deck from "../deck";
-import Graveyard from "../graveyard";
 import ToolBar from "../toolBar";
 import Field from "../field";
 
@@ -19,11 +17,7 @@ const Container = () => {
         <Grid item xs={12}>
           <ScoreBoard />
         </Grid>
-        <Grid item xs={2}>
-          <Deck />
-          <Graveyard />
-        </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={12}>
           <Field />
         </Grid>
         <Grid item xs={12}>
