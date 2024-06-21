@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Button, TextField, Typography, Box, Paper } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Typography,
+  Box,
+  Paper,
+  Autocomplete,
+} from "@mui/material";
 import CountUp from "react-countup";
 import {
   AddCircleOutline as AddCircleIcon,
@@ -22,6 +29,10 @@ const ScoreBoard = () => {
   const { resetField } = useField();
   const { resetDeck } = useDeck();
   const { resetGraveyard } = useGraveyard();
+
+  const damageOptions = Array.from(new Array(100)).map(
+    (_, index) => `${index * 100}`
+  );
 
   const handleAddPlayerLp = () => {
     setPreviousLp(playerLp);
@@ -47,8 +58,16 @@ const ScoreBoard = () => {
     setLpInput(e.target.value);
   };
 
+  const handleLpOptionChange = (_, newInputValue) => {
+    setLpInput(newInputValue);
+  };
+
   const handleOpponentInputChange = (e) => {
     setOpponentLpInput(e.target.value);
+  };
+
+  const handleOpponentOptionChange = (_, newInputValue) => {
+    setOpponentLpInput(newInputValue);
   };
 
   const handleResetDuel = () => {
@@ -74,13 +93,24 @@ const ScoreBoard = () => {
         <Button onClick={handleAddPlayerLp} color="primary" variant="contained">
           <AddCircleIcon />
         </Button>
-        <TextField
-          sx={{ input: { color: "white" }, label: { color: "white" } }}
-          id="outlined-basic"
-          label="You"
-          variant="filled"
-          type="number"
-          onChange={handleLpInputChange}
+        <Autocomplete
+          sx={{ minWidth: "15vw" }}
+          options={damageOptions}
+          onInputChange={handleLpOptionChange}
+          renderInput={(params) => (
+            <TextField
+              sx={{
+                input: { color: "white" },
+                label: { color: "white" },
+              }}
+              id="outlined-basic"
+              label="You"
+              variant="filled"
+              type="number"
+              onChange={handleLpInputChange}
+              {...params}
+            />
+          )}
         />
         <Button
           onClick={handleSubtractPlayerLp}
@@ -107,7 +137,7 @@ const ScoreBoard = () => {
           <RestartAltIcon />
         </Button>
       </Box>
-      <Box display="flex" justifyContent="space-around">
+      <Box display="flex" paddingRight="3%">
         <Typography
           sx={{
             textShadow: "0 0 2px #000",
@@ -131,14 +161,26 @@ const ScoreBoard = () => {
         >
           <AddCircleIcon />
         </Button>
-        <TextField
-          sx={{ input: { color: "white" }, label: { color: "white" } }}
-          id="outlined-basic"
-          label="Opponent"
-          variant="filled"
-          type="number"
-          onChange={handleOpponentInputChange}
+        <Autocomplete
+          sx={{ minWidth: "15vw" }}
+          options={damageOptions}
+          onInputChange={handleOpponentOptionChange}
+          renderInput={(params) => (
+            <TextField
+              sx={{
+                input: { color: "white" },
+                label: { color: "white" },
+              }}
+              id="outlined-basic"
+              label="Opponent"
+              variant="filled"
+              type="number"
+              onChange={handleOpponentInputChange}
+              {...params}
+            />
+          )}
         />
+
         <Button
           onClick={handleSubtractOpponentLp}
           color="primary"

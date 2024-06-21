@@ -139,6 +139,9 @@ const Card = ({ card, type, position }) => {
         paddingBottom: !card && "146%",
         backgroundColor: !card && "rgba(0, 0, 0, 0.3)",
         cursor: "pointer",
+        ":hover": {
+          opacity: "0.8",
+        },
       }}
     >
       <Box
@@ -165,7 +168,11 @@ const Card = ({ card, type, position }) => {
               <Box
                 component="img"
                 onClick={handleClick}
-                src={card.face_down ? backCard : card.card_images[0].image_url}
+                src={
+                  card.face_down
+                    ? backCard
+                    : card.card_images[0].image_url_small
+                }
                 alt="magic card"
                 sx={{ width: "100%" }}
               />

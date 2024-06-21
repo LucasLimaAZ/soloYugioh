@@ -85,14 +85,23 @@ const SearchCardModal = (props) => {
             Search
           </Button>
         </Box>
-        <Box display="flex" flexWrap="wrap" gap="12px">
+        <Box display="flex" flexWrap="wrap" justifyContent="center" gap="12px">
           {searchResult &&
             searchResult.map((card) => (
               <Box
                 onClick={() => handleClickCard(card.id)}
-                sx={{ width: "4vw", flex: "1 0 18%", cursor: "pointer" }}
+                sx={{
+                  maxWidth: "4vw",
+                  flex: "1 0 18%",
+                  cursor: "pointer",
+                  ":hover": {
+                    boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.3)",
+                    opacity: "0.8",
+                    transition: "0.2s",
+                  },
+                }}
                 component="img"
-                src={card.card_images[0].image_url}
+                src={card.card_images[0].image_url_small}
               />
             ))}
         </Box>
