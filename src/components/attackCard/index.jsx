@@ -47,8 +47,6 @@ const AttackModal = (props) => {
     if (props.target === "opponent" && willUseTrapCard) {
       setOpenTrapModal(true);
     } else calculateDamage();
-
-    setAttack(undefined);
   };
 
   const handleCloseTrapModal = () => {
@@ -60,6 +58,7 @@ const AttackModal = (props) => {
     props.handleCloseAttack();
     let atkDif = Number(attack - props.card?.atk);
     let defDif = Number(attack - props.card?.def);
+    setAttack(undefined);
 
     if (props.card.def_mode) {
       if (defDif === 0) return;
@@ -114,7 +113,7 @@ const AttackModal = (props) => {
           <DialogContentText>Continue Attack?</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleContinueAttack}>Attack</Button>
+          <Button onClick={handleContinueAttack}>Attack anyway</Button>
           <Button onClick={handleCloseTrapModal}>Ok</Button>
         </DialogActions>
       </Dialog>
