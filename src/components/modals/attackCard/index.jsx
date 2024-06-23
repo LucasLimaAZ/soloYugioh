@@ -11,9 +11,9 @@ import {
   Box,
   Autocomplete,
 } from "@mui/material";
-import MiniField from "../miniField";
-import useField from "../../shared/hooks/field";
-import useLifePoints from "../../shared/hooks/lifePoints";
+import MiniField from "../../miniField";
+import useField from "../../../shared/hooks/field";
+import useLifePoints from "../../../shared/hooks/lifePoints";
 
 const AttackModal = (props) => {
   const [attack, setAttack] = useState(undefined);
@@ -89,14 +89,14 @@ const AttackModal = (props) => {
   const chooseTrapCard = () => {
     let trapCards = searchForTrapCards();
     let randomIndex = Math.floor(Math.random() * trapCards.length);
-    let selectedCardPosition = trapCards[randomIndex]?.fieldPosition;
+    let selectedCardPosition = trapCards[randomIndex];
     return selectedCardPosition;
   };
 
   const FlippedTrapCard = () => {
-    let cardIndex = chooseTrapCard();
+    let card = chooseTrapCard();
 
-    return <MiniField cardIndex={cardIndex} />;
+    return <MiniField card={card} />;
   };
 
   const handleContinueAttack = () => {

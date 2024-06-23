@@ -1,4 +1,4 @@
-import Card from "../card";
+import Card from "../card/card";
 import useField from "../../shared/hooks/field";
 import { Box, Paper } from "@mui/material";
 import Deck from "../deck";

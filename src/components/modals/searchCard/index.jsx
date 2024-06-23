@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Box, TextField, Button, Typography } from "@mui/material";
-import { searchCard } from "../../shared/services/cards";
-import useField from "../../shared/hooks/field";
+import { searchCard } from "../../../shared/services/cards";
+import useField from "../../../shared/hooks/field";
 
 const SearchCardModal = (props) => {
   const [searchTerm, setSearchTerm] = useState();
