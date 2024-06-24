@@ -1,12 +1,9 @@
 import useField from "../../shared/hooks/field";
 import useGraveyard from "../../shared/hooks/graveyard";
 import useLifePoints from "../../shared/hooks/lifePoints";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const useCard = (position) => {
-  useEffect(() => {
-    console.log(position);
-  });
   const {
     generateTributeMonster,
     changeMonsterPosition,
@@ -29,7 +26,6 @@ export const useCard = (position) => {
   const card = field[position];
 
   const handleClick = (event) => {
-    console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
     if (!card.face_down) selectCard(card);
   };

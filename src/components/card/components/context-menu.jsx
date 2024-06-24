@@ -9,24 +9,22 @@ import {
   ChangeCircle,
   DoDisturb,
 } from "@mui/icons-material";
-import { useCard } from "../use-card";
 
-const CardContextMenu = ({ type }) => {
-  const {
-    handleAttack,
-    handleChangePosition,
-    handleDirectAttack,
-    handleEquip,
-    handleFlip,
-    handleMonsterAttack,
-    handleSearchCard,
-    handleTribute,
-    handleDestroy,
-    anchorEl,
-    openContextMenu,
-    handleClose,
-  } = useCard();
-
+const CardContextMenu = ({
+  type,
+  handleAttack,
+  handleChangePosition,
+  handleDirectAttack,
+  handleEquip,
+  handleFlip,
+  handleMonsterAttack,
+  handleSearchCard,
+  handleTribute,
+  handleDestroy,
+  anchorEl,
+  openContextMenu,
+  handleClose,
+}) => {
   return (
     <Menu
       id="card-menu"

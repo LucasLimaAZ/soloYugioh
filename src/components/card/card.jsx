@@ -23,6 +23,16 @@ const Card = ({ card, type, position }) => {
     setOpenAttackModal,
     setOpenSearchModal,
     setOpenChangeStatsModal,
+    handleAttack,
+    handleChangePosition,
+    handleDirectAttack,
+    handleEquip,
+    handleFlip,
+    handleMonsterAttack,
+    handleSearchCard,
+    handleTribute,
+    anchorEl,
+    handleClose,
   } = useCard(position);
 
   return (
@@ -44,7 +54,23 @@ const Card = ({ card, type, position }) => {
         aria-expanded={openContextMenu ? "true" : undefined}
         sx={{ transform: rotateBoard && "rotate(180deg)" }}
       >
-        <CardContextMenu type={type} />
+        <CardContextMenu
+          {...{
+            type,
+            handleAttack,
+            handleChangePosition,
+            handleDirectAttack,
+            handleEquip,
+            handleFlip,
+            handleMonsterAttack,
+            handleSearchCard,
+            handleTribute,
+            handleDestroy,
+            anchorEl,
+            openContextMenu,
+            handleClose,
+          }}
+        />
         {card && (
           <Box sx={{ transform: card.def_mode && "rotate(90deg)" }}>
             <Grow in>
