@@ -181,6 +181,16 @@ const useField = () => {
     setField([]);
   };
 
+  const handleMonsterClick = (position) => {
+    if (field[position]) return;
+    generateMonster(position);
+  };
+
+  const handleMagicClick = (position) => {
+    if (field[position]) return;
+    generateMagicTrap(position);
+  };
+
   return {
     field,
     rotateBoard,
@@ -197,6 +207,8 @@ const useField = () => {
     selectedCard,
     updateCard,
     resetField,
+    handleMonsterClick,
+    handleMagicClick,
   };
 };
 

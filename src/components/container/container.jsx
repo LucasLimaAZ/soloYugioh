@@ -1,7 +1,7 @@
 import { Grid, Box } from "@mui/material";
-import ScoreBoard from "../scoreboard";
-import ToolBar from "../toolBar";
-import Field from "../field";
+import ScoreBoard from "../scoreboard/scoreboard";
+import ToolBar from "../tool-bar/tool-bar";
+import Field from "../field/field";
 
 const Container = () => {
   return (

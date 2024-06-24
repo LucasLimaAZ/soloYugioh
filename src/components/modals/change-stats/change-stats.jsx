@@ -1,23 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Box, Typography, TextField, Button } from "@mui/material";
+import { useChangeStats } from "./use-change-stats";
 
 const ChangeStatsModal = (props) => {
-  const [newAtk, setNewAtk] = useState();
-  const [newDef, setNewDef] = useState();
-
-  const handleNewAtk = (e) => {
-    setNewAtk(e.target.value);
-  };
-
-  const handleNewDef = (e) => {
-    setNewDef(e.target.value);
-  };
-
-  const handleUpdateStats = () => {
-    props.updateStats(newAtk, newDef);
-    setNewAtk(undefined);
-    setNewDef(undefined);
-  };
+  const { handleNewAtk, handleNewDef, handleUpdateStats } =
+    useChangeStats(props);
 
   return (
     <Modal

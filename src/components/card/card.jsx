@@ -2,9 +2,9 @@ import React from "react";
 import { Box, Typography, Grow } from "@mui/material";
 import backCard from "../../assets/img/yugioh-back.jpg";
 import useField from "../../shared/hooks/field";
-import AttackModal from "../modals/attackCard";
-import ChangeStatsModal from "../modals/changeStats";
-import SearchCardModal from "../modals/searchCard";
+import AttackModal from "../modals/attack-card/attack-card";
+import ChangeStatsModal from "../modals/change-stats/change-stats";
+import SearchCardModal from "../modals/search-card/search-card";
 import CardContextMenu from "./components/context-menu";
 import { useCard } from "./use-card";
 

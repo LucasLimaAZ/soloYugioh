@@ -1,21 +1,12 @@
 import Card from "../card/card";
 import useField from "../../shared/hooks/field";
 import { Box, Paper } from "@mui/material";
-import Deck from "../deck";
-import Graveyard from "../graveyard";
+import Deck from "../deck/deck";
+import Graveyard from "../graveyard/graveyard";
 
 const Field = () => {
-  const { generateMonster, generateMagicTrap, field, rotateBoard } = useField();
-
-  const handleMonsterClick = (position) => {
-    if (field[position]) return;
-    generateMonster(position);
-  };
-
-  const handleMagicClick = (position) => {
-    if (field[position]) return;
-    generateMagicTrap(position);
-  };
+  const { handleMonsterClick, handleMagicClick, field, rotateBoard } =
+    useField();
 
   return (
     <Box
