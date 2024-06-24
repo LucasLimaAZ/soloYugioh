@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# Duel Simulator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Introduction:** This project is intended for the Yu-Gi-Oh! card game players. Its goal is to make possible the experience of dueling on your own, with real cards, against a machine.
+Additionally, this software provides useful tools to help the player build, test and enjoy their physical decks.
 
-## Available Scripts
+## How to run the project
 
-In the project directory, you can run:
+### `npm install`
+
+Start by installing all the project dependencies.
 
 ### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Code architecture
 
-### `npm test`
+The project follows the reference architecture patterns of clean code. Being aware of the SOLID principles, I decided to build its structure in this way:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Components
 
-### `npm run build`
+The components are separated in individual folders containing the presentational file and the hook one.\
+The presentational part of the component returns the JSX code used to build the visual structure using primarily [MUI](https://mui.com/) components.\
+The hook file must be named useTheComponentName and provide all the logic used by the presentational component. Services execution, array sorts, math operations and more. It's all provided by the hook.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Shared hooks
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Some hooks are useful for more than one component, in that case they become shared hooks (src/shared/hooks). Those can be consumed by any component that need to use the data from the hook.\
+The difference here is how the state is stored. As many components can consume the same hook, we may not want to create multiple instances of it as those will not share the same state. As a solution to this problema I decided to use [Jotai](https://jotai.org/) as the global state management tool, aiming to keep the same data available for all the components that use the same hook.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Services
 
-### `npm run eject`
+This project is powered by the [Yu-Gi-Oh! API](https://ygoprodeck.com/api-guide/).
+The services are responsible for comunicating with the API and retrieving data. Also the services read the cardList json files that contain a list of card ids in case a specific card needs to be placed in field.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Helpers
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The helpers are simple and useful functions that don't rely on any state.\
+As an example, the playSound function is a helper function that makes use of [HowlerJS](https://howlerjs.com/). Its goal is to reproduce sounds on the application when the user executes specific actions.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Atoms
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+You can learn more about atoms in the [Jotai](https://jotai.org/) documentation. Atoms are implemented here being in charge of keeping the hooks state global.
