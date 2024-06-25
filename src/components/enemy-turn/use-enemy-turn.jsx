@@ -1,9 +1,9 @@
-import MainPhase from "./phases/mainPhase";
-import MainPhaseTwo from "./phases/mainPhaseTwo";
-import BattlePhase from "./phases/battlePhase";
-import DrawPhase from "./phases/drawPhase";
+import MainPhase from "./phases/main-phase";
+import MainPhaseTwo from "./phases/main-phase-two";
+import BattlePhase from "./phases/battle-phase";
+import DrawPhase from "./phases/draw-phase";
 import useDeck from "../../shared/hooks/deck";
-import useEnemyActions from "../../shared/hooks/enemyActions";
+import useEnemyActions from "../../shared/hooks/enemy-actions";
 import { useState } from "react";
 
 export const useEnemyTurn = () => {

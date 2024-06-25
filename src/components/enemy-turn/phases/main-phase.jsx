@@ -6,7 +6,7 @@ import {
   Box,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import useEnemyActions from "../../../shared/hooks/enemyActions";
+import useEnemyActions from "../../../shared/hooks/enemy-actions";
 
 const MainPhase = () => {
   const { mainPhase } = useEnemyActions();

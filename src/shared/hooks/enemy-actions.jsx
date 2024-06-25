@@ -4,13 +4,13 @@ import {
   mainPhaseMagicTrap,
   mainPhaseMonster,
   mainPhaseMonsterWithTribute,
-} from "../actions/mainPhaseActions";
+} from "../actions/main-phase";
 import {
   attackDefenseMonster,
   attackMonster,
   attackSetMonster,
   attackTieMonster,
-} from "../actions/battlePhaseActions";
+} from "../actions/battle-phase";
 import useField from "./field";
 
 const useEnemyActions = () => {
