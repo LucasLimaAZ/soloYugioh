@@ -72,7 +72,7 @@ const Card = ({ card, type, position }) => {
           }}
         />
         {card && (
-          <Box sx={{ transform: card.def_mode && "rotate(90deg)" }}>
+          <Box sx={{ transform: card?.def_mode && "rotate(90deg)" }}>
             <Grow in>
               <Box
                 component="img"

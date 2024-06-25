@@ -1,15 +1,14 @@
-import MainPhase from "./phases/mainPhase";
-import MainPhaseTwo from "./phases/mainPhaseTwo";
-import BattlePhase from "./phases/battlePhase";
-import DrawPhase from "./phases/drawPhase";
-import useDeck from "../../shared/hooks/deck";
-import useEnemyActions from "../../shared/hooks/enemyActions";
+import MainPhase from "./phases/main-phase";
+import MainPhaseTwo from "./phases/main-phase-two";
+import BattlePhase from "./phases/battle-phase";
+import DrawPhase from "./phases/draw-phase";
+import useEnemyActions from "../../shared/hooks/enemy-actions";
 import { useState } from "react";
+import StandbyPhase from "./phases/standby-phase";
 
 export const useEnemyTurn = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
-  const { drawCard } = useDeck();
+  const [activePhase, setActivePhase] = useState(0);
   const { generateMainPhase, generateBattlePhase, mainPhase } =
     useEnemyActions();
 
@@ -18,15 +17,14 @@ export const useEnemyTurn = () => {
   };
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActivePhase((prevActivePhase) => prevActivePhase + 1);
   };
 
   const handleReset = () => {
-    setActiveStep(0);
+    setActivePhase(0);
   };
 
   const handleEnemyTurn = () => {
-    drawCard();
     generateMainPhase();
     generateBattlePhase();
     handleReset();
@@ -42,6 +40,10 @@ export const useEnemyTurn = () => {
       content: <DrawPhase />,
     },
     {
+      label: "Standby phase",
+      content: <StandbyPhase />,
+    },
+    {
       label: "Main phase",
       content: <MainPhase />,
     },
@@ -53,17 +55,21 @@ export const useEnemyTurn = () => {
       label: "Main phase 2",
       content: <MainPhaseTwo />,
     },
+    {
+      label: "End phase",
+      content: "",
+    },
   ];
 
   return {
     phases,
     mainPhase,
     openModal,
-    activeStep,
+    activePhase,
     handleCloseModal,
     handleNext,
     handleEnemyTurn,
     handleOpenEnemyTurn,
-    setActiveStep,
+    setActivePhase,
   };
 };

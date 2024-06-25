@@ -1,6 +1,6 @@
 import useField from "../../shared/hooks/field";
 import useGraveyard from "../../shared/hooks/graveyard";
-import useLifePoints from "../../shared/hooks/lifePoints";
+import useLifePoints from "../../shared/hooks/life-points";
 import { useState } from "react";
 
 export const useCard = (position) => {

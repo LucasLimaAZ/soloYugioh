@@ -64,7 +64,7 @@ const ToolBar = () => {
               </Box>
               <Box display="flex" alignItems="center">
                 <EnemyTurn />
-                <Typography>Enemy turn</Typography>
+                <Typography>Opponent turn</Typography>
               </Box>
             </Box>
           </Grid>
@@ -76,7 +76,7 @@ const ToolBar = () => {
             xs={6}
           >
             <Description />
-            <Typography fontSize="9px" paddingLeft="5px">
+            <Typography fontSize="11px" paddingLeft="5px">
               {selectedCard?.desc || "Card description"}
             </Typography>
           </Grid>

@@ -30,3 +30,7 @@ export const playSound = (sound) => {
   });
   howl.play();
 };
+
+export const isFlipMonster = (card) => {
+  return card?.desc.includes("FLIP:");
+};

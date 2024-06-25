@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useLifePoints from "../../../shared/hooks/lifePoints";
+import useLifePoints from "../../../shared/hooks/life-points";
 import useField from "../../../shared/hooks/field";
 
 export const useAttackCard = (props) => {
@@ -47,7 +47,7 @@ export const useAttackCard = (props) => {
     let defDif = Number(attack - props.card?.def);
     setAttack(undefined);
 
-    if (props.card.def_mode) {
+    if (props.card?.def_mode) {
       if (defDif === 0) return;
 
       defDif > 0 ? props.handleDestroyCard() : setPlayerLp(playerLp + defDif);

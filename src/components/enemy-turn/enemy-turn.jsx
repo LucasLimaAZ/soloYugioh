@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  Box,
-  Typography,
-  Button,
-  Stepper,
-  Step,
-  StepLabel,
-  StepContent,
-  IconButton,
-} from "@mui/material";
+import { Modal, Box, Typography, Button, IconButton } from "@mui/material";
 import { ShieldMoon } from "@mui/icons-material";
 import { useEnemyTurn } from "./use-enemy-turn";
 
@@ -18,12 +8,11 @@ const EnemyTurn = () => {
     phases,
     mainPhase,
     openModal,
-    activeStep,
+    activePhase,
     handleCloseModal,
-    handleNext,
     handleEnemyTurn,
     handleOpenEnemyTurn,
-    setActiveStep,
+    setActivePhase,
   } = useEnemyTurn();
 
   return (
@@ -47,54 +36,75 @@ const EnemyTurn = () => {
           }}
         >
           <Box>
+            <Box>
+              <Box display="flex" justifyContent="space-between">
+                <Typography variant="h4">
+                  {phases[activePhase].label}
+                </Typography>
+                <Button onClick={handleEnemyTurn} variant="contained">
+                  Generate opponent turn
+                </Button>
+              </Box>
+              <Box padding="4%" marginBottom="32px">
+                {mainPhase && phases[activePhase].content}
+              </Box>
+            </Box>
             <Box display="flex" justifyContent="space-between">
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Enemy Turn
-              </Typography>
               <Button
+                disabled={activePhase === 0}
+                onClick={() => setActivePhase(0)}
                 color="primary"
                 variant="contained"
-                onClick={handleEnemyTurn}
+                sx={{ borderRadius: "50%" }}
               >
-                Generate Enemy Turn
+                DP
+              </Button>
+              <Button
+                disabled={activePhase === 1}
+                onClick={() => setActivePhase(1)}
+                color="primary"
+                variant="contained"
+                sx={{ borderRadius: "50%" }}
+              >
+                SP
+              </Button>
+              <Button
+                disabled={activePhase === 2}
+                onClick={() => setActivePhase(2)}
+                color="primary"
+                variant="contained"
+                sx={{ borderRadius: "50%" }}
+              >
+                MP1
+              </Button>
+              <Button
+                disabled={activePhase === 3}
+                onClick={() => setActivePhase(3)}
+                color="primary"
+                variant="contained"
+                sx={{ borderRadius: "50%" }}
+              >
+                BP
+              </Button>
+              <Button
+                disabled={activePhase === 4}
+                onClick={() => setActivePhase(4)}
+                color="primary"
+                variant="contained"
+                sx={{ borderRadius: "50%" }}
+              >
+                MP2
+              </Button>
+              <Button
+                disabled={activePhase === 5}
+                onClick={() => setActivePhase(5)}
+                color="primary"
+                variant="contained"
+                sx={{ borderRadius: "50%" }}
+              >
+                EP
               </Button>
             </Box>
-            {mainPhase ? (
-              <Box>
-                <Box>What does your enemy do:</Box>
-                <Stepper activeStep={activeStep} orientation="vertical">
-                  {phases.map((step, index) => (
-                    <Step key={step.label}>
-                      <StepLabel>
-                        <Typography onClick={() => setActiveStep(index)}>
-                          {step.label}:
-                        </Typography>
-                      </StepLabel>
-                      <StepContent>
-                        {step.content}
-                        <Box sx={{ mb: 2 }}>
-                          <Box>
-                            <Button
-                              variant="contained"
-                              onClick={handleNext}
-                              sx={{ mt: 1, mr: 1 }}
-                            >
-                              {index === phases.length - 1
-                                ? "End enemy turn"
-                                : `Enter ${
-                                    phases[index + 1].label || "End phase"
-                                  }`}
-                            </Button>
-                          </Box>
-                        </Box>
-                      </StepContent>
-                    </Step>
-                  ))}
-                </Stepper>
-              </Box>
-            ) : (
-              ""
-            )}
           </Box>
         </Box>
       </Modal>

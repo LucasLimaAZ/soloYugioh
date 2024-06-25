@@ -9,6 +9,7 @@ const opponentLpAtom = atom(8000);
 const enemyMainPhaseActions = atom();
 const enemyBattlePhaseActions = atom();
 const selectedCardAtom = atom();
+const bpAttackOrderAtom = atom();
 
 export {
   fieldAtom,
@@ -20,4 +21,5 @@ export {
   enemyMainPhaseActions,
   enemyBattlePhaseActions,
   selectedCardAtom,
+  bpAttackOrderAtom,
 };

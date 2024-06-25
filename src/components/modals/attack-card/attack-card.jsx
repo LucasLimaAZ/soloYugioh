@@ -70,7 +70,7 @@ const AttackModal = (props) => {
                 -{" "}
                 {Math.abs(
                   attack -
-                    (props.card.def_mode ? props.card?.def : props.card?.atk)
+                    (props.card?.def_mode ? props.card?.def : props.card?.atk)
                 ) || 0}
               </Typography>
             )}

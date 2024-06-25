@@ -6,14 +6,14 @@ import {
   Box,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import useEnemyActions from "../../../shared/hooks/enemyActions";
+import useEnemyActions from "../../../shared/hooks/enemy-actions";
 
 const MainPhase = () => {
   const { mainPhase } = useEnemyActions();
 
   return (
-    <Box style={{ marginTop: "10px" }}>
-      <Box>
+    <Box>
+      <Box paddingY="12px">
         {mainPhase.map((action) => (
           <Typography>{action}</Typography>
         ))}
