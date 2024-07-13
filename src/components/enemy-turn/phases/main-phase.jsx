@@ -12,8 +12,8 @@ const MainPhase = () => {
   const { mainPhase } = useEnemyActions();
 
   return (
-    <Box style={{ marginTop: "10px" }}>
-      <Box>
+    <Box>
+      <Box paddingY="12px">
         {mainPhase.map((action) => (
           <Typography>{action}</Typography>
         ))}

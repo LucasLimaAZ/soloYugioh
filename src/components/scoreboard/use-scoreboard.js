@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useLifePoints from "../../shared/hooks/lifePoints";
+import useLifePoints from "../../shared/hooks/life-points";
 import useField from "../../shared/hooks/field";
 import useDeck from "../../shared/hooks/deck";
 import useGraveyard from "../../shared/hooks/graveyard";
@@ -61,6 +61,7 @@ export const useScoreBoard = () => {
   };
 
   const handleResetDuel = () => {
+    localStorage.setItem("standby-phase-text", "");
     setPlayerLp(8000);
     setOpponentLp(8000);
     resetField();

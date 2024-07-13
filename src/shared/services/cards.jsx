@@ -2,6 +2,8 @@ import axios from "axios";
 import trapCards from "../cardLists/trapCards.json";
 import damageSpellCards from "../cardLists/damageSpellCards.json";
 import equipSpellCards from "../cardLists/equipSpellCards.json";
+import effectMonsters from "../cardLists/effectMonsters.json";
+import flipMonsters from "../cardLists/flipMonsters.json";
 
 const baseUrl = "https://db.ygoprodeck.com/api/v7";
 
@@ -62,7 +64,16 @@ export const getRandomMonster = () => {
   let sort = Math.floor(Math.random() * 7) + 1;
 
   switch (sort) {
+    case 2:
+      monsterUrl = `${baseUrl}/cardinfo.php?id=${
+        flipMonsters[Math.floor(Math.random() * flipMonsters.length)]
+      }`;
+      break;
     case 3:
+      monsterUrl = `${baseUrl}/cardinfo.php?id=${
+        effectMonsters[Math.floor(Math.random() * effectMonsters.length)]
+      }`;
+      break;
     case 4:
     case 5:
       monsterUrl += "&atk=gte1700";

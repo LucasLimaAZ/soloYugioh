@@ -9,7 +9,7 @@ import {
 } from "../services/cards";
 import { fieldAtom, selectedCardAtom, rotateBoardAtom } from "../atoms";
 import { useAtom } from "jotai";
-import { playSound } from "../helper";
+import { playSound, isFlipMonster } from "../helper";
 
 const useField = () => {
   const [field, setField] = useAtom(fieldAtom);
@@ -39,8 +39,8 @@ const useField = () => {
         let card = response.data[randomCardIndex];
         newField[position] = {
           ...card,
-          def_mode: card.atk < card.def,
-          face_down: card.atk < card.def,
+          def_mode: card.atk < card.def || isFlipMonster(card),
+          face_down: card.atk < card.def || isFlipMonster(card),
         };
         setField(newField);
       })
@@ -59,8 +59,8 @@ const useField = () => {
         let card = response.data[randomCardIndex];
         newField[position] = {
           ...card,
-          def_mode: card.atk < card.def,
-          face_down: card.atk < card.def,
+          def_mode: card.atk < card.def || isFlipMonster(card),
+          face_down: card.atk < card.def || isFlipMonster(card),
         };
         setField(newField);
       })

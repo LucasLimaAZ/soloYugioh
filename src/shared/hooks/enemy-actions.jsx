@@ -1,4 +1,8 @@
-import { enemyMainPhaseActions, enemyBattlePhaseActions } from "../atoms";
+import {
+  enemyMainPhaseActions,
+  enemyBattlePhaseActions,
+  bpAttackOrderAtom,
+} from "../atoms";
 import { useAtom } from "jotai";
 import {
   mainPhaseMagicTrap,
@@ -12,13 +16,19 @@ import {
   attackTieMonster,
 } from "../actions/battle-phase";
 import useField from "./field";
+import { useEffect } from "react";
 
 const useEnemyActions = () => {
   const [mainPhase, setMainPhase] = useAtom(enemyMainPhaseActions);
+  const [bpAttackOrder, setBpAttackOrder] = useAtom(bpAttackOrderAtom);
   const [battlePhasePriority, setBattlePhasePriority] = useAtom(
     enemyBattlePhaseActions
   );
   const { field } = useField();
+
+  useEffect(() => {
+    updateBattlePhase();
+  }, [field]);
 
   const hasLowLevelMonster = () => {
     let lowLevelMonsters = field.filter((card) => card?.level < 5);
@@ -29,11 +39,20 @@ const useEnemyActions = () => {
     return actionArray[Math.floor(Math.random() * actionArray.length)];
   };
 
+  const updateBattlePhase = () => {
+    const attackMonsters = field.filter(
+      (card) => card?.atk > 0 && !card?.face_down && !card?.def_mode
+    );
+
+    setBpAttackOrder(attackMonsters.sort((a, b) => a.atk - b.atk));
+  };
+
   const generateBattlePhase = () => {
     const attackMonsterAction = randomAction(attackMonster);
     const attackDefenseMonsterAction = randomAction(attackDefenseMonster);
     const attackSetMonsterAction = randomAction(attackSetMonster);
     const attackTieMonsterAction = randomAction(attackTieMonster);
+    updateBattlePhase();
 
     setBattlePhasePriority([
       attackMonsterAction,
@@ -62,6 +81,8 @@ const useEnemyActions = () => {
     generateMainPhase,
     battlePhasePriority,
     generateBattlePhase,
+    bpAttackOrder,
+    updateBattlePhase,
   };
 };
 
