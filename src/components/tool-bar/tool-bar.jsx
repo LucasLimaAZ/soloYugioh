@@ -11,10 +11,11 @@ import {
   ChangeCircle,
   Casino,
   Description,
-  ScreenRotation,
+  Settings,
 } from "@mui/icons-material";
 import EnemyTurn from "../enemy-turn/enemy-turn";
 import { useToolBar } from "./use-tool-bar";
+import SettingsModal from "../modals/settings/settings";
 
 const ToolBar = () => {
   const {
@@ -23,7 +24,9 @@ const ToolBar = () => {
     selectedCard,
     handleDice,
     handleCoin,
-    handleRotateBoard,
+    isOpenSettings,
+    handleOpenSettings,
+    handleCloseSettings,
   } = useToolBar();
 
   return (
@@ -37,13 +40,13 @@ const ToolBar = () => {
               alignItems="center"
               gap="16px"
             >
-              <Box display="flex" alignItems="center">
-                <IconButton
-                  onClick={handleRotateBoard}
-                  color="inherit"
-                  aria-label="open drawer"
-                >
-                  <ScreenRotation />
+              <Box>
+                <SettingsModal
+                  handleCloseSettingsModal={handleCloseSettings}
+                  openSettingsModal={isOpenSettings}
+                />
+                <IconButton color="inherit" onClick={handleOpenSettings}>
+                  <Settings />
                 </IconButton>
               </Box>
               <Box display="flex" alignItems="center">

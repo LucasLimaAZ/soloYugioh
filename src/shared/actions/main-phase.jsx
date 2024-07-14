@@ -3,7 +3,13 @@ export const mainPhaseMonster = [
   "Enemy summons 1 monster",
   "Enemy summons 1 monster",
   "",
+];
+
+export const mainPhaseMonsterMedium = [
   "Enemy summons 1 monster and equip this monster",
+];
+
+export const mainPhaseMonsterHard = [
   "Enemy normal summons 1 monster and special summons 1 monster",
 ];
 

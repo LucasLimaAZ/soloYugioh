@@ -61,24 +61,31 @@ export const getRandomDualTribute = () => {
 
 export const getRandomMonster = () => {
   let monsterUrl = `${baseUrl}/cardinfo.php?type=normal%20monster&level=lte4`;
-  let sort = Math.floor(Math.random() * 7) + 1;
+  let sort = Math.floor(Math.random() * 9) + 1;
 
   switch (sort) {
+    case 1:
     case 2:
       monsterUrl = `${baseUrl}/cardinfo.php?id=${
         flipMonsters[Math.floor(Math.random() * flipMonsters.length)]
       }`;
       break;
     case 3:
+    case 4:
       monsterUrl = `${baseUrl}/cardinfo.php?id=${
         effectMonsters[Math.floor(Math.random() * effectMonsters.length)]
       }`;
       break;
-    case 4:
     case 5:
       monsterUrl += "&atk=gte1700";
       break;
     case 6:
+      monsterUrl += "&atk=gte1800";
+      break;
+    case 7:
+      monsterUrl += "&atk=gte1900";
+      break;
+    case 8:
       monsterUrl = `${baseUrl}/cardinfo.php?type=fusion%20monster&atk=gte2000&has_effect=false`;
       break;
     default:

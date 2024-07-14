@@ -7,6 +7,8 @@ import { useAtom } from "jotai";
 import {
   mainPhaseMagicTrap,
   mainPhaseMonster,
+  mainPhaseMonsterMedium,
+  mainPhaseMonsterHard,
   mainPhaseMonsterWithTribute,
 } from "../actions/main-phase";
 import {
@@ -16,6 +18,7 @@ import {
   attackTieMonster,
 } from "../actions/battle-phase";
 import useField from "./field";
+import { useDifficulty } from "./difficulty";
 import { useEffect } from "react";
 
 const useEnemyActions = () => {
@@ -25,6 +28,7 @@ const useEnemyActions = () => {
     enemyBattlePhaseActions
   );
   const { field } = useField();
+  const { difficulty } = useDifficulty();
 
   useEffect(() => {
     updateBattlePhase();
@@ -72,6 +76,20 @@ const useEnemyActions = () => {
         mainPhaseMonsterWithTribute
       );
     }
+
+    if (difficulty === "medium") {
+      mainPhaseMonsterArray = mainPhaseMonsterArray.concat(
+        mainPhaseMonsterMedium
+      );
+    }
+
+    if (difficulty === "hard") {
+      mainPhaseMonsterArray = mainPhaseMonsterArray.concat([
+        ...mainPhaseMonsterHard,
+        ...mainPhaseMonsterMedium,
+      ]);
+    }
+
     const monsterAction = randomAction(mainPhaseMonsterArray);
     setMainPhase([magicTrapAction, monsterAction]);
   };

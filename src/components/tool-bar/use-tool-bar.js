@@ -4,7 +4,8 @@ import useField from "../../shared/hooks/field";
 export const useToolBar = () => {
   const [coin, setCoin] = useState("Heads");
   const [dice, setDice] = useState("6");
-  const { selectedCard, setRotateBoard, rotateBoard } = useField();
+  const { selectedCard } = useField();
+  const [isOpenSettings, setIsOpenSettings] = useState(false);
 
   const handleDice = () => {
     setDice("Rolling...");
@@ -29,8 +30,12 @@ export const useToolBar = () => {
     }
   };
 
-  const handleRotateBoard = () => {
-    setRotateBoard(!rotateBoard);
+  const handleOpenSettings = () => {
+    setIsOpenSettings(!isOpenSettings);
+  };
+
+  const handleCloseSettings = () => {
+    setIsOpenSettings(false);
   };
 
   return {
@@ -39,6 +44,9 @@ export const useToolBar = () => {
     selectedCard,
     handleDice,
     handleCoin,
-    handleRotateBoard,
+    isOpenSettings,
+    setIsOpenSettings,
+    handleOpenSettings,
+    handleCloseSettings,
   };
 };
