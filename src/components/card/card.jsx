@@ -33,6 +33,7 @@ const Card = ({ card, type, position }) => {
     handleTribute,
     anchorEl,
     handleClose,
+    negateCard,
   } = useCard(position);
 
   return (
@@ -69,10 +70,16 @@ const Card = ({ card, type, position }) => {
             anchorEl,
             openContextMenu,
             handleClose,
+            negateCard,
           }}
         />
         {card && (
-          <Box sx={{ transform: card?.def_mode && "rotate(90deg)" }}>
+          <Box
+            sx={{
+              transform: card?.def_mode && "rotate(90deg)",
+              filter: card?.isNegated && "grayscale(100%)",
+            }}
+          >
             <Grow in>
               <Box
                 component="img"
@@ -93,6 +100,7 @@ const Card = ({ card, type, position }) => {
           openAttack={openAttackModal}
           handleCloseAttack={() => setOpenAttackModal(false)}
           handleDestroyCard={handleDestroy}
+          handleFlipCard={handleFlip}
           target={target}
         />
         <ChangeStatsModal

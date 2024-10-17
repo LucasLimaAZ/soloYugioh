@@ -7,6 +7,7 @@ import {
   AddCircleOutline,
   Search,
   ChangeCircle,
+  Delete,
   DoDisturb,
 } from "@mui/icons-material";
 
@@ -24,6 +25,7 @@ const CardContextMenu = ({
   anchorEl,
   openContextMenu,
   handleClose,
+  negateCard,
 }) => {
   return (
     <Menu
@@ -63,8 +65,11 @@ const CardContextMenu = ({
       <MenuItem onClick={handleFlip}>
         <ChangeCircle /> Flip
       </MenuItem>
+      <MenuItem onClick={negateCard}>
+        <DoDisturb /> Negate
+      </MenuItem>
       <MenuItem onClick={handleDestroy}>
-        <DoDisturb /> Destroy
+        <Delete /> Destroy
       </MenuItem>
     </Menu>
   );

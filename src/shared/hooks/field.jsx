@@ -191,8 +191,17 @@ const useField = () => {
     generateMagicTrap(position);
   };
 
+  const updateCardZone = (card, position) => {
+    setField((prev) => {
+      const newField = [...prev];
+      newField[position] = card;
+      return newField;
+    });
+  };
+
   return {
     field,
+    updateCardZone,
     rotateBoard,
     setRotateBoard,
     generateCard,

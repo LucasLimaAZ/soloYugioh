@@ -50,13 +50,13 @@ export const useAttackCard = (props) => {
     if (props.card?.def_mode) {
       if (defDif === 0) return;
 
-      defDif > 0 ? props.handleDestroyCard() : setPlayerLp(playerLp + defDif);
+      defDif > 0 ? handleDestroyCard() : setPlayerLp(playerLp + defDif);
 
       return;
     }
 
     if (atkDif >= 0) {
-      props.handleDestroyCard();
+      handleDestroyCard();
       if (atkDif > 0) setOpponentLp(opponentLp - atkDif);
     }
 
@@ -65,10 +65,20 @@ export const useAttackCard = (props) => {
     }
   };
 
+  const handleDestroyCard = () => {
+    if (props.card?.face_down) {
+      console.log("aueba? estoy aqui...");
+      props.handleFlipCard();
+      return;
+    }
+
+    props.handleDestroyCard();
+  };
+
   const searchForTrapCards = () => {
     let trapCards = field?.filter((card, index) => {
       if (card) card.fieldPosition = index;
-      return card?.type === "Trap Card";
+      return card?.type === "Trap Card" && !card?.isNegated;
     });
     return trapCards;
   };

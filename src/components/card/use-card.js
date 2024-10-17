@@ -12,6 +12,7 @@ export const useCard = (position) => {
     destroyCard,
     selectCard,
     field,
+    updateCardZone,
   } = useField();
 
   const { sendToGraveyard } = useGraveyard();
@@ -86,6 +87,14 @@ export const useCard = (position) => {
     setOpenChangeStatsModal(false);
   };
 
+  const negateCard = () => {
+    const negatedCard = {
+      ...card,
+      isNegated: !card.isNegated,
+    };
+    updateCardZone(negatedCard, position);
+  };
+
   return {
     handleTribute,
     handleChangePosition,
@@ -109,5 +118,6 @@ export const useCard = (position) => {
     openContextMenu,
     anchorEl,
     handleClose,
+    negateCard,
   };
 };
