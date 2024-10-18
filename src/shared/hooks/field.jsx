@@ -10,12 +10,14 @@ import {
 import { fieldAtom, selectedCardAtom, rotateBoardAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { playSound, isFlipMonster } from "../helper";
+import useHand from "./hand";
 
 const useField = () => {
   const [field, setField] = useAtom(fieldAtom);
   const [rotateBoard, setRotateBoard] = useAtom(rotateBoardAtom);
   const [selectedCard, setSelectedCard] = useAtom(selectedCardAtom);
   const [loading, setLoading] = useState(false);
+  const { decreaseHand, hand } = useHand();
 
   const getFreePosition = () => {
     const spellCardZones = [0, 1, 2, 3, 4];
@@ -183,12 +185,16 @@ const useField = () => {
 
   const handleMonsterClick = (position) => {
     if (field[position]) return;
+    if (hand === 0) return;
     generateMonster(position);
+    decreaseHand();
   };
 
   const handleMagicClick = (position) => {
     if (field[position]) return;
+    if (hand === 0) return;
     generateMagicTrap(position);
+    decreaseHand();
   };
 
   const updateCardZone = (card, position) => {

@@ -67,7 +67,6 @@ export const useAttackCard = (props) => {
 
   const handleDestroyCard = () => {
     if (props.card?.face_down) {
-      console.log("aueba? estoy aqui...");
       props.handleFlipCard();
       return;
     }

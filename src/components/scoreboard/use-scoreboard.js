@@ -4,6 +4,7 @@ import useField from "../../shared/hooks/field";
 import useDeck from "../../shared/hooks/deck";
 import useGraveyard from "../../shared/hooks/graveyard";
 import { playSound } from "../../shared/helper";
+import useHand from "../../shared/hooks/hand";
 
 export const useScoreBoard = () => {
   const [lpInput, setLpInput] = useState(0);
@@ -15,6 +16,7 @@ export const useScoreBoard = () => {
   const { resetField } = useField();
   const { resetDeck } = useDeck();
   const { resetGraveyard } = useGraveyard();
+  const { setHand } = useHand();
 
   const damageOptions = Array.from(new Array(100)).map(
     (_, index) => `${index * 100}`
@@ -68,6 +70,7 @@ export const useScoreBoard = () => {
     resetDeck();
     resetGraveyard();
     setTimeout(() => playSound("start-duel"), 1400);
+    setHand(5);
   };
 
   return {

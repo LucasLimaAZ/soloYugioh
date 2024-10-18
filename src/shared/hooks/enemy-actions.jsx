@@ -20,6 +20,7 @@ import {
 import useField from "./field";
 import { useDifficulty } from "./difficulty";
 import { useEffect } from "react";
+import useHand from "./hand";
 
 const useEnemyActions = () => {
   const [mainPhase, setMainPhase] = useAtom(enemyMainPhaseActions);
@@ -29,6 +30,7 @@ const useEnemyActions = () => {
   );
   const { field } = useField();
   const { difficulty } = useDifficulty();
+  const { hand } = useHand();
 
   useEffect(() => {
     updateBattlePhase();
@@ -68,6 +70,8 @@ const useEnemyActions = () => {
   };
 
   const generateMainPhase = () => {
+    const hasMonsterInHand = Math.random() < 0.5;
+
     const magicTrapAction = randomAction(mainPhaseMagicTrap);
     let mainPhaseMonsterArray = mainPhaseMonster;
 
@@ -91,6 +95,17 @@ const useEnemyActions = () => {
     }
 
     const monsterAction = randomAction(mainPhaseMonsterArray);
+
+    if (hand === 0) {
+      if (hasMonsterInHand) {
+        setMainPhase(["", monsterAction]);
+        return;
+      } else {
+        setMainPhase([magicTrapAction, ""]);
+        return;
+      }
+    }
+
     setMainPhase([magicTrapAction, monsterAction]);
   };
 

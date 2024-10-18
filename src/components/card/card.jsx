@@ -34,6 +34,7 @@ const Card = ({ card, type, position }) => {
     anchorEl,
     handleClose,
     negateCard,
+    returnToHand,
   } = useCard(position);
 
   return (
@@ -71,6 +72,7 @@ const Card = ({ card, type, position }) => {
             openContextMenu,
             handleClose,
             negateCard,
+            returnToHand,
           }}
         />
         {card && (

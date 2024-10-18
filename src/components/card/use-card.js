@@ -2,6 +2,7 @@ import useField from "../../shared/hooks/field";
 import useGraveyard from "../../shared/hooks/graveyard";
 import useLifePoints from "../../shared/hooks/life-points";
 import { useState } from "react";
+import useHand from "../../shared/hooks/hand";
 
 export const useCard = (position) => {
   const {
@@ -25,6 +26,7 @@ export const useCard = (position) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const openContextMenu = Boolean(anchorEl);
   const card = field[position];
+  const { decreaseHand, increaseHand } = useHand();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -65,6 +67,7 @@ export const useCard = (position) => {
 
   const handleEquip = () => {
     generateEquipCard();
+    decreaseHand();
   };
 
   const handleSearchCard = () => {
@@ -85,6 +88,11 @@ export const useCard = (position) => {
     if (newAtk) card.atk = newAtk;
     if (newDef) card.def = newDef;
     setOpenChangeStatsModal(false);
+  };
+
+  const returnToHand = () => {
+    handleDestroy();
+    increaseHand();
   };
 
   const negateCard = () => {
@@ -119,5 +127,6 @@ export const useCard = (position) => {
     anchorEl,
     handleClose,
     negateCard,
+    returnToHand,
   };
 };

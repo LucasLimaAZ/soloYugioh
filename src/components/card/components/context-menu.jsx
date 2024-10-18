@@ -9,6 +9,7 @@ import {
   ChangeCircle,
   Delete,
   DoDisturb,
+  Upload,
 } from "@mui/icons-material";
 
 const CardContextMenu = ({
@@ -26,6 +27,7 @@ const CardContextMenu = ({
   openContextMenu,
   handleClose,
   negateCard,
+  returnToHand,
 }) => {
   return (
     <Menu
@@ -67,6 +69,9 @@ const CardContextMenu = ({
       </MenuItem>
       <MenuItem onClick={negateCard}>
         <DoDisturb /> Negate
+      </MenuItem>
+      <MenuItem onClick={returnToHand}>
+        <Upload /> Return to hand
       </MenuItem>
       <MenuItem onClick={handleDestroy}>
         <Delete /> Destroy
