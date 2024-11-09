@@ -9,7 +9,4 @@ export const mainPhaseMonsterWithTribute = [
   "Enemy summons 1 monster",
 ];
 
-export const mainPhaseMagicTrap = [
-  "Enemy set 1 magic/trap card",
-  "Enemy equips a monster",
-];
+export const mainPhaseMagicTrap = ["Enemy set 1 magic/trap card"];

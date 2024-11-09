@@ -38,6 +38,7 @@ export const useCard = (position) => {
   };
 
   const handleTribute = () => {
+    decreaseHand();
     generateTributeMonster(position);
   };
 

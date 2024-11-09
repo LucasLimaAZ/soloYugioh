@@ -41,6 +41,11 @@ const useEnemyActions = () => {
     return lowLevelMonsters.length > 0;
   };
 
+  const hasFaceUpMonster = () => {
+    let faceUpMonsters = field.filter((card) => !card?.face_down);
+    return faceUpMonsters.length > 0;
+  };
+
   const randomAction = (actionArray) => {
     return actionArray[Math.floor(Math.random() * actionArray.length)];
   };
@@ -71,14 +76,16 @@ const useEnemyActions = () => {
 
   const generateMainPhase = () => {
     const hasMonsterInHand = Math.random() < 0.5;
-
-    const magicTrapAction = randomAction(mainPhaseMagicTrap);
     let mainPhaseMonsterArray = mainPhaseMonster;
 
     if (hasLowLevelMonster()) {
       mainPhaseMonsterArray = mainPhaseMonster.concat(
         mainPhaseMonsterWithTribute
       );
+    }
+
+    if (hasFaceUpMonster()) {
+      mainPhaseMagicTrap.concat("Enemy equips a monster");
     }
 
     if (difficulty === "medium") {
@@ -95,6 +102,7 @@ const useEnemyActions = () => {
     }
 
     const monsterAction = randomAction(mainPhaseMonsterArray);
+    const magicTrapAction = randomAction(mainPhaseMagicTrap);
 
     if (hand === 0) {
       if (hasMonsterInHand) {
