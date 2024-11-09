@@ -1,11 +1,13 @@
 import { useState } from "react";
 import useLifePoints from "../../../shared/hooks/life-points";
 import useField from "../../../shared/hooks/field";
+import { playSound } from "../../../shared/helper";
 
 export const useAttackCard = (props) => {
   const [attack, setAttack] = useState(undefined);
   const [openTrapModal, setOpenTrapModal] = useState(false);
-  const { field } = useField();
+  const [chosenTrapCard, setChosenTrapCard] = useState();
+  const { field, flipCard } = useField();
   const { playerLp, opponentLp, setOpponentLp, setPlayerLp } = useLifePoints();
   const damageOptions = Array.from(new Array(100)).map(
     (_, index) => `${index * 100}`
@@ -28,10 +30,15 @@ export const useAttackCard = (props) => {
     let trapCardsOnField = searchForTrapCards();
 
     if (trapCardsOnField.length) {
-      willUseTrapCard = Math.floor(Math.random() * 10) + 1 < 6;
+      willUseTrapCard = Math.floor(Math.random() * 10) + 1 < 8;
     }
 
+    const trapCard = chooseTrapCard();
+    setChosenTrapCard(trapCard);
+
     if (props.target === "opponent" && willUseTrapCard) {
+      flipCard(trapCard.fieldPosition);
+      playSound("flip-card");
       setOpenTrapModal(true);
     } else calculateDamage();
   };
@@ -42,6 +49,10 @@ export const useAttackCard = (props) => {
   };
 
   const calculateDamage = () => {
+    if (props.card?.face_down) {
+      props.handleFlipCard();
+    }
+
     props.handleCloseAttack();
     let atkDif = Number(attack - props.card?.atk);
     let defDif = Number(attack - props.card?.def);
@@ -77,7 +88,10 @@ export const useAttackCard = (props) => {
   const searchForTrapCards = () => {
     let trapCards = field?.filter((card, index) => {
       if (card) card.fieldPosition = index;
-      return card?.type === "Trap Card" && !card?.isNegated;
+      const isTrapOrQuickSpell =
+        card?.type === "Trap Card" || card?.race === "Quick-Play";
+      const isAvailable = !card?.isNegated && card?.face_down;
+      return isTrapOrQuickSpell && isAvailable;
     });
     return trapCards;
   };
@@ -105,5 +119,6 @@ export const useAttackCard = (props) => {
     handleCloseTrapModal,
     attack,
     handleConfirmAttack,
+    chosenTrapCard,
   };
 };

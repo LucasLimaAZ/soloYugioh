@@ -11,7 +11,6 @@ import {
   Box,
   Autocomplete,
 } from "@mui/material";
-import MiniField from "../../mini-field/mini-field";
 import { useAttackCard } from "./use-attack-card";
 
 const AttackModal = (props) => {
@@ -21,7 +20,7 @@ const AttackModal = (props) => {
     handleAttackChange,
     handleKeyDown,
     handleOptionsChange,
-    chooseTrapCard,
+    chosenTrapCard,
     handleContinueAttack,
     handleCloseTrapModal,
     attack,
@@ -33,7 +32,15 @@ const AttackModal = (props) => {
       <Dialog open={openTrapModal} onClose={handleCloseTrapModal}>
         <DialogTitle>Your opponent used a TRAP CARD!</DialogTitle>
         <DialogContent>
-          <MiniField card={chooseTrapCard()} />
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            {chosenTrapCard && (
+              <Box
+                sx={{ width: "66%", marginY: "16px" }}
+                component="img"
+                src={chosenTrapCard.card_images[0].image_url}
+              />
+            )}
+          </Box>
           <DialogContentText>Continue Attack?</DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -54,25 +61,31 @@ const AttackModal = (props) => {
             padding="4%"
             alignItems="center"
           >
-            <Box
-              sx={{
-                borderRadius: "50%",
-                width: "10vw",
-              }}
-              component="img"
-              src={props.card?.card_images[0].image_url_cropped}
-            />
-            {attack && (
-              <Typography
-                variant="h4"
-                sx={{ color: "red", textShadow: "2px 2px rgba(0,0,0,0.3)" }}
-              >
-                -{" "}
-                {Math.abs(
-                  attack -
-                    (props.card?.def_mode ? props.card?.def : props.card?.atk)
-                ) || 0}
-              </Typography>
+            {!props.card?.face_down && (
+              <>
+                <Box
+                  sx={{
+                    borderRadius: "50%",
+                    width: "10vw",
+                  }}
+                  component="img"
+                  src={props.card?.card_images[0].image_url_cropped}
+                />
+                {attack && (
+                  <Typography
+                    variant="h4"
+                    sx={{ color: "red", textShadow: "2px 2px rgba(0,0,0,0.3)" }}
+                  >
+                    -{" "}
+                    {Math.abs(
+                      attack -
+                        (props.card?.def_mode
+                          ? props.card?.def
+                          : props.card?.atk)
+                    ) || 0}
+                  </Typography>
+                )}
+              </>
             )}
           </Box>
           <DialogContentText>
