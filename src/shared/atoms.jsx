@@ -12,6 +12,7 @@ const selectedCardAtom = atom();
 const bpAttackOrderAtom = atom();
 const difficultyAtom = atom("hard");
 const handAtom = atom(5);
+const playerInfoAtom = atom();
 
 export {
   fieldAtom,
@@ -26,4 +27,5 @@ export {
   bpAttackOrderAtom,
   difficultyAtom,
   handAtom,
+  playerInfoAtom,
 };

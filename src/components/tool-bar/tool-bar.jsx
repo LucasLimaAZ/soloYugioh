@@ -6,6 +6,7 @@ import {
   Box,
   Grid,
   Typography,
+  Button,
 } from "@mui/material";
 import {
   ChangeCircle,
@@ -16,6 +17,7 @@ import {
 import EnemyTurn from "../enemy-turn/enemy-turn";
 import { useToolBar } from "./use-tool-bar";
 import SettingsModal from "../modals/settings/settings";
+import PlayerFieldInfo from "../modals/player-field-info/player-field-info";
 
 const ToolBar = () => {
   const {
@@ -27,13 +29,15 @@ const ToolBar = () => {
     isOpenSettings,
     handleOpenSettings,
     handleCloseSettings,
+    isPlayerMonstersModalOpen,
+    setIsPlayerMonstersModalOpen,
   } = useToolBar();
 
   return (
     <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
       <Toolbar>
         <Grid container>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Box
               display="flex"
               justifyContent="center"
@@ -72,11 +76,26 @@ const ToolBar = () => {
             </Box>
           </Grid>
           <Grid
+            xs={4}
             display="flex"
             alignItems="center"
             justifyContent="center"
             item
-            xs={6}
+          >
+            <Button
+              sx={{ color: "white" }}
+              variant="outlined"
+              onClick={() => setIsPlayerMonstersModalOpen(true)}
+            >
+              Player monsters
+            </Button>
+          </Grid>
+          <Grid
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            item
+            xs={4}
           >
             <Description />
             <Typography fontSize="11px" paddingLeft="5px">
@@ -85,6 +104,10 @@ const ToolBar = () => {
           </Grid>
         </Grid>
       </Toolbar>
+      <PlayerFieldInfo
+        open={isPlayerMonstersModalOpen}
+        onClose={() => setIsPlayerMonstersModalOpen(false)}
+      />
     </AppBar>
   );
 };

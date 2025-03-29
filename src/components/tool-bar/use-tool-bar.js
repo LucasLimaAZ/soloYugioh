@@ -5,6 +5,7 @@ export const useToolBar = () => {
   const [coin, setCoin] = useState("Heads");
   const [dice, setDice] = useState("6");
   const { selectedCard } = useField();
+  const [isPlayerMonstersModalOpen, setIsPlayerMonstersModalOpen] = useState();
   const [isOpenSettings, setIsOpenSettings] = useState(false);
 
   const handleDice = () => {
@@ -48,5 +49,7 @@ export const useToolBar = () => {
     setIsOpenSettings,
     handleOpenSettings,
     handleCloseSettings,
+    isPlayerMonstersModalOpen,
+    setIsPlayerMonstersModalOpen,
   };
 };

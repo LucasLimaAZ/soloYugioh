@@ -10,6 +10,7 @@ import {
 import { fieldAtom, selectedCardAtom, rotateBoardAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { playSound, isFlipMonster } from "../helper";
+import usePlayerInfo from "../hooks/player-info";
 import useHand from "./hand";
 
 const useField = () => {
@@ -18,6 +19,7 @@ const useField = () => {
   const [selectedCard, setSelectedCard] = useAtom(selectedCardAtom);
   const [loading, setLoading] = useState(false);
   const { decreaseHand, hand } = useHand();
+  const { playerInfo } = usePlayerInfo();
 
   const getFreePosition = () => {
     const spellCardZones = [0, 1, 2, 3, 4];
@@ -32,18 +34,26 @@ const useField = () => {
   };
   const generateMonster = (position) => {
     if (loading) return;
+
     setLoading(true);
     playSound("summon-monster");
+
     getRandomMonster()
       .then((response) => {
         let newField = [...field];
         let randomCardIndex = Math.floor(Math.random() * response.data.length);
         let card = response.data[randomCardIndex];
+        const isFaceDownDefense =
+          card.atk < card.def ||
+          isFlipMonster(card) ||
+          card.atk < playerInfo.stat;
+
         newField[position] = {
           ...card,
-          def_mode: card.atk < card.def || isFlipMonster(card),
-          face_down: card.atk < card.def || isFlipMonster(card),
+          def_mode: isFaceDownDefense,
+          face_down: isFaceDownDefense,
         };
+
         setField(newField);
       })
       .catch((err) => console.error("Could not generate monster", err))
