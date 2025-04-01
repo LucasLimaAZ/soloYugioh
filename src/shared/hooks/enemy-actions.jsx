@@ -75,8 +75,8 @@ const useEnemyActions = () => {
   };
 
   const generateMainPhase = () => {
-    const hasMonsterInHand = Math.random() < 0.5;
     let mainPhaseMonsterArray = mainPhaseMonster;
+    let mainPhaseMagicTrapArray = mainPhaseMagicTrap;
 
     if (hasLowLevelMonster()) {
       mainPhaseMonsterArray = mainPhaseMonster.concat(
@@ -85,7 +85,9 @@ const useEnemyActions = () => {
     }
 
     if (hasFaceUpMonster()) {
-      mainPhaseMagicTrap.concat("Enemy equips a monster");
+      mainPhaseMagicTrapArray = mainPhaseMagicTrapArray.concat(
+        "Enemy equips a monster"
+      );
     }
 
     if (difficulty === "medium") {
@@ -101,11 +103,12 @@ const useEnemyActions = () => {
       ]);
     }
 
+    console.log(mainPhaseMagicTrapArray);
     const monsterAction = randomAction(mainPhaseMonsterArray);
-    const magicTrapAction = randomAction(mainPhaseMagicTrap);
+    const magicTrapAction = randomAction(mainPhaseMagicTrapArray);
 
     if (hand === 0) {
-      if (hasMonsterInHand) {
+      if (Math.random() < 0.5) {
         setMainPhase(["", monsterAction]);
         return;
       } else {

@@ -12,7 +12,26 @@ const useGraveyard = () => {
     setGraveyard([]);
   };
 
-  return { sendToGraveyard, graveyard, resetGraveyard };
+  const banishCard = (removedCard) => {
+    setGraveyard(graveyard.filter((card) => card.attribute !== removedCard));
+  };
+
+  const banishLightAndDarkFromGy = () => {
+    const lightCard = graveyard.find((card) => card?.attribute === "LIGHT");
+    const darkCard = graveyard.find((card) => card?.attribute === "DARK");
+
+    setGraveyard(
+      graveyard.filter((card) => card !== lightCard && card !== darkCard)
+    );
+  };
+
+  return {
+    sendToGraveyard,
+    graveyard,
+    resetGraveyard,
+    banishCard,
+    banishLightAndDarkFromGy,
+  };
 };
 
 export default useGraveyard;

@@ -11,6 +11,8 @@ import { fieldAtom, selectedCardAtom, rotateBoardAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { playSound, isFlipMonster } from "../helper";
 import useHand from "./hand";
+import useGraveyard from "./graveyard";
+import SpecialSummonMonsters from "../../shared/cardLists/specialSummonMonsters.json";
 
 const useField = () => {
   const [field, setField] = useAtom(fieldAtom);
@@ -18,6 +20,7 @@ const useField = () => {
   const [selectedCard, setSelectedCard] = useAtom(selectedCardAtom);
   const [loading, setLoading] = useState(false);
   const { decreaseHand, hand } = useHand();
+  const { graveyard, banishLightAndDarkFromGy } = useGraveyard();
 
   const getFreePosition = () => {
     const spellCardZones = [0, 1, 2, 3, 4];
@@ -30,24 +33,50 @@ const useField = () => {
 
     return null;
   };
-  const generateMonster = (position) => {
+
+  const hasLightAndDarkOnGy = () => {
+    const hasLight = graveyard.some((card) => card?.attribute === "LIGHT");
+    const hasDark = graveyard.some((card) => card?.attribute === "DARK");
+
+    return hasLight && hasDark;
+  };
+
+  const generateMonster = async (position) => {
     if (loading) return;
     setLoading(true);
     playSound("summon-monster");
-    getRandomMonster()
-      .then((response) => {
-        let newField = [...field];
+
+    try {
+      let card;
+
+      if (hasLightAndDarkOnGy()) {
+        let randomIndex = Math.floor(
+          Math.random() * SpecialSummonMonsters.length
+        );
+        let specialMonsterId = SpecialSummonMonsters[randomIndex];
+
+        const response = await getCard(specialMonsterId);
+        card = response.data[0];
+        banishLightAndDarkFromGy();
+      } else {
+        const response = await getRandomMonster();
         let randomCardIndex = Math.floor(Math.random() * response.data.length);
-        let card = response.data[randomCardIndex];
-        newField[position] = {
-          ...card,
-          def_mode: card.atk < card.def || isFlipMonster(card),
-          face_down: card.atk < card.def || isFlipMonster(card),
-        };
-        setField(newField);
-      })
-      .catch((err) => console.error("Could not generate monster", err))
-      .finally(() => setLoading(false));
+        card = response.data[randomCardIndex];
+      }
+
+      let newField = [...field];
+      newField[position] = {
+        ...card,
+        def_mode: card.atk < card.def || isFlipMonster(card),
+        face_down: card.atk < card.def || isFlipMonster(card),
+      };
+
+      setField(newField);
+    } catch (err) {
+      console.error("Could not generate monster", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const generateTributeMonster = (position) => {

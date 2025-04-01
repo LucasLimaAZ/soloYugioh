@@ -15,7 +15,7 @@ const MainPhase = () => {
     <Box>
       <Box paddingY="12px">
         {mainPhase.map((action) => (
-          <Typography>{action}</Typography>
+          <Typography key={action}>{action}</Typography>
         ))}
       </Box>
       <Accordion>
