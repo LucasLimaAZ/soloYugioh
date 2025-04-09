@@ -1,5 +1,6 @@
 import { graveyardAtom } from "../atoms";
 import { useAtom } from "jotai";
+import { getRandomGoatFormatCard } from "../services/cards";
 
 const useGraveyard = () => {
   const [graveyard, setGraveyard] = useAtom(graveyardAtom);
@@ -13,7 +14,7 @@ const useGraveyard = () => {
   };
 
   const banishCard = (removedCard) => {
-    setGraveyard(graveyard.filter((card) => card.attribute !== removedCard));
+    setGraveyard(graveyard.filter((card) => card !== removedCard));
   };
 
   const banishLightAndDarkFromGy = () => {
@@ -25,12 +26,18 @@ const useGraveyard = () => {
     );
   };
 
+  const addRandomCardToGy = async () => {
+    const randomCard = await getRandomGoatFormatCard();
+    setGraveyard(graveyard.concat(randomCard));
+  };
+
   return {
     sendToGraveyard,
     graveyard,
     resetGraveyard,
     banishCard,
     banishLightAndDarkFromGy,
+    addRandomCardToGy,
   };
 };
 

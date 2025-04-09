@@ -4,13 +4,7 @@ import {
   bpAttackOrderAtom,
 } from "../atoms";
 import { useAtom } from "jotai";
-import {
-  mainPhaseMagicTrap,
-  mainPhaseMonster,
-  mainPhaseMonsterMedium,
-  mainPhaseMonsterHard,
-  mainPhaseMonsterWithTribute,
-} from "../actions/main-phase";
+import mainPhaseActions from "../actions/main-phase.ts";
 import {
   attackDefenseMonster,
   attackMonster,
@@ -21,6 +15,15 @@ import useField from "./field";
 import { useDifficulty } from "./difficulty";
 import { useEffect } from "react";
 import useHand from "./hand";
+
+const {
+  mainPhaseMonster,
+  mainPhaseMonsterMedium,
+  mainPhaseMonsterHard,
+  mainPhaseMonsterWithTribute,
+  mainPhaseMagicTrap,
+  mainPhaseMagicTrapMedium,
+} = mainPhaseActions;
 
 const useEnemyActions = () => {
   const [mainPhase, setMainPhase] = useAtom(enemyMainPhaseActions);
@@ -75,49 +78,70 @@ const useEnemyActions = () => {
   };
 
   const generateMainPhase = () => {
-    let mainPhaseMonsterArray = mainPhaseMonster;
-    let mainPhaseMagicTrapArray = mainPhaseMagicTrap;
+    let mainPhaseMonsterArray = [...mainPhaseMonster];
+    let mainPhaseMagicTrapArray = [...mainPhaseMagicTrap];
 
+    // Adds tribute summon to actions
     if (hasLowLevelMonster()) {
-      mainPhaseMonsterArray = mainPhaseMonster.concat(
+      mainPhaseMonsterArray = mainPhaseMonsterArray.concat(
         mainPhaseMonsterWithTribute
       );
     }
 
+    // Adds equip card to actions
     if (hasFaceUpMonster()) {
-      mainPhaseMagicTrapArray = mainPhaseMagicTrapArray.concat(
-        "Enemy equips a monster"
-      );
+      mainPhaseMagicTrapArray = mainPhaseMagicTrapArray.concat({
+        action: "Enemy equips a monster",
+        resourceAmount: 1,
+      });
     }
 
+    // Adds medium difficulty moves to actions
     if (difficulty === "medium") {
       mainPhaseMonsterArray = mainPhaseMonsterArray.concat(
         mainPhaseMonsterMedium
       );
+      mainPhaseMagicTrapArray = mainPhaseMagicTrapArray.concat(
+        mainPhaseMagicTrapMedium
+      );
     }
 
+    // Adds hard difficulty moves to actions
     if (difficulty === "hard") {
       mainPhaseMonsterArray = mainPhaseMonsterArray.concat([
         ...mainPhaseMonsterHard,
         ...mainPhaseMonsterMedium,
       ]);
+      mainPhaseMagicTrapArray = mainPhaseMagicTrapArray.concat(
+        mainPhaseMagicTrapMedium
+      );
     }
 
-    console.log(mainPhaseMagicTrapArray);
     const monsterAction = randomAction(mainPhaseMonsterArray);
     const magicTrapAction = randomAction(mainPhaseMagicTrapArray);
 
-    if (hand === 0) {
-      if (Math.random() < 0.5) {
-        setMainPhase(["", monsterAction]);
+    const totalResources =
+      (monsterAction?.resourceAmount || 0) +
+      (magicTrapAction?.resourceAmount || 0);
+
+    if (totalResources > hand) {
+      if (monsterAction.resourceAmount <= hand) {
+        setMainPhase(["", monsterAction.action]);
+        return;
+      } else if (magicTrapAction.resourceAmount <= hand) {
+        setMainPhase([magicTrapAction.action, ""]);
         return;
       } else {
-        setMainPhase([magicTrapAction, ""]);
+        if (Math.random() >= 0.5) {
+          setMainPhase(["Enemy sets 1 spell/trap card", ""]);
+        } else {
+          setMainPhase(["", "Enemy summons 1 monster"]);
+        }
         return;
       }
     }
 
-    setMainPhase([magicTrapAction, monsterAction]);
+    setMainPhase([magicTrapAction.action, monsterAction.action]);
   };
 
   return {

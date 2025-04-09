@@ -25,7 +25,7 @@ const AttackModal = (props) => {
     handleCloseTrapModal,
     attack,
     handleConfirmAttack,
-  } = useAttackCard(props);
+  } = useAttackCard({ ...props, direct: true });
 
   return (
     <>
@@ -52,7 +52,7 @@ const AttackModal = (props) => {
         <DialogTitle>
           {props.target === "you"
             ? "Recieve attack from this monster"
-            : "Attack this monster"}
+            : `Attack ${props.direct ? "directly" : "this monster"}`}
         </DialogTitle>
         <DialogContent>
           <Box

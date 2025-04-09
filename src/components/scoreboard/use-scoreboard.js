@@ -11,6 +11,7 @@ export const useScoreBoard = () => {
   const [opponentLpInput, setOpponentLpInput] = useState(0);
   const [previousLp, setPreviousLp] = useState(8000);
   const [opponentPreviousLp, setOpponentPreviousLp] = useState(8000);
+  const [isOpenAttackModal, setIsOpenAttackModal] = useState();
 
   const { playerLp, setPlayerLp, opponentLp, setOpponentLp } = useLifePoints();
   const { resetField } = useField();
@@ -88,5 +89,7 @@ export const useScoreBoard = () => {
     opponentPreviousLp,
     opponentLp,
     playerLp,
+    isOpenAttackModal,
+    setIsOpenAttackModal,
   };
 };

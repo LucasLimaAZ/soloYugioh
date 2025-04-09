@@ -10,6 +10,7 @@ import {
   Delete,
   DoDisturb,
   Upload,
+  Refresh,
 } from "@mui/icons-material";
 
 const CardContextMenu = ({
@@ -28,6 +29,7 @@ const CardContextMenu = ({
   handleClose,
   negateCard,
   returnToHand,
+  changeCard,
 }) => {
   return (
     <Menu
@@ -70,10 +72,15 @@ const CardContextMenu = ({
       <MenuItem onClick={negateCard}>
         <DoDisturb /> Negate
       </MenuItem>
-      <MenuItem onClick={returnToHand}>
+      <MenuItem onClick={() => returnToHand(type === "monster")}>
         <Upload /> Return to hand
       </MenuItem>
-      <MenuItem onClick={handleDestroy}>
+      {type !== "monster" && (
+        <MenuItem onClick={changeCard}>
+          <Refresh /> Change card
+        </MenuItem>
+      )}
+      <MenuItem onClick={() => handleDestroy(type === "monster")}>
         <Delete /> Destroy
       </MenuItem>
     </Menu>

@@ -17,5 +17,4 @@ export const attackDefenseMonster = [
 export const attackSetMonster = [
   "1st (left to right) set DEF monster",
   "Last (left to right) set DEF monster",
-  "Do NOT attack set monsters",
 ];

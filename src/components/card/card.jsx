@@ -35,7 +35,8 @@ const Card = ({ card, type, position }) => {
     handleClose,
     negateCard,
     returnToHand,
-  } = useCard(position);
+    changeCard,
+  } = useCard(position, type);
 
   return (
     <Box
@@ -73,6 +74,7 @@ const Card = ({ card, type, position }) => {
             handleClose,
             negateCard,
             returnToHand,
+            changeCard,
           }}
         />
         {card && (

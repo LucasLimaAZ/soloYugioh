@@ -33,10 +33,14 @@ export const useAttackCard = (props) => {
       willUseTrapCard = Math.floor(Math.random() * 10) + 1 < 8;
     }
 
+    if (trapCardsOnField.length && opponentLp <= 3000) {
+      willUseTrapCard = true;
+    }
+
     const trapCard = chooseTrapCard();
     setChosenTrapCard(trapCard);
 
-    if (props.target === "opponent" && willUseTrapCard) {
+    if (props.target !== "you" && willUseTrapCard) {
       flipCard(trapCard.fieldPosition);
       playSound("flip-card");
       setOpenTrapModal(true);
@@ -48,9 +52,18 @@ export const useAttackCard = (props) => {
     props.handleCloseAttack();
   };
 
+  const directDamage = () => {
+    setOpponentLp(opponentLp - attack);
+  };
+
   const calculateDamage = () => {
     if (props.card?.face_down) {
       props.handleFlipCard();
+    }
+
+    if (!props.card) {
+      directDamage();
+      return;
     }
 
     props.handleCloseAttack();

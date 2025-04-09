@@ -171,8 +171,13 @@ const useField = () => {
     setField(newField);
   };
 
-  const destroyCard = (position) => {
-    playSound("destroy-card");
+  const destroyCard = (position, isMonster = true) => {
+    if (isMonster) {
+      playSound("destroy-card");
+    } else {
+      playSound("flip-card");
+    }
+
     let newField = [...field];
     newField[position] = undefined;
     setField(newField);

@@ -4,7 +4,7 @@ import useLifePoints from "../../shared/hooks/life-points";
 import { useState } from "react";
 import useHand from "../../shared/hooks/hand";
 
-export const useCard = (position) => {
+export const useCard = (position, type) => {
   const {
     generateTributeMonster,
     changeMonsterPosition,
@@ -14,6 +14,7 @@ export const useCard = (position) => {
     selectCard,
     field,
     updateCardZone,
+    generateMagicTrap,
   } = useField();
 
   const { sendToGraveyard } = useGraveyard();
@@ -26,6 +27,7 @@ export const useCard = (position) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const openContextMenu = Boolean(anchorEl);
   const card = field[position];
+  const isMonster = type === "monster";
   const { decreaseHand, increaseHand } = useHand();
 
   const handleClick = (event) => {
@@ -76,7 +78,7 @@ export const useCard = (position) => {
   };
 
   const handleDestroy = () => {
-    destroyCard(position);
+    destroyCard(position, isMonster);
     sendToGraveyard(card);
     handleClose();
   };
@@ -92,8 +94,13 @@ export const useCard = (position) => {
   };
 
   const returnToHand = () => {
-    handleDestroy();
+    handleDestroy(isMonster);
     increaseHand();
+  };
+
+  const changeCard = () => {
+    handleDestroy(position);
+    generateMagicTrap(position);
   };
 
   const negateCard = () => {
@@ -129,5 +136,6 @@ export const useCard = (position) => {
     handleClose,
     negateCard,
     returnToHand,
+    changeCard,
   };
 };

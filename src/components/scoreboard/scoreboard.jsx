@@ -12,8 +12,10 @@ import {
   AddCircleOutline as AddCircleIcon,
   RemoveCircleOutline as RemoveCircleIcon,
   RestartAlt as RestartAltIcon,
+  ArrowUpward as ArrowUpwardIcon,
 } from "@mui/icons-material";
 import { useScoreBoard } from "./use-scoreboard";
+import AttackModal from "../modals/attack-card/attack-card";
 
 const ScoreBoard = () => {
   const {
@@ -31,6 +33,8 @@ const ScoreBoard = () => {
     opponentPreviousLp,
     opponentLp,
     playerLp,
+    isOpenAttackModal,
+    setIsOpenAttackModal,
   } = useScoreBoard();
 
   return (
@@ -86,9 +90,16 @@ const ScoreBoard = () => {
           <CountUp duration={0.875} start={previousLp} end={playerLp} />
         </Typography>
       </Box>
-      <Box display="flex" justifyContent="center">
-        <Button onClick={handleResetDuel} color="primary" variant="contained">
+      <Box display="flex" justifyContent="center" gap="16px">
+        <Button onClick={handleResetDuel} color="info" variant="outlined">
           <RestartAltIcon />
+        </Button>
+        <Button
+          onClick={() => setIsOpenAttackModal(true)}
+          color="primary"
+          variant="contained"
+        >
+          <ArrowUpwardIcon />
         </Button>
       </Box>
       <Box display="flex" paddingRight="3%">
@@ -143,6 +154,11 @@ const ScoreBoard = () => {
           <RemoveCircleIcon />
         </Button>
       </Box>
+      <AttackModal
+        handleCloseAttack={() => setIsOpenAttackModal(false)}
+        openAttack={isOpenAttackModal}
+        direct={true}
+      />
     </Paper>
   );
 };

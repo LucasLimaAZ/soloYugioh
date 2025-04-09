@@ -1,6 +1,6 @@
 import axios from "axios";
 import trapCards from "../cardLists/trapCards.json";
-import damageSpellCards from "../cardLists/damageSpellCards.json";
+import normalSpellCards from "../cardLists/normalSpellCards.json";
 import equipSpellCards from "../cardLists/equipSpellCards.json";
 import effectMonsters from "../cardLists/effectMonsters.json";
 import flipMonsters from "../cardLists/flipMonsters.json";
@@ -21,10 +21,18 @@ export const getRandomCard = () => {
   return axios.get(`${baseUrl}/randomcard.php`).then((res) => res.data);
 };
 
+export const getRandomGoatFormatCard = () => {
+  return axios.get(`${baseUrl}/cardinfo.php?enddate=2005-05-01`).then((res) => {
+    const card =
+      res.data.data[Math.floor(Math.random() * res.data.data.length)];
+    return card;
+  });
+};
+
 export const getRandomDamageLpSpell = () => {
-  let randomNumber = Math.floor(Math.random() * damageSpellCards.length);
+  let randomNumber = Math.floor(Math.random() * normalSpellCards.length);
   return axios
-    .get(`${baseUrl}/cardinfo.php?id=${damageSpellCards[randomNumber]}`)
+    .get(`${baseUrl}/cardinfo.php?id=${normalSpellCards[randomNumber]}`)
     .then((res) => res.data);
 };
 
