@@ -12,6 +12,7 @@ export const useScoreBoard = () => {
   const [previousLp, setPreviousLp] = useState(8000);
   const [opponentPreviousLp, setOpponentPreviousLp] = useState(8000);
   const [isOpenAttackModal, setIsOpenAttackModal] = useState();
+  const [isOpenResetModal, setIsOpenResetModal] = useState();
 
   const { playerLp, setPlayerLp, opponentLp, setOpponentLp } = useLifePoints();
   const { resetField } = useField();
@@ -19,9 +20,10 @@ export const useScoreBoard = () => {
   const { resetGraveyard } = useGraveyard();
   const { setHand } = useHand();
 
-  const damageOptions = Array.from(new Array(100)).map(
-    (_, index) => `${index * 100}`
-  );
+  const damageOptions = [
+    `${Math.floor(playerLp / 2)}`,
+    ...Array.from(new Array(200)).map((_, index) => `${index * 50}`),
+  ];
 
   const handleAddPlayerLp = () => {
     setPreviousLp(playerLp);
@@ -91,5 +93,7 @@ export const useScoreBoard = () => {
     playerLp,
     isOpenAttackModal,
     setIsOpenAttackModal,
+    setIsOpenResetModal,
+    isOpenResetModal,
   };
 };

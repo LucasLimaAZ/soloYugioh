@@ -45,7 +45,7 @@ const useEnemyActions = () => {
   };
 
   const hasFaceUpMonster = () => {
-    let faceUpMonsters = field.filter((card) => !card?.face_down);
+    let faceUpMonsters = field.filter((card) => card?.atk && !card?.face_down);
     return faceUpMonsters.length > 0;
   };
 
@@ -124,11 +124,13 @@ const useEnemyActions = () => {
       (monsterAction?.resourceAmount || 0) +
       (magicTrapAction?.resourceAmount || 0);
 
-    if (totalResources > hand) {
-      if (monsterAction.resourceAmount <= hand) {
+    const effectiveHand = hand + 1;
+
+    if (totalResources > effectiveHand) {
+      if (monsterAction.resourceAmount <= effectiveHand) {
         setMainPhase(["", monsterAction.action]);
         return;
-      } else if (magicTrapAction.resourceAmount <= hand) {
+      } else if (magicTrapAction.resourceAmount <= effectiveHand) {
         setMainPhase([magicTrapAction.action, ""]);
         return;
       } else {

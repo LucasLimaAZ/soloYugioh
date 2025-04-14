@@ -9,8 +9,8 @@ export const useAttackCard = (props) => {
   const [chosenTrapCard, setChosenTrapCard] = useState();
   const { field, flipCard } = useField();
   const { playerLp, opponentLp, setOpponentLp, setPlayerLp } = useLifePoints();
-  const damageOptions = Array.from(new Array(100)).map(
-    (_, index) => `${index * 100}`
+  const damageOptions = Array.from(new Array(200)).map(
+    (_, index) => `${index * 50}`
   );
 
   const handleAttackChange = (e) => {

@@ -28,7 +28,7 @@ export const useCard = (position, type) => {
   const openContextMenu = Boolean(anchorEl);
   const card = field[position];
   const isMonster = type === "monster";
-  const { decreaseHand, increaseHand } = useHand();
+  const { decreaseHand, increaseHand, hand } = useHand();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,6 +40,7 @@ export const useCard = (position, type) => {
   };
 
   const handleTribute = () => {
+    if (hand === 0) return;
     decreaseHand();
     generateTributeMonster(position);
   };
@@ -99,7 +100,6 @@ export const useCard = (position, type) => {
   };
 
   const changeCard = () => {
-    handleDestroy(position);
     generateMagicTrap(position);
   };
 

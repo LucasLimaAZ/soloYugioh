@@ -54,9 +54,7 @@ export const getRandomTrap = () => {
 };
 
 export const getRandomTribute = () => {
-  let monsterUrl = `${baseUrl}/cardinfo.php?type=normal%20monster&${
-    Math.random() >= 0.3 ? "atk" : "def"
-  }=gte2000&level=${Math.random() >= 0.5 ? "5" : "6"}`;
+  let monsterUrl = `${baseUrl}/cardinfo.php?type=normal%20monster&atk=gte2300&def=lte2300&enddate=2005-05-01`;
   return axios.get(monsterUrl).then((res) => res.data);
 };
 

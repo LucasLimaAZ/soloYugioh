@@ -16,10 +16,12 @@ import {
 } from "@mui/icons-material";
 import { useScoreBoard } from "./use-scoreboard";
 import AttackModal from "../modals/attack-card/attack-card";
+import ResetDuelConfirmationModal from "../modals/confirmation/confirmation";
 
 const ScoreBoard = () => {
   const {
-    handleResetDuel,
+    isOpenResetModal,
+    setIsOpenResetModal,
     handleOpponentInputChange,
     handleOpponentOptionChange,
     handleLpOptionChange,
@@ -91,7 +93,11 @@ const ScoreBoard = () => {
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center" gap="16px">
-        <Button onClick={handleResetDuel} color="info" variant="outlined">
+        <Button
+          onClick={() => setIsOpenResetModal(true)}
+          color="info"
+          variant="outlined"
+        >
           <RestartAltIcon />
         </Button>
         <Button
@@ -158,6 +164,11 @@ const ScoreBoard = () => {
         handleCloseAttack={() => setIsOpenAttackModal(false)}
         openAttack={isOpenAttackModal}
         direct={true}
+      />
+      <ResetDuelConfirmationModal
+        isOpenResetModal={isOpenResetModal}
+        handleCloseResetModal={() => setIsOpenResetModal(false)}
+        handleCancel={() => setIsOpenResetModal(false)}
       />
     </Paper>
   );
