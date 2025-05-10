@@ -1,7 +1,15 @@
 import React from "react";
-import { Modal, Box, Typography, Button, IconButton } from "@mui/material";
+import {
+  Modal,
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  Divider,
+} from "@mui/material";
 import { ShieldMoon } from "@mui/icons-material";
 import { useEnemyTurn } from "./use-enemy-turn";
+import MarikImg from "../../assets/img/characters/marik.png";
 
 const EnemyTurn = () => {
   const {
@@ -45,10 +53,22 @@ const EnemyTurn = () => {
                   Generate opponent turn
                 </Button>
               </Box>
-              <Box padding="4%" marginBottom="32px">
+              <Divider sx={{ marginY: "16px" }} />
+              <Box
+                padding="4%"
+                marginBottom="32px"
+                sx={{
+                  background: activePhase !== 3 && `url(${MarikImg})`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  minHeight: "240px",
+                  backgroundPosition: "right",
+                }}
+              >
                 {mainPhase && phases[activePhase].content}
               </Box>
             </Box>
+            <Divider sx={{ marginY: "16px" }} />
             <Box display="flex" justifyContent="space-between">
               <Button
                 disabled={activePhase === 0}
