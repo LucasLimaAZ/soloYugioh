@@ -68,7 +68,7 @@ export const useScoreBoard = () => {
   const handleResetDuel = () => {
     localStorage.setItem("standby-phase-text", "");
     setPlayerLp(8000);
-    setOpponentLp(8000);
+    setOpponentLp(8000, false);
     resetField();
     resetDeck();
     resetGraveyard();

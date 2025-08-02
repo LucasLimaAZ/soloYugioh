@@ -8,6 +8,7 @@ import CalculatedSound from "../assets/sounds/calculated.ogg";
 import FinishSound from "../assets/sounds/endedDuel.ogg";
 import StartDuelSound from "../assets/sounds/duelStart.ogg";
 import VictorySound from "../assets/sounds/victory.ogg";
+import DefeatSound from "../assets/sounds/defeat.ogg";
 
 const sounds = {
   "destroy-card": DestroyCardSound,
@@ -19,6 +20,7 @@ const sounds = {
   "finish-duel": FinishSound,
   "start-duel": StartDuelSound,
   "player-victory": VictorySound,
+  "player-defeat": DefeatSound,
 };
 
 export const playSound = (sound) => {

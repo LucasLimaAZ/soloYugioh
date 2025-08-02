@@ -13,32 +13,40 @@ const useLifePoints = () => {
     }, 700);
   };
 
-  const setPlayerLp = (newLp) => {
-    if (newLp <= 0) {
-      setPlayerLifePoints(0);
-      playDamageSound();
-      setTimeout(() => {
-        playSound("finish-duel");
-      }, 1200);
-      return;
-    }
+  const setPlayerLp = (newLp, playsound = true) => {
+    const lp = Math.max(0, newLp);
+    setPlayerLifePoints(lp);
 
-    setPlayerLifePoints(newLp);
-    playDamageSound();
+    if (playsound) {
+      playDamageSound();
+      if (lp === 0) {
+        setTimeout(() => {
+          playSound("finish-duel");
+        }, 1200);
+
+        setTimeout(() => {
+          playSound("player-defeat");
+        }, 2000);
+      }
+    }
   };
 
-  const setOpponentLp = (newLp) => {
-    if (newLp <= 0) {
-      playDamageSound();
-      setOpponentLifePoints(0);
-      setTimeout(() => {
-        playSound("finish-duel");
-      }, 1200);
-      return;
-    }
+  const setOpponentLp = (newLp, playsound = true) => {
+    const lp = Math.max(0, newLp);
+    setOpponentLifePoints(lp);
 
-    setOpponentLifePoints(newLp);
-    playDamageSound();
+    if (playsound) {
+      playDamageSound();
+      if (lp === 0) {
+        setTimeout(() => {
+          playSound("finish-duel");
+        }, 1200);
+
+        setTimeout(() => {
+          playSound("player-victory");
+        }, 2000);
+      }
+    }
   };
 
   return {
