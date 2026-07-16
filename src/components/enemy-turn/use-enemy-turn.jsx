@@ -25,7 +25,7 @@ export const useEnemyTurn = () => {
   };
 
   const handleEnemyTurn = () => {
-    generateMainPhase();
+    generateMainPhase({ handAfterDraw: true });
     generateBattlePhase();
     handleReset();
   };

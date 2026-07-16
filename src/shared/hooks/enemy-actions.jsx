@@ -4,7 +4,7 @@ import {
   bpAttackOrderAtom,
 } from "../atoms";
 import { useAtom } from "jotai";
-import mainPhaseActions from "../actions/main-phase.ts";
+import mainPhaseActions from "../actions/main-phase.js";
 import {
   attackDefenseMonster,
   attackMonster,
@@ -29,7 +29,7 @@ const useEnemyActions = () => {
   const [mainPhase, setMainPhase] = useAtom(enemyMainPhaseActions);
   const [bpAttackOrder, setBpAttackOrder] = useAtom(bpAttackOrderAtom);
   const [battlePhasePriority, setBattlePhasePriority] = useAtom(
-    enemyBattlePhaseActions
+    enemyBattlePhaseActions,
   );
   const { field } = useField();
   const { difficulty } = useDifficulty();
@@ -55,7 +55,7 @@ const useEnemyActions = () => {
 
   const updateBattlePhase = () => {
     const attackMonsters = field.filter(
-      (card) => card?.atk > 0 && !card?.face_down && !card?.def_mode
+      (card) => card?.atk > 0 && !card?.face_down && !card?.def_mode,
     );
 
     setBpAttackOrder(attackMonsters.sort((a, b) => a.atk - b.atk));
@@ -77,14 +77,14 @@ const useEnemyActions = () => {
     ]);
   };
 
-  const generateMainPhase = () => {
+  const generateMainPhase = ({ handAfterDraw }) => {
     let mainPhaseMonsterArray = [...mainPhaseMonster];
     let mainPhaseMagicTrapArray = [...mainPhaseMagicTrap];
 
     // Adds tribute summon to actions
     if (hasLowLevelMonster()) {
       mainPhaseMonsterArray = mainPhaseMonsterArray.concat(
-        mainPhaseMonsterWithTribute
+        mainPhaseMonsterWithTribute,
       );
     }
 
@@ -99,10 +99,10 @@ const useEnemyActions = () => {
     // Adds medium difficulty moves to actions
     if (difficulty === "medium") {
       mainPhaseMonsterArray = mainPhaseMonsterArray.concat(
-        mainPhaseMonsterMedium
+        mainPhaseMonsterMedium,
       );
       mainPhaseMagicTrapArray = mainPhaseMagicTrapArray.concat(
-        mainPhaseMagicTrapMedium
+        mainPhaseMagicTrapMedium,
       );
     }
 
@@ -113,7 +113,7 @@ const useEnemyActions = () => {
         ...mainPhaseMonsterMedium,
       ]);
       mainPhaseMagicTrapArray = mainPhaseMagicTrapArray.concat(
-        mainPhaseMagicTrapMedium
+        mainPhaseMagicTrapMedium,
       );
     }
 
@@ -124,7 +124,7 @@ const useEnemyActions = () => {
       (monsterAction?.resourceAmount || 0) +
       (magicTrapAction?.resourceAmount || 0);
 
-    const effectiveHand = hand + 1;
+    const effectiveHand = handAfterDraw ? hand + 1 : hand;
 
     if (totalResources > effectiveHand) {
       if (monsterAction.resourceAmount <= effectiveHand) {

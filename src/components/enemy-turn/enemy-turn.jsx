@@ -55,7 +55,6 @@ const EnemyTurn = () => {
               </Box>
               <Divider sx={{ marginY: "16px" }} />
               <Box
-                padding="4%"
                 marginBottom="32px"
                 sx={{
                   background: activePhase !== 3 && `url(${MarikImg})`,
